@@ -1,6 +1,7 @@
 <script>
 
-    import {pokemon} from "../stores/pokestore";
+    import { pokemon } from "../stores/pokestore";
+    import {} from "../stores/fbstore";
 	import PokemanCard from "../components/pokemanCard.svelte";
 	import { redirect } from "@sveltejs/kit";
 
