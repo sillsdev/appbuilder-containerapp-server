@@ -1,23 +1,26 @@
 <script>
+    import {} from '../stores/fbstore';
+
+    // Pokemon API practice data
     import { pokemon } from '../stores/pokestore';
     import PokemanCard from '../components/pokemanCard.svelte';
-    import { redirect } from '@sveltejs/kit';
 
-    let searchTerm = '';
+    let pokeSearchTerm = '';
 
     /**
      * @type {any[]}
      **/
 
-    let filtered = [];
+    let pokeFiltered = [];
+    let langFiltered = [];
 
     $: {
-        if (searchTerm) {
-            filtered = $pokemon.filter((pokeman) =>
-                pokeman.name.toLowerCase().includes(searchTerm.toLowerCase())
+        if (pokeSearchTerm) {
+            pokeFiltered = $pokemon.filter((pokeman) =>
+                pokeman.name.toLowerCase().includes(pokeSearchTerm.toLowerCase())
             );
         } else {
-            filtered = [];
+            pokeFiltered = [];
         }
     }
 </script>
@@ -30,10 +33,10 @@
     <div class="title">Welcome to Scripture App Builder</div>
 
     <div class="search">
-        <input type="text" placeholder="Enter a language" bind:value={searchTerm} />
+        <input type="text" placeholder="Enter a language" bind:value={pokeSearchTerm} />
     </div>
     <div class="pokelist">
-        {#each filtered as pokeman}
+        {#each pokeFiltered as pokeman}
             <PokemanCard {pokeman} />
         {/each}
     </div>
