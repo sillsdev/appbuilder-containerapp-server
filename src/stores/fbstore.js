@@ -1,17 +1,18 @@
-import {writable} from "svelte/store";
-
-import { collection, query, where, getDocs } from '@firebase/firestore';
+import { writable } from 'svelte/store';
+import { collection, getDocs } from '@firebase/firestore';
 import { db } from "../firebase";
 
-const q = query(collection(db, "languages"), where( "date_accepted", "!=", null ));
 /**
- * @type {never[]}
+ * @type {any[]}
  */
+export const languages = [];
 
-export let languages = [];
+const packagesReference = collection( db, 'packages'); 
+const snapshot = await getDocs( packagesReference );
 
-const querySnapshot = await getDocs(q);
-querySnapshot.forEach( (doc) => {
-    console.log( doc.id, " => ", doc.data() );
+
+snapshot.forEach((doc) => {
+    languages.push({ ...doc.data(), id: doc.id });
 });
 
+// console.log(languages);
