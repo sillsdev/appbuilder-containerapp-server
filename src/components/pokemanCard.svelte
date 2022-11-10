@@ -1,17 +1,20 @@
 <script>
     /**
-	 * @type {{ image: any; name: string; id: any; }}
-	 */
-     export let pokeman;
+     * @type {{ image: any; name: string; id: any; }}
+     */
+    export let pokeman;
 </script>
 
 <div class="card">
     <div>
-        <img src={pokeman.image} alt={pokeman.name}>
+        <img src={pokeman.image} alt={pokeman.name} />
     </div>
     <ul>
         <h2>{pokeman.name.toUpperCase()}</h2>
-        <h3>{pokeman.name.substring(0, 1).toUpperCase()}{pokeman.name.substring(1)} is number {pokeman.id} on the index list.</h3>
+        <h3>
+            {pokeman.name.substring(0, 1).toUpperCase()}{pokeman.name.substring(1)} is number {pokeman.id}
+            on the index list.
+        </h3>
     </ul>
 </div>
 

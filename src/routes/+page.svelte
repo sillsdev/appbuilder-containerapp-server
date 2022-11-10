@@ -1,25 +1,25 @@
 <script>
-
-    import {pokemon} from "../stores/pokestore";
-	import PokemanCard from "../components/pokemanCard.svelte";
-	import { redirect } from "@sveltejs/kit";
+    import { pokemon } from '../stores/pokestore';
+    import PokemanCard from '../components/pokemanCard.svelte';
+    import { redirect } from '@sveltejs/kit';
 
     let searchTerm = '';
-    
+
     /**
-	 * @type {any[]}
-	**/
+     * @type {any[]}
+     **/
 
     let filtered = [];
 
     $: {
-        if(searchTerm) {
-            filtered = $pokemon.filter(pokeman => pokeman.name.toLowerCase().includes(searchTerm.toLowerCase()));
+        if (searchTerm) {
+            filtered = $pokemon.filter((pokeman) =>
+                pokeman.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
         } else {
-            filtered = []
+            filtered = [];
         }
     }
-
 </script>
 
 <head>
@@ -27,26 +27,19 @@
 </head>
 
 <section id="main">
+    <div class="title">Welcome to Scripture App Builder</div>
 
-        <div class="title">
-            Welcome to Scripture App Builder
-        </div>
-
-        <div class="search">
-            <input type="text" placeholder="Enter a language" bind:value={searchTerm}>
-        </div>
-        <div class="pokelist">
-            {#each filtered as pokeman}
-                <PokemanCard pokeman={pokeman} />
-            {/each}
-        </div>
-
+    <div class="search">
+        <input type="text" placeholder="Enter a language" bind:value={searchTerm} />
+    </div>
+    <div class="pokelist">
+        {#each filtered as pokeman}
+            <PokemanCard {pokeman} />
+        {/each}
+    </div>
 </section>
 
-
-
 <style>
-
     #main {
         height: 600px;
         width: 100%;
