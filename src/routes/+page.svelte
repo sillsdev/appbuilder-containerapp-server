@@ -48,7 +48,6 @@
 
 
 <style>
-
     #main {
         height: 600px;
         width: 100%;
