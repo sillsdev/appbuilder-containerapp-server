@@ -95,6 +95,7 @@
         padding: 12px;
         align-items: center;
         background-size: contain;
+        background-color: silver;
         background-repeat: no-repeat;
         background-image: url('./images/scripture.jpeg');
         background-size: auto;
