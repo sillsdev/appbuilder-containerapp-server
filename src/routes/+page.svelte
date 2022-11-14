@@ -41,13 +41,14 @@
 
 <style>
     #main {
-        height: 600px;
         width: 100%;
+        height: 1000px;
         display: flex;
         flex-direction: column;
         padding: 12px;
         align-items: center;
         background-size: contain;
+        background-color: silver;
         background-repeat: no-repeat;
     }
 
