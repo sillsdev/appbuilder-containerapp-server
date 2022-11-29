@@ -33,25 +33,25 @@
         <input type="text" placeholder="Enter a language" bind:value={searchTerm} />
     </div>
     <div class="search2">
-        <input type="text" placeholder="Enter a Country"/>
+        <input type="text" placeholder="Enter a Country" />
     </div>
 
     <div class="search3">
-        <input type="text" placeholder="Enter a language"/>
+        <input type="text" placeholder="Enter a language" />
     </div>
 
-<div class ="button">
-    <a href="https://google.com" class="btn btn-outline">About Us</a>
-</div>
-
-<div class="dropdown">
-    <span>English</span>
-    <div class="dropdown-content">
-      <p>Spanish</p>
-      <p>Spanish</p>
-      <p>Spanish</p>
+    <div class="button">
+        <a href="https://google.com" class="btn btn-outline">About Us</a>
     </div>
-  </div>
+
+    <div class="dropdown">
+        <span>English</span>
+        <div class="dropdown-content">
+            <p>Spanish</p>
+            <p>Spanish</p>
+            <p>Spanish</p>
+        </div>
+    </div>
 
     <div class="pokelist">
         {#each filtered as pokeman}
@@ -61,32 +61,32 @@
 </section>
 
 <style>
-.dropdown {
-  position: absolute;
-  display: inline-block;
-  left: 75%;
-  top: 87%;
-}
+    .dropdown {
+        position: absolute;
+        display: inline-block;
+        left: 75%;
+        top: 87%;
+    }
 
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  padding: 12px 16px;
-  z-index: 1;
-}
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        padding: 12px 16px;
+        z-index: 1;
+    }
 
-.dropdown:hover .dropdown-content {
-  display: block;
-}
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
 
-.button {
-    position: absolute;
-    top: 87%;
-    left: 25%;
-}
+    .button {
+        position: absolute;
+        top: 87%;
+        left: 25%;
+    }
     #main {
         width: 100%;
         height: 1000px;
@@ -96,7 +96,7 @@
         align-items: center;
         background-size: contain;
         background-repeat: no-repeat;
-        background-image: url("./images/scripture.jpeg");
+        background-image: url('./images/scripture.jpeg');
         background-size: auto;
     }
 
@@ -107,7 +107,6 @@
         margin: auto;
         color: aqua;
         position: absolute;
-
     }
 
     .title {
@@ -131,15 +130,13 @@
         align-items: center;
         position: absolute;
         top: 28%;
-        
     }
-    .search3{
+    .search3 {
         display: flex;
         width: 100%;
         align-items: center;
         position: absolute;
         top: 36%;
-       
     }
 
     input {
@@ -150,5 +147,4 @@
         padding: 1%;
         text-align: center;
     }
-    
 </style>
