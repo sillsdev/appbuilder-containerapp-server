@@ -64,6 +64,8 @@
 .dropdown {
   position: absolute;
   display: inline-block;
+  left: 75%;
+  top: 87%;
 }
 
 .dropdown-content {
