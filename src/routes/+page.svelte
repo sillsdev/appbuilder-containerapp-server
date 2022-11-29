@@ -32,6 +32,27 @@
     <div class="search">
         <input type="text" placeholder="Enter a language" bind:value={searchTerm} />
     </div>
+    <div class="search2">
+        <input type="text" placeholder="Enter a Country"/>
+    </div>
+
+    <div class="search3">
+        <input type="text" placeholder="Enter a language"/>
+    </div>
+
+<div class ="button">
+    <a href="https://google.com" class="btn btn-outline">About Us</a>
+</div>
+
+<div class="dropdown">
+    <span>English</span>
+    <div class="dropdown-content">
+      <p>Spanish</p>
+      <p>Spanish</p>
+      <p>Spanish</p>
+    </div>
+  </div>
+
     <div class="pokelist">
         {#each filtered as pokeman}
             <PokemanCard {pokeman} />
@@ -40,6 +61,30 @@
 </section>
 
 <style>
+.dropdown {
+  position: absolute;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.button {
+    position: absolute;
+    top: 87%;
+    left: 25%;
+}
     #main {
         width: 100%;
         height: 1000px;
@@ -48,8 +93,9 @@
         padding: 12px;
         align-items: center;
         background-size: contain;
-        background-color: silver;
         background-repeat: no-repeat;
+        background-image: url("./images/scripture.jpeg");
+        background-size: auto;
     }
 
     .pokelist {
@@ -57,13 +103,16 @@
         min-width: 50%;
         max-width: 70%;
         margin: auto;
+        color: aqua;
+        position: absolute;
+
     }
 
     .title {
         text-align: center;
         font-size: 24px;
         font-family: Arial, Helvetica, sans-serif;
-        color: black;
+        color: white;
         padding: 6px;
     }
 
@@ -71,6 +120,24 @@
         display: flex;
         width: 100%;
         align-items: center;
+        position: absolute;
+        top: 20%;
+    }
+    .search2 {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        position: absolute;
+        top: 28%;
+        
+    }
+    .search3{
+        display: flex;
+        width: 100%;
+        align-items: center;
+        position: absolute;
+        top: 36%;
+       
     }
 
     input {
@@ -81,4 +148,5 @@
         padding: 1%;
         text-align: center;
     }
+    
 </style>
