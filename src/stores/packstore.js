@@ -51,8 +51,8 @@ const langPackConverter = {
 };
 
 const docRef = doc(db, 'packages', 'TJ3OqolmsLWpdlRxBKrb');
-const docSnap = await getDoc(docRef);
-console.log(docSnap);
+export const docSnap = await getDoc(docRef);
+
 
 const snapshot = await getDocs(collection(db, 'packages'));
 console.log(snapshot);

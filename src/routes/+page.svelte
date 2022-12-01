@@ -1,7 +1,7 @@
 <script>
     import { pokemon } from '../stores/pokestore';
     import PokemanCard from '../components/pokemanCard.svelte';
-    import { packages } from '../stores/packstore';
+    import { docSnap } from '../stores/packstore';
 
     let searchTerm = '';
 
@@ -20,7 +20,8 @@
             filtered = [];
         }
     }
-    console.log(packages);
+
+    console.log(docSnap);
 </script>
 
 <head>
@@ -96,7 +97,6 @@
         padding: 12px;
         align-items: center;
         background-size: contain;
-        background-color: silver;
         background-repeat: no-repeat;
         background-image: url('./images/scripture.jpeg');
         background-size: auto;
