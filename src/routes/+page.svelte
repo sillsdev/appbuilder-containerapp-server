@@ -1,7 +1,7 @@
 <script>
     import { pokemon } from '../stores/pokestore';
     import PokemanCard from '../components/pokemanCard.svelte';
-    import { redirect } from '@sveltejs/kit';
+    import { packages } from '../stores/packstore';
 
     let searchTerm = '';
 
@@ -20,6 +20,7 @@
             filtered = [];
         }
     }
+    console.log(packages);
 </script>
 
 <head>
