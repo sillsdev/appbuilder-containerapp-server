@@ -21,6 +21,7 @@
         }
     }
 
+    // shows database is working
     console.log( packages );
 </script>
 

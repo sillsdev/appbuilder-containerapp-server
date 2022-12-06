@@ -3,11 +3,12 @@ import type { UserConfig } from 'vite';
 
 const config: UserConfig = {
     plugins: [sveltekit()],
-    server: {
-        fs: {
-            allow: ['..']
-        }
-    }
+    // if uncommented, resources load as expected
+    // server: {
+    //     fs: {
+    //         allow: ['..']
+    //     }
+    // }
 };
 
 export default config;
