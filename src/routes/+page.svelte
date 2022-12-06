@@ -1,7 +1,7 @@
 <script>
     import { pokemon } from '../stores/pokestore';
+    import { packages } from '../stores/packstore';
     import PokemanCard from '../components/pokemanCard.svelte';
-    import { docSnap } from '../stores/packstore';
 
     let searchTerm = '';
 
@@ -21,7 +21,7 @@
         }
     }
 
-    console.log(docSnap);
+    console.log( packages );
 </script>
 
 <head>
@@ -42,6 +42,16 @@
         <input type="text" placeholder="Enter a language" />
     </div>
 
+    <div>
+        { packages }
+    </div>
+
+    <div class="pokelist">
+        {#each filtered as pokeman}
+            <PokemanCard {pokeman} />
+        {/each}
+    </div>
+
     <div class="button">
         <a href="https://google.com" class="btn btn-outline">About Us</a>
     </div>
@@ -55,11 +65,6 @@
         </div>
     </div>
 
-    <div class="pokelist">
-        {#each filtered as pokeman}
-            <PokemanCard {pokeman} />
-        {/each}
-    </div>
 </section>
 
 <style>

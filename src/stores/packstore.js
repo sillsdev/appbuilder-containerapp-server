@@ -1,11 +1,12 @@
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
-import { db } from '../fbconfig';
+import { collection, doc, getDocs, getDoc } from 'firebase/firestore';
+import { db } from '../../fbconfig';
+import { writable } from 'svelte/store';
 
 /**
- * @type {import("@firebase/firestore").QueryDocumentSnapshot<langPackage>[]}
+ * @type {any}
  */
 
-export let packages = [];
+export const packages = writable([]);
 
 class langPackage {
     /**
@@ -50,12 +51,15 @@ const langPackConverter = {
     }
 };
 
-const docRef = doc(db, 'packages', 'TJ3OqolmsLWpdlRxBKrb');
-export const docSnap = await getDoc(docRef);
+// const docRef = doc(db, 'packages', 'TJ3OqolmsLWpdlRxBKrb');
+// export const docSnap = await getDoc(docRef);
 
+const colq = collection(db, 'packages');
+const dq = doc(db, 'packages', 'TJ3OqolmsLWpdlRxBKrb').withConverter(langPackConverter);
 
-const snapshot = await getDocs(collection(db, 'packages'));
-console.log(snapshot);
-// snapshot.forEach((doc) => {
-//     packages.push(doc);
-// });
+// const snap = await getDocs(colq);
+export const snap = await getDoc(dq);
+if (snap.exists()) {
+    packages.set(snap.data());
+}
+export const snapshot = await getDocs(colq);
