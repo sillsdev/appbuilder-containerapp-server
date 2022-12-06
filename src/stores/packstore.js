@@ -6,7 +6,7 @@ import { writable } from 'svelte/store';
  * @type {any}
  */
 
-export const packages = writable([]);
+export const packages = [];
 
 class langPackage {
     /**
@@ -60,6 +60,6 @@ const dq = doc(db, 'packages', 'TJ3OqolmsLWpdlRxBKrb').withConverter(langPackCon
 // const snap = await getDocs(colq);
 export const snap = await getDoc(dq);
 if (snap.exists()) {
-    packages.set(snap.data());
+    packages.push(snap.data());
 }
 export const snapshot = await getDocs(colq);
