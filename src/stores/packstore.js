@@ -1,6 +1,5 @@
 import { collection, doc, getDocs, getDoc } from 'firebase/firestore';
-import { db } from '../../fbconfig';
-import { writable } from 'svelte/store';
+import { db } from '../lib/fbconfig';
 
 /**
  * @type {any}

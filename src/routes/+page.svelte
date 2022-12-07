@@ -22,7 +22,7 @@
     }
 
     // shows database is working
-    console.log( packages );
+    console.log(packages);
 </script>
 
 <head>
@@ -44,7 +44,7 @@
     </div>
 
     <div>
-        { packages }
+        {packages}
     </div>
 
     <div class="pokelist">
@@ -65,7 +65,6 @@
             <p>Spanish</p>
         </div>
     </div>
-
 </section>
 
 <style>

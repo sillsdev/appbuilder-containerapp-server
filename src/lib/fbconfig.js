@@ -8,7 +8,7 @@ import {
     PUBLIC_MEASUREMENT_ID
 } from '$env/static/public';
 
-import { getApp, getApps, initializeApp } from 'firebase/app';
+import { getApp, initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
