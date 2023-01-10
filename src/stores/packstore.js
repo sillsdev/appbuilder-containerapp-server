@@ -50,9 +50,6 @@ const langPackConverter = {
     }
 };
 
-// const docRef = doc(db, 'packages', 'TJ3OqolmsLWpdlRxBKrb');
-// export const docSnap = await getDoc(docRef);
-
 const colq = collection(db, 'packages');
 const dq = doc(db, 'packages', 'TJ3OqolmsLWpdlRxBKrb').withConverter(langPackConverter);
 
