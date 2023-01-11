@@ -32,7 +32,7 @@
     <div class="search">
         <input type="text" placeholder="Enter a language" bind:value={searchTerm} />
     </div>
-    
+
     <div class="search2">
         <input type="text" placeholder="Enter a Country" />
     </div>
