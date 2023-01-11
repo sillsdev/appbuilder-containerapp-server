@@ -17,6 +17,9 @@ jobs:
               run: |
                   npm i
 
+            - name: Add config
+              run: cp ".github/workflows/lint.env" .env
+
             - name: TypeScript/Svelte Check
               run: |
                   npm list --depth=0 typescript
