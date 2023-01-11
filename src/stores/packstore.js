@@ -53,9 +53,10 @@ const langPackConverter = {
 const colq = collection(db, 'packages');
 const dq = doc(db, 'packages', 'TJ3OqolmsLWpdlRxBKrb').withConverter(langPackConverter);
 
-// const snap = await getDocs(colq);
 export const snap = await getDoc(dq);
+
 if (snap.exists()) {
     packages.push(snap.data());
 }
+
 export const snapshot = await getDocs(colq);
