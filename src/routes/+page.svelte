@@ -1,7 +1,7 @@
 <script>
     import { pokemon } from '../stores/pokestore';
+    import { packages } from '../stores/packstore';
     import PokemanCard from '../components/pokemanCard.svelte';
-    import { redirect } from '@sveltejs/kit';
 
     let searchTerm = '';
 
@@ -32,12 +32,23 @@
     <div class="search">
         <input type="text" placeholder="Enter a language" bind:value={searchTerm} />
     </div>
+
     <div class="search2">
         <input type="text" placeholder="Enter a Country" />
     </div>
 
     <div class="search3">
         <input type="text" placeholder="Enter a language" />
+    </div>
+
+    <div>
+        {packages}
+    </div>
+
+    <div class="pokelist">
+        {#each filtered as pokeman}
+            <PokemanCard {pokeman} />
+        {/each}
     </div>
 
     <div class="button">
@@ -51,12 +62,6 @@
             <p>Spanish</p>
             <p>Spanish</p>
         </div>
-    </div>
-
-    <div class="pokelist">
-        {#each filtered as pokeman}
-            <PokemanCard {pokeman} />
-        {/each}
     </div>
 </section>
 
@@ -87,6 +92,7 @@
         top: 87%;
         left: 25%;
     }
+
     #main {
         width: 100%;
         height: 1000px;
@@ -124,6 +130,7 @@
         position: absolute;
         top: 20%;
     }
+
     .search2 {
         display: flex;
         width: 100%;
@@ -131,6 +138,7 @@
         position: absolute;
         top: 28%;
     }
+
     .search3 {
         display: flex;
         width: 100%;
