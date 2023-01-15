@@ -1,7 +1,7 @@
 <script>
     import { pokemon } from '../stores/pokestore';
+    import { packages } from '../stores/packstore';
     import PokemanCard from '../components/pokemanCard.svelte';
-    import { redirect } from '@sveltejs/kit';
 
     let searchTerm = '';
 
@@ -40,6 +40,16 @@
         <input type="text" placeholder="Enter a language" />
     </div>
 
+    <div>
+        {packages}
+    </div>
+
+    <div class="pokelist">
+        {#each filtered as pokeman}
+            <PokemanCard {pokeman} />
+        {/each}
+    </div>
+
     <div class="button">
         <a href="https://google.com" class="btn btn-outline">About Us</a>
     </div>
@@ -51,12 +61,6 @@
             <p>Spanish</p>
             <p>Spanish</p>
         </div>
-    </div>
-
-    <div class="pokelist">
-        {#each filtered as pokeman}
-            <PokemanCard {pokeman} />
-        {/each}
     </div>
 </section>
 
