@@ -1,44 +1,38 @@
 <script>
-    /**
-     * @type {{ image: any; name: string; id: any; }}
-     */
-    export let pokeman;
+    export let pack;
 </script>
 
 <div class="card">
-    <div>
-        <img src={pokeman.image} alt={pokeman.name} />
-    </div>
+    
     <ul>
-        <h2>{pokeman.name.toUpperCase()}</h2>
-        <h3>
-            {pokeman.name.substring(0, 1).toUpperCase()}{pokeman.name.substring(1)} is number {pokeman.id}
-            on the index list.
-        </h3>
+        <h2>{pack.name.toUpperCase()}</h2>
+        <h3>Region: {pack.country.substring(0,1).toUpperCase()}{pack.country.substring(1)}</h3>
+        <h3>Alternate Names: {pack.altNames}</h3>
+        <h3>Language Code (ISO-693 3): {pack.code}</h3>
+        <h3>The {pack.name.substring(0, 1).toUpperCase()}{pack.name.substring(1)} App package is {pack.size / 1000} MB.</h3>
     </ul>
+
 </div>
 
 <style>
     .card {
-        padding: 8px;
+        padding: 2px;
+        display: flex;
+        overflow: hidden;
         margin-top: 4px;
         height: auto;
-        background-color: rgb(150, 150, 150);
+        background-color: rgba(100, 100, 100, .8);
         border-radius: 12px;
-        display: flex;
-    }
-
-    img {
-        min-height: 24px;
-        justify-content: center;
     }
 
     h2 {
-        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-        font-weight: 300;
+        font-family: 'Arial Narrow Bold', sans-serif;
+        font-weight: 700;
+        color: white;
     }
 
     h3 {
         font-family: Arial, Helvetica, sans-serif;
+        color:rgb(200, 200, 200);
     }
 </style>

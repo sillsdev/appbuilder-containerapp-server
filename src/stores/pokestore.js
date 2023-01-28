@@ -19,4 +19,6 @@ const fetchPokemon = async () => {
     pokemon.set(loadedPokemon);
 };
 
+// console.log(pokemon);
+
 fetchPokemon();
