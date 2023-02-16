@@ -20,7 +20,6 @@
             await goto('/admin');
         } catch (error) {
             console.log('error signin in', error.message);
-            error = error.message;
         }
     }
 </script>
