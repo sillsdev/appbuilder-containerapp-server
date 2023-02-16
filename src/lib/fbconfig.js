@@ -10,7 +10,7 @@ import {
 
 import { getApp, initializeApp } from 'firebase/app';
 import { doc, getFirestore } from 'firebase/firestore';
-import { getAuth } from "firebase/auth";
+import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
     apiKey: `${PUBLIC_API_KEY}`,
@@ -33,7 +33,5 @@ const initAppIfNeeded = () => {
 let firebaseapp = initAppIfNeeded();
 const auth = getAuth(firebaseapp);
 export const db = getFirestore(firebaseapp);
-const userDoc = (userId) => doc(db, "users", userId)
-export {
-    auth, userDoc
-}
+const userDoc = (userId) => doc(db, 'users', userId);
+export { auth, userDoc };
