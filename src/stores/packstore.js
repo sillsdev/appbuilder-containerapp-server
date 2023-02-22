@@ -55,8 +55,8 @@ const colq = collection(db, 'packages');
 
 export const snapshot = await getDocs(colq);
 
-snapshot.forEach( (doc) => {
-    packs.push( doc.data() );
+snapshot.forEach((doc) => {
+    packs.push(doc.data());
 });
 
 // @ts-ignore
@@ -69,8 +69,7 @@ const loadedPack = packs.map((data, index) => {
         code: data.app_lang.iso639_3,
         image: data.image.baseurl,
         size: data.size
-    }
+    };
 });
 
-packages.set( loadedPack );
-
+packages.set(loadedPack);

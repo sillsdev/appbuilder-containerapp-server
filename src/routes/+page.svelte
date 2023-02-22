@@ -2,7 +2,7 @@
     import { packages } from '../stores/packstore';
     import PokemanCard from '../components/pokemanCard.svelte';
     import { _, locale, locales } from 'svelte-i18n';
-    
+
     let searchName = '';
     let searchCountry = '';
     let searchCode = '';
@@ -12,49 +12,51 @@
     $: {
         // search by name
 
-        if ( searchName ) {
+        if (searchName) {
             filter = $packages.filter((pack) =>
-                pack.name.substring(0, searchName.length).toLowerCase().includes(searchName.toLowerCase())
-                );
-        } else if ( searchCountry ) {
+                pack.name
+                    .substring(0, searchName.length)
+                    .toLowerCase()
+                    .includes(searchName.toLowerCase())
+            );
+        } else if (searchCountry) {
             filter = $packages.filter((pack) =>
-                pack.country.substring(0, searchCountry.length).toLowerCase().includes(searchCountry.toLowerCase())
-                );
-        } else if ( searchCode ) {
+                pack.country
+                    .substring(0, searchCountry.length)
+                    .toLowerCase()
+                    .includes(searchCountry.toLowerCase())
+            );
+        } else if (searchCode) {
             filter = $packages.filter((pack) =>
                 pack.code.toLowerCase().includes(searchCode.toLowerCase())
-                );
+            );
         } else {
             filter = [];
         }
-
     }
-
 </script>
 
-<head>
-    Scripture App Builder
-</head>
+<head> Scripture App Builder </head>
 
 <section id="main">
-    <div class="title"> { $_('page.home.title') }</div>
+    <div class="title">{$_('page.home.title')}</div>
 
     <div class="search-box">
-        {#if (!searchCountry && !searchCode) }
+        {#if !searchCountry && !searchCode}
             <div class="search">
                 <input type="text" placeholder="Enter a language" bind:value={searchName} />
             </div>
         {/if}
-    
-        {#if (!searchName && !searchCode)}
+
+        {#if !searchName && !searchCode}
             <div class="search2">
-                <input type="text" placeholder="Enter a Country" bind:value={searchCountry}/>
+                <input type="text" placeholder="Enter a Country" bind:value={searchCountry} />
             </div>
         {/if}
-    
-        {#if (!searchName && !searchCountry)}
+
+        {#if !searchName && !searchCountry}
             <div class="search3">
-                <input type="text" placeholder="Language Code (ISO639-3)" bind:value={searchCode}/>
+                <input type="text" placeholder="Language Code (ISO639-3)" bind:value={searchCode} />
             </div>
         {/if}
     </div>
@@ -69,7 +71,7 @@
         <a href="https://google.com" class="btn btn-outline">{$_('page.home.about')}</a>
     </div>
 
-    <div class="dropdown" >
+    <div class="dropdown">
         <select bind:value={$locale}>
             {#each $locales as locale}
                 <option value={locale}>{locale}</option>
@@ -78,9 +80,7 @@
     </div>
 </section>
 
-
 <style>
-
     .search-box {
         display: flex;
         flex-direction: column;
