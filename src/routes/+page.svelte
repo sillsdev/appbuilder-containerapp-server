@@ -1,7 +1,7 @@
 <script>
     import { packages } from '../stores/packstore';
     import PokemanCard from '../components/pokemanCard.svelte';
-    
+    import { _, locale, locales } from 'svelte-i18n';
     
     let searchName = '';
     let searchCountry = '';
@@ -33,11 +33,11 @@
 </script>
 
 <head>
-    <title> Welcome to Scripture App Builder </title>
+    Scripture App Builder
 </head>
 
 <section id="main">
-    <div class="title">Welcome to Scripture App Builder</div>
+    <div class="title"> { $_('page.home.title') }</div>
 
     <div class="search-box">
         {#if (!searchCountry && !searchCode) }
@@ -66,18 +66,18 @@
     </div>
 
     <div class="button">
-        <a href="https://google.com" class="btn btn-outline">About Us</a>
+        <a href="https://google.com" class="btn btn-outline">{$_('page.home.about')}</a>
     </div>
 
-    <div class="dropdown">
-        <span>English</span>
-        <div class="dropdown-content">
-            <p>Spanish</p>
-            <p>Spanish</p>
-            <p>Spanish</p>
-        </div>
+    <div class="dropdown" >
+        <select bind:value={$locale}>
+            {#each $locales as locale}
+                <option value={locale}>{locale}</option>
+            {/each}
+        </select>
     </div>
 </section>
+
 
 <style>
 
@@ -92,8 +92,12 @@
         color: white;
         position: absolute;
         display: inline-block;
-        left: 90%;
+        left: 85%;
         top: 5%;
+    }
+
+    select {
+        width: 96px;
     }
 
     a {
