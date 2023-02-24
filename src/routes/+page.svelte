@@ -2,6 +2,7 @@
     import { packages } from '../stores/packstore';
     import PokemanCard from '../components/pokemanCard.svelte';
     import { _, locale, locales } from 'svelte-i18n';
+    import LanguageSelector from '../components/LanguageSelector.svelte';
 
     let searchName = '';
     let searchCountry = '';
@@ -79,6 +80,8 @@
         </select>
     </div>
 </section>
+
+<LanguageSelector />
 
 <style>
     .search-box {

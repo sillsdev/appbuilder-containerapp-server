@@ -1,20 +1,20 @@
 import { locale, register, init, getLocaleFromNavigator } from 'svelte-i18n';
 
-let initialLocale = 'en';
+let fallback = 'en';
 
-register('ar', () => import('../stores/locales/ar.json'));
-register('de', () => import('../stores/locales/de.json'));
-register('en', () => import('../stores/locales/en.json'));
-register('es', () => import('../stores/locales/es.json'));
-register('fil', () => import('../stores/locales/fil.json'));
-register('fr', () => import('../stores/locales/fr.json'));
-register('id', () => import('../stores/locales/id.json'));
-register('ru', () => import('../stores/locales/ru.json'));
-register('zh', () => import('../stores/locales/zh.json'));
+register('ar', () => import('./locales/ar.json'));
+register('de', () => import('./locales/de.json'));
+register('en', () => import('./locales/en.json'));
+register('es', () => import('./locales/es.json'));
+register('fil', () => import('./locales/fil.json'));
+register('fr', () => import('./locales/fr.json'));
+register('id', () => import('./locales/id.json'));
+register('ru', () => import('./locales/ru.json'));
+register('zh', () => import('./locales/zh.json'));
 
 init({
-    initialLocale: initialLocale,
-    fallbackLocale: getLocaleFromNavigator()
+    initialLocale: getLocaleFromNavigator(),
+    fallbackLocale: fallback
 });
 
 locale.set('en');
