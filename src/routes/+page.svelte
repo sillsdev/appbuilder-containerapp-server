@@ -39,11 +39,9 @@
 
 <head> Scripture App Builder </head>
 
-
 <section id="main">
-    
     <div class="title">{$_('page.home.title')}</div>
-    
+
     <div class="language_selector">
         <LanguageSelector />
     </div>
@@ -76,11 +74,9 @@
     <div class="button">
         <a href="https://google.com">{$_('page.home.about')}</a>
     </div>
-
 </section>
 
 <style>
-
     .language_selector {
         position: absolute;
         top: 3%;
@@ -98,7 +94,7 @@
     .button {
         color: white;
         position: absolute;
-        top:4%;
+        top: 4%;
         left: 10%;
     }
 
