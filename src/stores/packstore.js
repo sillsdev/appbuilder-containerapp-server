@@ -43,7 +43,7 @@ const langPackConverter = {
         const data = snapshot.data(options);
         return new langPackage(
             data.app_lang,
-            data.image,
+            data.image.baseurl,
             data.listing,
             data.publish_url,
             data.size
@@ -67,9 +67,10 @@ const loadedPack = packs.map((data, index) => {
         altNames: data.app_lang.names,
         country: data.app_lang.regionname,
         code: data.app_lang.iso639_3,
-        image: data.image.baseurl,
+        image: data.image.baseurl + "/" + data.image.files[0].src,
         size: data.size
     };
 });
 
 packages.set(loadedPack);
+

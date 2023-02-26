@@ -1,7 +1,7 @@
 <script>
     import { packages } from '../stores/packstore';
-    import PokemanCard from '../components/pokemanCard.svelte';
-    import { _, locale, locales } from 'svelte-i18n';
+    import PokemanCard from '../components/PackageCard.svelte';
+    import { _ } from 'svelte-i18n';
     import LanguageSelector from '../components/LanguageSelector.svelte';
 
     let searchName = '';
@@ -42,7 +42,7 @@
 <section id="main">
     <div class="title">{$_('page.home.title')}</div>
 
-    <div class="language_selector">
+    <div id="language_selector">
         <LanguageSelector />
     </div>
 
@@ -66,7 +66,7 @@
         {/if}
     </div>
 
-    <div class="pokelist">
+    <div class="list">
         {#each filter as pack}
             <PokemanCard {pack} />
         {/each}
@@ -77,7 +77,7 @@
 </section>
 
 <style>
-    .language_selector {
+    #language_selector {
         position: absolute;
         top: 3%;
         left: 90%;
@@ -104,19 +104,19 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-size: contain;
+        background-size: cover;
         background-repeat: no-repeat;
         background-image: url('./images/scripture.jpeg');
         background-position: center;
         background-size: auto;
     }
 
-    .pokelist {
+    .list {
         position: static;
         margin-top: 1%;
         justify-content: center;
-        min-width: 60%;
-        max-width: 70%;
+        min-width: 85%;
+        max-width: 90%;
     }
 
     .title {
