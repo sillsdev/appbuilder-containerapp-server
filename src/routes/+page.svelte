@@ -64,10 +64,7 @@
     </div>
 </section>
 
-<style lang="postcss">
-    @tailwind base;
-    @tailwind components;
-    @tailwind utilities;
+<style>
     .dropdown {
         position: absolute;
         display: inline-block;

@@ -25,6 +25,8 @@
     }
 </script>
 
+<html data-theme="light" />
+
 <svelte:head>
     <title>Register</title>
 </svelte:head>
@@ -44,3 +46,31 @@
         <div>Already have an account? <Link href="/login">Sign In</Link></div>
     </div>
 </div>
+
+<style>
+    .header {
+        width: 100vw;
+        padding: 2em 0;
+        min-height: 20vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #e5f0ff;
+    }
+    .header h4 {
+        color: black;
+        font-weight: 600;
+        font-size: 3rem;
+    }
+    .form-container {
+        min-height: 80vh;
+        display: grid;
+        place-items: center;
+    }
+    .notification-block {
+        min-width: 20vw;
+        padding: 1.2em 0.75em;
+        border-radius: 5px;
+        background-color: #fe634e;
+    }
+</style>

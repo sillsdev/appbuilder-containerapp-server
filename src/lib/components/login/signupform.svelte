@@ -15,12 +15,6 @@
 
 <div class="form">
     <Form>
-        <TextInput
-            bind:value={username}
-            labelText="Username"
-            placeholder="Enter your username"
-            name="username"
-        />
         <div class="space" />
         <TextInput
             bind:value={email}
@@ -45,9 +39,9 @@
 
 <style>
     .form {
-        width: 400px;
+        width: 30%;
     }
     .form .space {
-        margin: 0.6em 0;
+        margin: 20px 0;
     }
 </style>

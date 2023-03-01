@@ -24,6 +24,8 @@
     }
 </script>
 
+<html data-theme="light" />
+
 <svelte:head>
     <title>Login</title>
 </svelte:head>
@@ -38,7 +40,7 @@
             </div>
         {/if}
         <SignIn on:login={signIn} />
-        <div>Already have an account? <Link href="/signup">Sign Up</Link></div>
+        <div>Don't have an account? <Link href="/signup">Sign Up</Link></div>
     </div>
 </div>
 
