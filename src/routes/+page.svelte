@@ -1,96 +1,104 @@
 <script>
-    import { pokemon } from '../stores/pokestore';
     import { packages } from '../stores/packstore';
-    import PokemanCard from '../components/pokemanCard.svelte';
+    import PackageCard from '../components/PackageCard.svelte';
+    import { _ } from 'svelte-i18n';
+    import LanguageSelector from '../components/LanguageSelector.svelte';
 
-    let searchTerm = '';
+    let searchName = '';
+    let searchCountry = '';
+    let searchCode = '';
 
-    /**
-     * @type {any[]}
-     **/
-
-    let filtered = [];
+    let filter = [];
 
     $: {
-        if (searchTerm) {
-            filtered = $pokemon.filter((pokeman) =>
-                pokeman.name.toLowerCase().includes(searchTerm.toLowerCase())
+        // search by name
+
+        if (searchName) {
+            filter = $packages.filter((pack) =>
+                pack.name
+                    .substring(0, searchName.length)
+                    .toLowerCase()
+                    .includes(searchName.toLowerCase())
+            );
+        } else if (searchCountry) {
+            filter = $packages.filter((pack) =>
+                pack.country
+                    .substring(0, searchCountry.length)
+                    .toLowerCase()
+                    .includes(searchCountry.toLowerCase())
+            );
+        } else if (searchCode) {
+            filter = $packages.filter((pack) =>
+                pack.code.toLowerCase().includes(searchCode.toLowerCase())
             );
         } else {
-            filtered = [];
+            filter = [];
         }
     }
 </script>
 
-<head>
-    <title> Welcome to Scripture App Builder </title>
-</head>
+<head> Scripture App Builder </head>
 
 <section id="main">
-    <div class="title">Welcome to Scripture App Builder</div>
+    <div class="title">{$_('page.home.title')}</div>
 
-    <div class="search">
-        <input type="text" placeholder="Enter a language" bind:value={searchTerm} />
-    </div>
-
-    <div class="search2">
-        <input type="text" placeholder="Enter a Country" />
-    </div>
-
-    <div class="search3">
-        <input type="text" placeholder="Enter a language" />
-    </div>
-
-    <div>
-        {packages}
-    </div>
-
-    <div class="pokelist">
-        {#each filtered as pokeman}
-            <PokemanCard {pokeman} />
-        {/each}
+    <div id="language_selector">
+        <LanguageSelector />
     </div>
 
     <div class="button">
-        <a href="https://google.com" class="btn btn-outline">About Us</a>
+        <a href="https://google.com">{$_('page.home.about')}</a>
     </div>
 
-    <div class="dropdown">
-        <span>English</span>
-        <div class="dropdown-content">
-            <p>Spanish</p>
-            <p>Spanish</p>
-            <p>Spanish</p>
-        </div>
+    <div class="search-box">
+        {#if !searchCountry && !searchCode}
+            <div class="search">
+                <input type="text" placeholder="Enter a language" bind:value={searchName} />
+            </div>
+        {/if}
+
+        {#if !searchName && !searchCode}
+            <div class="search2">
+                <input type="text" placeholder="Enter a Country" bind:value={searchCountry} />
+            </div>
+        {/if}
+
+        {#if !searchName && !searchCountry}
+            <div class="search3">
+                <input type="text" placeholder="Language Code (ISO639-3)" bind:value={searchCode} />
+            </div>
+        {/if}
+    </div>
+
+    <div class="list">
+        {#each filter as pack}
+            <PackageCard {pack} />
+        {/each}
     </div>
 </section>
 
 <style>
-    .dropdown {
+    #language_selector {
         position: absolute;
-        display: inline-block;
-        left: 75%;
-        top: 87%;
+        top: 3%;
+        left: 90%;
     }
 
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: #f9f9f9;
-        min-width: 160px;
-        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-        padding: 12px 16px;
-        z-index: 1;
+    .search-box {
+        display: flex;
+        flex-direction: column;
+        -ms-flex-align: center;
+        width: 100%;
+        margin-top: 5%;
     }
-
-    .dropdown:hover .dropdown-content {
-        display: block;
+    a {
+        color: white;
     }
-
     .button {
+        color: white;
         position: absolute;
-        top: 87%;
-        left: 25%;
+        top: 4%;
+        left: 10%;
     }
 
     #main {
@@ -98,21 +106,18 @@
         height: 1000px;
         display: flex;
         flex-direction: column;
-        padding: 12px;
-        align-items: center;
-        background-size: contain;
-        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
         background-image: url('./images/scripture.jpeg');
-        background-size: auto;
     }
 
-    .pokelist {
-        justify-content: center;
-        min-width: 50%;
-        max-width: 70%;
-        margin: auto;
-        color: aqua;
-        position: absolute;
+    .list {
+        display: flex;
+        flex-direction: column;
+        position: static;
+        margin-top: 1%;
+        min-width: 85%;
+        max-width: 90%;
     }
 
     .title {
@@ -120,6 +125,8 @@
         font-size: 24px;
         font-family: Arial, Helvetica, sans-serif;
         color: white;
+        margin: 8px;
+        margin-top: 4%;
         padding: 6px;
     }
 
@@ -127,30 +134,30 @@
         display: flex;
         width: 100%;
         align-items: center;
-        position: absolute;
-        top: 20%;
+        position: static;
+        margin: 4px;
     }
 
     .search2 {
         display: flex;
         width: 100%;
         align-items: center;
-        position: absolute;
-        top: 28%;
+        position: static;
+        margin: 4px;
     }
 
     .search3 {
         display: flex;
         width: 100%;
         align-items: center;
-        position: absolute;
-        top: 36%;
+        position: static;
+        margin: 4px;
     }
 
     input {
         border-radius: 16px;
-        min-width: 50%;
-        max-width: 70%;
+        min-width: 60%;
+        max-width: 80%;
         margin: auto;
         padding: 1%;
         text-align: center;

@@ -1,12 +1,13 @@
 import { collection, doc, getDocs, getDoc } from 'firebase/firestore';
+import { writable } from 'svelte/store';
 import { db } from '../lib/fbconfig';
 
 /**
  * @type {any}
  */
 
-export const packages = [];
-
+export const packs = [];
+export const packages = writable([]);
 class langPackage {
     /**
      * @param {any} app_lang
@@ -42,7 +43,7 @@ const langPackConverter = {
         const data = snapshot.data(options);
         return new langPackage(
             data.app_lang,
-            data.image,
+            data.image.baseurl,
             data.listing,
             data.publish_url,
             data.size
@@ -51,12 +52,24 @@ const langPackConverter = {
 };
 
 const colq = collection(db, 'packages');
-const dq = doc(db, 'packages', 'TJ3OqolmsLWpdlRxBKrb').withConverter(langPackConverter);
-
-export const snap = await getDoc(dq);
-
-if (snap.exists()) {
-    packages.push(snap.data());
-}
 
 export const snapshot = await getDocs(colq);
+
+snapshot.forEach((doc) => {
+    packs.push(doc.data());
+});
+
+// @ts-ignore
+const loadedPack = packs.map((data, index) => {
+    return {
+        id: index + 1,
+        name: data.app_lang.name,
+        altNames: data.app_lang.names,
+        country: data.app_lang.regionname,
+        code: data.app_lang.iso639_3,
+        image: data.image.baseurl + '/' + data.image.files[0].src,
+        size: data.size
+    };
+});
+
+packages.set(loadedPack);
