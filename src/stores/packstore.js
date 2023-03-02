@@ -67,10 +67,9 @@ const loadedPack = packs.map((data, index) => {
         altNames: data.app_lang.names,
         country: data.app_lang.regionname,
         code: data.app_lang.iso639_3,
-        image: data.image.baseurl + "/" + data.image.files[0].src,
+        image: data.image.baseurl + '/' + data.image.files[0].src,
         size: data.size
     };
 });
 
 packages.set(loadedPack);
-

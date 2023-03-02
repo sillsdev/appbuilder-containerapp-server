@@ -1,6 +1,6 @@
 <script>
     import { packages } from '../stores/packstore';
-    import PokemanCard from '../components/PackageCard.svelte';
+    import PackageCard from '../components/PackageCard.svelte';
     import { _ } from 'svelte-i18n';
     import LanguageSelector from '../components/LanguageSelector.svelte';
 
@@ -46,6 +46,10 @@
         <LanguageSelector />
     </div>
 
+    <div class="button">
+        <a href="https://google.com">{$_('page.home.about')}</a>
+    </div>
+
     <div class="search-box">
         {#if !searchCountry && !searchCode}
             <div class="search">
@@ -68,11 +72,8 @@
 
     <div class="list">
         {#each filter as pack}
-            <PokemanCard {pack} />
+            <PackageCard {pack} />
         {/each}
-    </div>
-    <div class="button">
-        <a href="https://google.com">{$_('page.home.about')}</a>
     </div>
 </section>
 
@@ -82,9 +83,11 @@
         top: 3%;
         left: 90%;
     }
+
     .search-box {
         display: flex;
         flex-direction: column;
+        -ms-flex-align: center;
         width: 100%;
         margin-top: 5%;
     }
@@ -103,18 +106,16 @@
         height: 1000px;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-image: url('./images/scripture.jpeg');
         background-position: center;
-        background-size: auto;
+        background-size: cover;
+        background-image: url('./images/scripture.jpeg');
     }
 
     .list {
+        display: flex;
+        flex-direction: column;
         position: static;
         margin-top: 1%;
-        justify-content: center;
         min-width: 85%;
         max-width: 90%;
     }
