@@ -1,6 +1,5 @@
 <script>
     import SignIn from '../../lib/components/login/loginForm.svelte';
-    import { Link } from 'carbon-components-svelte';
     import { signInWithEmailAndPassword } from 'firebase/auth';
     import { auth, userDoc } from '../../lib/fbconfig';
     import { goto } from '$app/navigation';
@@ -24,8 +23,6 @@
     }
 </script>
 
-<html data-theme="light" />
-
 <svelte:head>
     <title>Login</title>
 </svelte:head>
@@ -40,7 +37,7 @@
             </div>
         {/if}
         <SignIn on:login={signIn} />
-        <div>Don't have an account? <Link href="/signup">Sign Up</Link></div>
+        <div>Don't have an account? <a class="link link-hover" href="/signup">Sign Up</a></div>
     </div>
 </div>
 
@@ -52,10 +49,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: #e5f0ff;
     }
     .header h4 {
-        color: black;
         font-weight: 600;
         font-size: 3rem;
     }
@@ -69,8 +64,5 @@
         padding: 1.2em 0.75em;
         border-radius: 5px;
         background-color: #fe634e;
-    }
-    .notification-block p {
-        color: white;
     }
 </style>

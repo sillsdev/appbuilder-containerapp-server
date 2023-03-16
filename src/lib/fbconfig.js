@@ -30,6 +30,8 @@ const initAppIfNeeded = () => {
     }
 };
 
+
+
 let firebaseapp = initAppIfNeeded();
 const auth = getAuth(firebaseapp);
 export const db = getFirestore(firebaseapp);

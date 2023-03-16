@@ -1,6 +1,5 @@
 <script>
     import SignUp from '../../lib/components/login/signupform.svelte';
-    import { Link } from 'carbon-components-svelte';
     import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
     import { goto } from '$app/navigation';
     import { auth, userDoc } from '../../lib/fbconfig';
@@ -25,8 +24,6 @@
     }
 </script>
 
-<html data-theme="light" />
-
 <svelte:head>
     <title>Register</title>
 </svelte:head>
@@ -43,7 +40,7 @@
             {/each}
         {/if}
         <SignUp on:signup={signUp} />
-        <div>Already have an account? <Link href="/login">Sign In</Link></div>
+        <div>Already have an account? <a class="link link-hover" href="/login">Sign In</a></div>
     </div>
 </div>
 
@@ -55,10 +52,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: #e5f0ff;
     }
     .header h4 {
-        color: black;
         font-weight: 600;
         font-size: 3rem;
     }

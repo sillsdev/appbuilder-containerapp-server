@@ -1,5 +1,4 @@
 <script>
-    import { Form, TextInput, PasswordInput, Button } from 'carbon-components-svelte';
     import { createEventDispatcher } from 'svelte';
     let email, password;
     const dispatcher = createEventDispatcher();
@@ -12,26 +11,26 @@
 </script>
 
 <div class="form-container">
-    <Form>
-        <TextInput
-            bind:value={email}
-            type="email"
-            labelText="Email"
-            placeholder="Enter your email"
-            name="email"
-        />
-        <div class="space" />
-        <PasswordInput
-            labelText="Password"
-            bind:value={password}
-            placeholder="Enter password"
-            tooltipAlignment="start"
-            tooltipPosition="left"
-            name="password"
-        />
-        <div class="space" />
-        <Button size="small" on:click={login}>Sign In</Button>
-    </Form>
+    <input
+        class="input input-bordered w-full max-w-xs"
+        bind:value={email}
+        type="email"
+        labelText="Email"
+        placeholder="Enter your email"
+        name="email"
+    />
+    <div class="space" />
+    <input
+        class="input input-bordered w-full max-w-xs"
+        labelText="Password"
+        bind:value={password}
+        placeholder="Enter password"
+        tooltipAlignment="start"
+        tooltipPosition="left"
+        name="password"
+    />
+    <div class="space" />
+    <button class="btn" on:click={login}>Sign In</button>
 </div>
 
 <style>
