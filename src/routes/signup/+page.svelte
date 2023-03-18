@@ -1,8 +1,8 @@
 <script>
-    import SignUp from '../../lib/components/login/signupform.svelte';
+    import SignUp from '$lib/components/login/signupform.svelte';
     import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
     import { goto } from '$app/navigation';
-    import { auth, userDoc } from '../../lib/fbconfig';
+    import { auth, userDoc } from '$lib/fbconfig';
     import { setDoc } from 'firebase/firestore';
     let errors;
     async function signUp(event) {

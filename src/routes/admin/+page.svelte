@@ -1,5 +1,5 @@
 <script>
-    import { auth } from '../../lib/fbconfig';
+    import { auth } from '$lib/fbconfig';
     import { signOut } from 'firebase/auth';
     import { goto } from '$app/navigation';
     import { onMount } from 'svelte';
