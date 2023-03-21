@@ -5,7 +5,6 @@
     import { onMount } from 'svelte';
 
     let user = null;
-
     onMount(() => {
         auth.onAuthStateChanged((userData) => {
             if (!userData) {
@@ -16,18 +15,14 @@
             }
         });
     });
-
     async function logOut() {
         await signOut(auth);
         await goto('/login');
     }
-
     function home() {
         goto('/');
     }
-
     let currentPage = 'home';
-
     const setCurrentPage = (page) => {
         currentPage = page;
     };
@@ -43,9 +38,7 @@
         <div class="flex-none">
             <div class="dropdown dropdown-end">
                 <label tabindex="0" class="btn btn-ghost btn-circle avatar">
-                    <div class="w-10 rounded-full">
-                        <img src="/photo-1534528741775-53994a69daeb.jpg" />
-                    </div>
+                    <div class="w-10 rounded-full" />
                 </label>
                 <ul
                     tabindex="0"
