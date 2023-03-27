@@ -12,11 +12,17 @@
                 event.detail.email,
                 event.detail.password
             );
-            await updateProfile(user.user, { displayName: event.detail.username });
-            await setDoc(userDoc(auth.currentUser.uid), {
-                username: user.user.displayName,
-                email: user.user.email
+            await updateProfile(user.user, {
+                displayName: `${event.detail.firstname} ${event.detail.lastname}`
             });
+            const userData = {
+                email: user.user.email,
+                lastname: event.detail.lastname
+            };
+            if (event.detail.firstname) {
+                userData.firstname = event.detail.firstname;
+            }
+            await setDoc(userDoc(auth.currentUser.uid), userData);
             await goto('/admin');
         } catch (e) {
             console.log('error from creating user', e);

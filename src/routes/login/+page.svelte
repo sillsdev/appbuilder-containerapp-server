@@ -12,10 +12,6 @@
                 event.detail.email,
                 event.detail.password
             );
-            await setDoc(userDoc(auth.currentUser.uid), {
-                username: user.user.displayName,
-                email: user.user.email
-            });
             await goto('/admin');
         } catch (error) {
             console.log('error signin in', error.message);
