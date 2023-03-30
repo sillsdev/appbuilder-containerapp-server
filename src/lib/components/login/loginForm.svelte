@@ -33,37 +33,46 @@
             name="email"
         />
     </div>
-    <div class="space" />
-    <input
-        class="input input-bordered w-full max-w-xs"
-        id="password-input"
-        labelText="Password"
-        type="password"
-        bind:value={password}
-        placeholder="Enter password"
-        tooltipAlignment="start"
-        tooltipPosition="left"
-        name="password"
-    />
-    <div class="space" />
-    <button class="btn" on:click={login}>Sign In</button>
-</div>
-<div class="psbtn">
-    <button class="btn btn-xs" on:click={togglePasswordVisibility}>
-        {showPassword ? 'Hide Password' : 'Show Password'}
-    </button>
+    <div class="space">
+        <div class="password-container">
+            <input
+                class="input input-bordered w-full max-w-xs"
+                id="password-input"
+                labelText="Password"
+                type="password"
+                bind:value={password}
+                placeholder="Enter password"
+                tooltipAlignment="start"
+                tooltipPosition="left"
+                name="password"
+            />
+            <button class="btn btn-xs show-password" on:click={togglePasswordVisibility}>
+                {showPassword ? 'Hide Password' : 'Show Password'}
+            </button>
+        </div>
+    </div>
+    <div class="space">
+        <button class="btn" on:click={login}>Sign In</button>
+    </div>
 </div>
 
 <style>
     .form-control {
         width: 30%;
+        min-width: 150px;
     }
     .form-control .space {
         margin: 20px 0;
     }
-    .psbtn {
-        position: absolute;
-        top: 47.5%;
-        right: 38%;
+    .password-container {
+        display: flex;
+        align-items: center;
+    }
+    .input {
+        flex-grow: 1;
+        min-width: 150px;
+    }
+    .show-password {
+        margin-left: 5px;
     }
 </style>

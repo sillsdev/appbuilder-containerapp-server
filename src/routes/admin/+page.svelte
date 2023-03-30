@@ -7,31 +7,40 @@
     import { userInitials } from '$lib/components/userInitialsStore';
 
     let user = null;
+    let message = '';
+    let isAdmin = false;
 
     onMount(() => {
-        auth.onAuthStateChanged((userData) => {
+        auth.onAuthStateChanged(async (userData) => {
             if (!userData) {
                 // Redirect the user to the login page
                 goto('/login');
             } else {
                 user = userData;
 
-                const fetchUserData = async () => {
-                    if (user) {
-                        const userRef = doc(db, 'users', user.uid);
-                        const userSnapshot = await getDoc(userRef);
-                        if (userSnapshot.exists()) {
-                            const userData = userSnapshot.data();
-                            const firstName = userData.firstname || '';
-                            const lastName = userData.lastname || '';
-                            userInitials.set(`${firstName.charAt(0)}${lastName.charAt(0)}`);
-                        }
+                const userRef = doc(db, 'users', user.uid);
+                const userSnapshot = await getDoc(userRef);
+
+                if (userSnapshot.exists()) {
+                    const userData = userSnapshot.data();
+                    const role = userData.role || 'user';
+                    const firstName = userData.firstname || '';
+                    const lastName = userData.lastname || '';
+                    userInitials.set(`${firstName.charAt(0)}${lastName.charAt(0)}`);
+
+                    if (role !== 'admin') {
+                        // Redirect the user to another page or show an error message
+                        message = 'CONTACT ADMINSTRATOR FOR ROLE';
+                        isAdmin = false;
+                    } else {
+                        isAdmin = true;
                     }
-                };
-                fetchUserData();
+                }
             }
+            fetchUserData();
         });
     });
+
     async function logOut() {
         await signOut(auth);
         await goto('/login');
@@ -72,49 +81,66 @@
         </div>
     </div>
 
-    <div class="drawer drawer-mobile">
-        <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
-        <div class="drawer-content flex flex-col items-center justify-center">
-            <!-- Page content here -->
-            {#if currentPage === 'Dashboard'}
-                <h1>Welcome to the Home Page</h1>
-                <p>Dashboard content goes here from firebase</p>
-            {:else if currentPage === 'Active Projects'}
-                <h1>Active Projects</h1>
-                <p>Some information about active projects goes here...</p>
-            {:else if currentPage === 'Incoming Projects'}
-                <h1>Incoming Projects</h1>
-                <p>Info about Incoming Projects</p>
-            {:else if currentPage === 'Users'}
-                <h1>Users and Roles</h1>
-            {/if}
-
-            <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden"
-                >Open drawer</label
-            >
+    {#if message}
+        <div class="message-container">
+            <p>{message}</p>
         </div>
+    {/if}
 
-        <div class="drawer-side  bg-primary    ">
-            <label for="my-drawer-2" class="drawer-overlay" />
-            <ul class="menu p-4 w-80 bg-base-100 text-base-content">
-                <li><button on:click={() => setCurrentPage('Dashboard')}>Dashboard</button></li>
-                <li>
-                    <button on:click={() => setCurrentPage('Active Projects')}
-                        >Active Projects</button
-                    >
-                </li>
-                <li>
-                    <button on:click={() => setCurrentPage('Incoming Projects')}
-                        >Incoming Projects</button
-                    >
-                </li>
-                <li>
-                    <button on:click={() => setCurrentPage('Users')}>Users</button>
-                </li>
-            </ul>
+    {#if isAdmin}
+        <div class="drawer drawer-mobile">
+            <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
+            <div class="drawer-content flex flex-col items-center justify-center">
+                <!-- Page content here -->
+                {#if currentPage === 'Dashboard'}
+                    <h1>Welcome to the Home Page</h1>
+                    <p>Dashboard content goes here from firebase</p>
+                {:else if currentPage === 'Active Projects'}
+                    <h1>Active Projects</h1>
+                    <p>Some information about active projects goes here...</p>
+                {:else if currentPage === 'Incoming Projects'}
+                    <h1>Incoming Projects</h1>
+                    <p>Info about Incoming Projects</p>
+                {:else if currentPage === 'Users'}
+                    <h1>Users and Roles</h1>
+                {/if}
+
+                <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden"
+                    >Open drawer</label
+                >
+            </div>
+
+            <div class="drawer-side">
+                <label for="my-drawer-2" class="drawer-overlay" />
+                <ul class="menu p-4 w-80 bg-base-100 text-base-content">
+                    <li><button on:click={() => setCurrentPage('Dashboard')}>Dashboard</button></li>
+                    <li>
+                        <button on:click={() => setCurrentPage('Active Projects')}
+                            >Active Projects</button
+                        >
+                    </li>
+                    <li>
+                        <button on:click={() => setCurrentPage('Incoming Projects')}
+                            >Incoming Projects</button
+                        >
+                    </li>
+                    <li>
+                        <button on:click={() => setCurrentPage('Users')}>Users</button>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
+    {/if}
 {:else}{/if}
 
 <style>
+    .message-container {
+        text-align: center;
+        padding: 1rem;
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        border-radius: 0.25rem;
+        margin: 1rem;
+    }
 </style>

@@ -13,8 +13,14 @@
                 event.detail.password
             );
             await goto('/admin');
-        } catch (error) {
-            console.log('error signin in', error.message);
+        } catch (err) {
+            console.log('error signin in', err.message);
+            error = err.message;
+            if (err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') {
+                error = 'Wrong email or password';
+            } else {
+                error = err.message;
+            }
         }
     }
 </script>
