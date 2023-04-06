@@ -94,7 +94,7 @@
             >
         </div>
 
-        <div class="drawer-side  bg-primary    ">
+        <div class="drawer-side bg-primary">
             <label for="my-drawer-2" class="drawer-overlay" />
             <ul class="menu p-4 w-80 bg-base-100 text-base-content">
                 <li><button on:click={() => setCurrentPage('Dashboard')}>Dashboard</button></li>
