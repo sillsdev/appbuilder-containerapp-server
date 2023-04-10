@@ -5,6 +5,7 @@
     import { onMount } from 'svelte';
     import { doc, getDoc } from 'firebase/firestore';
     import { userInitials } from '$lib/components/userInitialsStore';
+    import HamburgerIcon from '$lib/icons/HamburgerIcon.svelte';
 
     let user = null;
     let message = '';
@@ -52,6 +53,12 @@
     const setCurrentPage = (page) => {
         currentPage = page;
     };
+
+    function navigate(page) {
+        setCurrentPage(page);
+        const drawerToggle = document.getElementById('my-drawer-2');
+        drawerToggle.checked = false;
+    }
 </script>
 
 <svelte:head>
@@ -60,19 +67,22 @@
 
 {#if user}
     <div class="navbar bg-base-100">
-        <div class="flex-1">
+        <div class="navbar-start">
+            <label for="my-drawer-2" class="btn btn-ghost btn-circle drawer-button lg:hidden">
+                <HamburgerIcon />
+            </label>
             <li class="btn btn-ghost normal-case text-xl">
                 <button on:click={home}>Scripture App Builder</button>
             </li>
         </div>
-        <div class="flex-none">
+        <div class="navbar-end">
             <div class="dropdown dropdown-end">
                 <button class="btn btn-ghost normal-case text-xl">
                     {$userInitials}
                 </button>
                 <ul
                     tabindex="0"
-                    class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+                    class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 "
                 >
                     <li><a>Settings</a></li>
                     <li><button on:click={logOut}>Sign Out</button></li>
@@ -104,28 +114,23 @@
                 {:else if currentPage === 'Users'}
                     <h1>Users and Roles</h1>
                 {/if}
-
-                <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden"
-                    >Open drawer</label
-                >
             </div>
 
             <div class="drawer-side">
                 <label for="my-drawer-2" class="drawer-overlay" />
                 <ul class="menu p-4 w-80 bg-base-100 text-base-content">
-                    <li><button on:click={() => setCurrentPage('Dashboard')}>Dashboard</button></li>
+                    <li><button on:click={() => navigate('Dashboard')}>Dashboard</button></li>
                     <li>
-                        <button on:click={() => setCurrentPage('Active Projects')}
-                            >Active Projects</button
+                        <button on:click={() => navigate('Active Projects')}>Active Projects</button
                         >
                     </li>
                     <li>
-                        <button on:click={() => setCurrentPage('Incoming Projects')}
+                        <button on:click={() => navigate('Incoming Projects')}
                             >Incoming Projects</button
                         >
                     </li>
                     <li>
-                        <button on:click={() => setCurrentPage('Users')}>Users</button>
+                        <button on:click={() => navigate('Users')}>Users</button>
                     </li>
                 </ul>
             </div>
