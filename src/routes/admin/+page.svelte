@@ -46,9 +46,11 @@
         await signOut(auth);
         await goto('/login');
     }
+
     function home() {
         goto('/');
     }
+
     let currentPage = 'home';
     const setCurrentPage = (page) => {
         currentPage = page;
