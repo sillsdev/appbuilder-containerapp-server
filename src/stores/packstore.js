@@ -51,25 +51,28 @@ const langPackConverter = {
     }
 };
 
-const colq = collection(db, 'packages');
+export async function initPackages() {
+    const colq = collection(db, 'packages');
 
-export const snapshot = await getDocs(colq);
+    const snapshot = await getDocs(colq);
 
-snapshot.forEach((doc) => {
-    packs.push(doc.data());
-});
+    snapshot.forEach((doc) => {
+        packs.push(doc.data());
+    });
 
-// @ts-ignore
-const loadedPack = packs.map((data, index) => {
-    return {
-        id: index + 1,
-        name: data.app_lang.name,
-        altNames: data.app_lang.names,
-        country: data.app_lang.regionname,
-        code: data.app_lang.iso639_3,
-        image: data.image.baseurl + '/' + data.image.files[0].src,
-        size: data.size
-    };
-});
+    // @ts-ignore
+    const loadedPack = packs.map((data, index) => {
+        return {
+            id: index + 1,
+            name: data.app_lang.name,
+            altNames: data.app_lang.names,
+            country: data.app_lang.regionname,
+            code: data.app_lang.iso639_3,
+            image: data.image.baseurl + '/' + data.image.files[0].src,
+            size: data.size,
+            permalink: data.permalink_url
+        };
+    });
 
-packages.set(loadedPack);
+    packages.set(loadedPack);
+}
