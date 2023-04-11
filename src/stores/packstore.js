@@ -52,15 +52,14 @@ const langPackConverter = {
 };
 
 export async function initPackages() {
-
     const colq = collection(db, 'packages');
-    
+
     const snapshot = await getDocs(colq);
-    
+
     snapshot.forEach((doc) => {
         packs.push(doc.data());
     });
-    
+
     // @ts-ignore
     const loadedPack = packs.map((data, index) => {
         return {
@@ -70,10 +69,10 @@ export async function initPackages() {
             country: data.app_lang.regionname,
             code: data.app_lang.iso639_3,
             image: data.image.baseurl + '/' + data.image.files[0].src,
-            size: data.size
+            size: data.size,
+            permalink: data.permalink_url
         };
     });
-    
+
     packages.set(loadedPack);
 }
-
