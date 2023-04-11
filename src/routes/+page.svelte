@@ -38,7 +38,7 @@
     }
 </script>
 
-<head> Scripture App Builder </head>
+<head> {$_('page.home.title')} </head>
 
 <section id="header">
     <div class="btn btn-ghost m-1 p-2">
