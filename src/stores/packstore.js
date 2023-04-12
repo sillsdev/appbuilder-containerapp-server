@@ -56,14 +56,13 @@ const langPackConverter = {
 
 export async function initPackages() {
     const colq = collection(db, 'packages');
-    
+
     const snapshot = await getDocs(colq);
-    
+
     snapshot.forEach((doc) => {
         packs.push(doc.data());
     });
-    
-    
+
     // @ts-ignore
     const loadedPack = packs.map((data, index) => {
         return {
@@ -78,15 +77,13 @@ export async function initPackages() {
             permalink: data.publish_url
         };
     });
-    
+
     packages.set(loadedPack);
-    
-    
 }
 
 export async function initIncomingPacks() {
     const incomingQuery = collection(db, 'incoming');
-    
+
     const incSnap = await getDocs(incomingQuery);
 
     incSnap.forEach((doc) => {

@@ -90,7 +90,7 @@
         await setDoc(userRef, { role: newRole }, { merge: true });
     }
 
-    let incoming = $incomingPack; 
+    let incoming = $incomingPack;
 </script>
 
 <svelte:head>
@@ -172,29 +172,32 @@
                         <p>No active packages found.</p>
                     {/if}
                 {:else if currentPage === 'Incoming Packages'}
-
-                <div id="incoming-packs">
-                    <table class="table w-full">
-                        <thead>
-                            <tr>
-                                <td>Image</td>
-                                <td>Name</td>
-                                <td>Country</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                                {#each incoming as pack }
+                    <div id="incoming-packs">
+                        <table class="table w-full">
+                            <thead>
                                 <tr>
-                                    <td><img class="mask mask-squircle w-32" src={pack.image} alt="app image"/></td>
-                                    <td>{pack.name}</td>
-                                    <td>{pack.country}</td>
+                                    <td>Image</td>
+                                    <td>Name</td>
+                                    <td>Country</td>
                                 </tr>
+                            </thead>
+                            <tbody>
+                                {#each incoming as pack}
+                                    <tr>
+                                        <td
+                                            ><img
+                                                class="mask mask-squircle w-32"
+                                                src={pack.image}
+                                                alt="app image"
+                                            /></td
+                                        >
+                                        <td>{pack.name}</td>
+                                        <td>{pack.country}</td>
+                                    </tr>
                                 {/each}
                             </tbody>
                         </table>
                     </div>
-
                 {:else if currentPage === 'Users'}
                     <div class="users-section" />
                     {#if userList.length > 0}
