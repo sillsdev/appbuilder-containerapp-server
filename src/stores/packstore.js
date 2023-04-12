@@ -105,5 +105,4 @@ export async function initIncomingPacks() {
         };
     });
     incomingPack.set(incomingPacks);
-    console.log(incomingPacks);
 }
