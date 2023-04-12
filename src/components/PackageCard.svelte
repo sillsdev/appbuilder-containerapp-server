@@ -3,7 +3,7 @@
 </script>
 
 <a href={pack.permalink}>
-    <div id="card" class="card-compact rounded-lg bg-base-100 shadow-xl m-2 p-2">
+    <div id="card" class="card-compact rounded-lg bg-base-300 shadow-xl m-2 p-2">
         <!-- svelte-ignore a11y-img-redundant-alt -->
         <div class="w-full inline-flex justify-between">
             <div>
