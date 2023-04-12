@@ -38,8 +38,6 @@
     }
 </script>
 
-<head> {$_('page.home.title')} </head>
-
 <section id="header">
     <div class="btn btn-ghost m-1 p-2">
         <a href="https://software.sil.org/scriptureappbuilder/">
@@ -85,6 +83,7 @@
 <style>
     #header {
         display: flex;
+        justify-content: space-between;
     }
 
     a {
