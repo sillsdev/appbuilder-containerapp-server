@@ -97,9 +97,6 @@
         display: flex;
         align-items: center;
         flex-direction: column;
-        background-position: center;
-        background-size: cover;
-        background-image: url('./images/scripture.jpeg');
     }
 
     .list {
