@@ -8,6 +8,7 @@
     import HamburgerIcon from '$lib/icons/HamburgerIcon.svelte';
     import { collection, query, getDocs } from 'firebase/firestore';
     import { setDoc } from 'firebase/firestore';
+    import { incomingPack } from '../../stores/packstore';
 
     let projects = [];
     let userList = [];
@@ -88,6 +89,8 @@
         const userRef = doc(db, 'users', userId);
         await setDoc(userRef, { role: newRole }, { merge: true });
     }
+
+    let incoming = $incomingPack; 
 </script>
 
 <svelte:head>
@@ -101,7 +104,7 @@
                 <HamburgerIcon />
             </label>
             <li class="btn btn-ghost normal-case text-xl">
-                <button on:click={home}>Scripture App Builder</button>
+                <button on:click={home}>Kalaam Media Administrator</button>
             </li>
         </div>
         <div class="navbar-end">
@@ -169,8 +172,29 @@
                         <p>No active packages found.</p>
                     {/if}
                 {:else if currentPage === 'Incoming Packages'}
-                    <h1>Incoming Packages</h1>
-                    <p>Info about Incoming Projects</p>
+
+                <div id="incoming-packs">
+                    <table class="table w-full">
+                        <thead>
+                            <tr>
+                                <td>Image</td>
+                                <td>Name</td>
+                                <td>Country</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                                {#each incoming as pack }
+                                <tr>
+                                    <td><img class="mask mask-squircle w-32" src={pack.image} alt="app image"/></td>
+                                    <td>{pack.name}</td>
+                                    <td>{pack.country}</td>
+                                </tr>
+                                {/each}
+                            </tbody>
+                        </table>
+                    </div>
+
                 {:else if currentPage === 'Users'}
                     <div class="users-section" />
                     {#if userList.length > 0}
@@ -249,6 +273,11 @@
     .active-packages-section {
         width: 100%;
         margin-top: -6%;
+    }
+
+    #incoming-packs {
+        width: 100%;
+        margin-top: -5%;
     }
 
     .package-image {

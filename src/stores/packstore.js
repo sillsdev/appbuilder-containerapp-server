@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, getDoc } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { writable } from 'svelte/store';
 import { db } from '../lib/fbconfig';
 
@@ -8,6 +8,9 @@ import { db } from '../lib/fbconfig';
 
 export const packs = [];
 export const packages = writable([]);
+
+export const incPack = [];
+export const incomingPack = writable([]);
 class langPackage {
     /**
      * @param {any} app_lang
@@ -53,13 +56,14 @@ const langPackConverter = {
 
 export async function initPackages() {
     const colq = collection(db, 'packages');
-
+    
     const snapshot = await getDocs(colq);
-
+    
     snapshot.forEach((doc) => {
         packs.push(doc.data());
     });
-
+    
+    
     // @ts-ignore
     const loadedPack = packs.map((data, index) => {
         return {
@@ -74,6 +78,35 @@ export async function initPackages() {
             permalink: data.publish_url
         };
     });
-
+    
     packages.set(loadedPack);
+    
+    
+}
+
+export async function initIncomingPacks() {
+    const incomingQuery = collection(db, 'incoming');
+    
+    const incSnap = await getDocs(incomingQuery);
+
+    incSnap.forEach((doc) => {
+        incPack.push(doc.data());
+    });
+
+    // @ts-ignore
+    const incomingPacks = incPack.map((data, index) => {
+        return {
+            id: index + 1,
+            name: data.app_lang.name,
+            altNames: data.app_lang.names,
+            country: data.app_lang.regionname,
+            code: data.app_lang.iso639_3,
+            image: data.image.baseurl + '/' + data.image.files[0].src,
+            size: data.size,
+            // should be PERMALINK
+            permalink: data.publish_url
+        };
+    });
+    incomingPack.set(incomingPacks);
+    console.log(incomingPacks);
 }
