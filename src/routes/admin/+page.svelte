@@ -277,7 +277,7 @@
 
     #incoming-packs {
         width: 100%;
-        margin-top: -5%;
+        margin-top: -40%;
     }
 
     .package-image {
