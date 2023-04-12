@@ -40,7 +40,7 @@
 
 <section id="header">
     <div class="btn btn-ghost m-1 p-2">
-        <a href="https://software.sil.org/scriptureappbuilder/">
+        <a href="https://kalaam.org/en/home">
             <Icon icon="ph:info-bold" color="white" width="32" />
         </a>
     </div>
