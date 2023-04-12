@@ -111,8 +111,15 @@
                     <h1>Active Projects</h1>
                     <p>Some information about active projects goes here...</p>
                 {:else if currentPage === 'Incoming Projects'}
-                    <h1>Incoming Projects</h1>
-                    <p>Info about Incoming Projects</p>
+                    <table class="table w-full">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Country</th>
+                            </tr>
+                        </thead>
+                    </table>
                 {:else if currentPage === 'Users'}
                     <h1>Users and Roles</h1>
                 {/if}
