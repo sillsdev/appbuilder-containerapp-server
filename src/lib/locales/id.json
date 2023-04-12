@@ -1,9 +1,12 @@
 {
-    "lang": "English",
+    "lang": "bahasa Indonesia",
     "page": {
         "home": {
-            "title": "Welcome to Scripture App Builder",
-            "about": "About Us"
+            "title": "Aplikasi Alkitab dari Kalaam Media",
+            "about": "Tentang kami",
+            "searchLanguage": "Masukkan bahasa",
+            "searchCountry": "Masukkan sebuah negara",
+            "searchCode": "Masukkan kode bahasa"
         }
     }
 }

@@ -101,7 +101,7 @@
     <div class="navbar bg-base-100">
         <div class="navbar-start">
             <label for="my-drawer-2" class="btn btn-ghost btn-circle drawer-button lg:hidden">
-                <HamburgerIcon />
+                <HamburgerIcon color="white" />
             </label>
             <li class="btn btn-ghost normal-case text-xl">
                 <button on:click={home}>Kalaam Media Administrator</button>
