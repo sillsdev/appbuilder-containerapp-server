@@ -70,7 +70,8 @@ export async function initPackages() {
             code: data.app_lang.iso639_3,
             image: data.image.baseurl + '/' + data.image.files[0].src,
             size: data.size,
-            permalink: data.permalink_url
+            // should be PERMALINK
+            permalink: data.publish_url
         };
     });
 
