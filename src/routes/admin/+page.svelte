@@ -6,7 +6,12 @@
     import { doc, getDoc } from 'firebase/firestore';
     import { userInitials } from '$lib/components/userInitialsStore';
     import HamburgerIcon from '$lib/icons/HamburgerIcon.svelte';
+    import { collection, query, getDocs } from 'firebase/firestore';
+    import { setDoc } from 'firebase/firestore';
+    import { incomingPack } from '../../stores/packstore';
 
+    let projects = [];
+    let userList = [];
     let user = null;
     let message = '';
     let isAdmin = false;
@@ -36,6 +41,8 @@
                     } else {
                         isAdmin = true;
                     }
+                    await fetchPackages();
+                    await fetchUsers();
                 }
             }
             fetchUserData();
@@ -51,16 +58,39 @@
         goto('/');
     }
 
-    let currentPage = 'home';
+    let currentPage = 'Active Packages';
     const setCurrentPage = (page) => {
         currentPage = page;
     };
+
+    async function fetchUsers() {
+        const usersRef = collection(db, 'users');
+        const usersSnapshot = await getDocs(usersRef);
+        userList = usersSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    }
+
+    async function fetchPackages() {
+        const packagesRef = collection(db, 'packages');
+        const packagesSnapshot = await getDocs(packagesRef);
+        projects = packagesSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    }
 
     function navigate(page) {
         setCurrentPage(page);
         const drawerToggle = document.getElementById('my-drawer-2');
         drawerToggle.checked = false;
+
+        if (page === 'Users') {
+            fetchUsers();
+        }
     }
+
+    async function updateUserRole(userId, newRole) {
+        const userRef = doc(db, 'users', userId);
+        await setDoc(userRef, { role: newRole }, { merge: true });
+    }
+
+    let incoming = $incomingPack;
 </script>
 
 <svelte:head>
@@ -71,10 +101,10 @@
     <div class="navbar bg-base-100">
         <div class="navbar-start">
             <label for="my-drawer-2" class="btn btn-ghost btn-circle drawer-button lg:hidden">
-                <HamburgerIcon />
+                <HamburgerIcon color="white" />
             </label>
             <li class="btn btn-ghost normal-case text-xl">
-                <button on:click={home}>Scripture App Builder</button>
+                <button on:click={home}>Kalaam Media Administrator</button>
             </li>
         </div>
         <div class="navbar-end">
@@ -106,15 +136,104 @@
                 <!-- Page content here -->
                 {#if currentPage === 'Dashboard'}
                     <h1>Welcome to the Home Page</h1>
-                    <p>Dashboard content goes here from firebase</p>
-                {:else if currentPage === 'Active Projects'}
-                    <h1>Active Projects</h1>
-                    <p>Some information about active projects goes here...</p>
-                {:else if currentPage === 'Incoming Projects'}
-                    <h1>Incoming Projects</h1>
-                    <p>Info about Incoming Projects</p>
+                {:else if currentPage === 'Active Packages'}
+                    <div class="active-packages-section" />
+                    {#if projects.length > 0}
+                        <table class="table w-full">
+                            <thead>
+                                <tr>
+                                    <th>Icon</th>
+                                    <th>Package</th>
+                                    <th>Region</th>
+
+                                    <!-- Add more columns as needed -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {#each projects as project}
+                                    <tr>
+                                        <td
+                                            ><img
+                                                class="package-image"
+                                                src={`${project.image.baseurl}/${project.image.files[0].src}`}
+                                                alt="Package Image"
+                                            /></td
+                                        >
+
+                                        <td>{project.app_lang.name}</td>
+                                        <td>{project.app_lang.regionname}</td>
+
+                                        <!-- Add more columns as needed -->
+                                    </tr>
+                                {/each}
+                            </tbody>
+                        </table>
+                    {:else}
+                        <p>No active packages found.</p>
+                    {/if}
+                {:else if currentPage === 'Incoming Packages'}
+                    <div id="incoming-packs">
+                        <table class="table w-full">
+                            <thead>
+                                <tr>
+                                    <td>Image</td>
+                                    <td>Name</td>
+                                    <td>Country</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {#each incoming as pack}
+                                    <tr>
+                                        <td
+                                            ><img
+                                                class="mask mask-squircle w-32"
+                                                src={pack.image}
+                                                alt="app image"
+                                            /></td
+                                        >
+                                        <td>{pack.name}</td>
+                                        <td>{pack.country}</td>
+                                    </tr>
+                                {/each}
+                            </tbody>
+                        </table>
+                    </div>
                 {:else if currentPage === 'Users'}
-                    <h1>Users and Roles</h1>
+                    <div class="users-section" />
+                    {#if userList.length > 0}
+                        <table class="table w-full">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {#each userList as user}
+                                    <tr>
+                                        <td>{user.firstname} {user.lastname}</td>
+                                        <td>{user.email}</td>
+                                        <td>
+                                            <select
+                                                value={user.role}
+                                                on:change={(e) => {
+                                                    updateUserRole(user.id, e.target.value);
+                                                    user.role = e.target.value;
+                                                }}
+                                            >
+                                                <option value="user">User</option>
+                                                <option value="admin">Admin</option>
+                                                <!-- Add more roles here if needed -->
+                                            </select>
+                                        </td>
+                                    </tr>
+                                {/each}
+                            </tbody>
+                        </table>
+                    {:else}
+                        <p>No users found.</p>
+                    {/if}
                 {/if}
             </div>
 
@@ -123,12 +242,12 @@
                 <ul class="menu p-4 w-80 bg-base-100 text-base-content">
                     <li><button on:click={() => navigate('Dashboard')}>Dashboard</button></li>
                     <li>
-                        <button on:click={() => navigate('Active Projects')}>Active Projects</button
+                        <button on:click={() => navigate('Active Packages')}>Active Packages</button
                         >
                     </li>
                     <li>
-                        <button on:click={() => navigate('Incoming Projects')}
-                            >Incoming Projects</button
+                        <button on:click={() => navigate('Incoming Packages')}
+                            >Incoming Packages</button
                         >
                     </li>
                     <li>
@@ -141,6 +260,10 @@
 {:else}{/if}
 
 <style>
+    .users-section {
+        width: 100%;
+        margin-top: -47%; /* Adjust the margin to position the users table at the top */
+    }
     .message-container {
         text-align: center;
         padding: 1rem;
@@ -149,5 +272,20 @@
         border: 1px solid #f5c6cb;
         border-radius: 0.25rem;
         margin: 1rem;
+    }
+    .active-packages-section {
+        width: 100%;
+        margin-top: -6%;
+    }
+
+    #incoming-packs {
+        width: 100%;
+        margin-top: -40%;
+    }
+
+    .package-image {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
     }
 </style>

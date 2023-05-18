@@ -1,9 +1,12 @@
 {
-    "lang": "English",
+    "lang": "عربي",
     "page": {
         "home": {
-            "title": "Welcome to Scripture App Builder",
-            "about": "About Us"
+            "title": "تطبيقات الكتاب المقدس من كلام ميديا",
+            "about": "معلومات عنا",
+            "searchLanguage": "أدخل لغة",
+            "searchCountry": "أدخل دولة",
+            "searchCode": "أدخل رمز البلد"
         }
     }
 }

@@ -1,9 +1,12 @@
 {
-    "lang": "English",
+    "lang": "中国人",
     "page": {
         "home": {
-            "title": "Welcome to Scripture App Builder",
-            "about": "About Us"
+            "title": "Kalaam Media 的圣经应用程序",
+            "about": "关于我们",
+            "searchLanguage": "输入语言",
+            "searchCountry": "入境",
+            "searchCode": "输入语言代码"
         }
     }
 }

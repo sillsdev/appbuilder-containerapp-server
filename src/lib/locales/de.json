@@ -3,7 +3,10 @@
     "page": {
         "home": {
             "title": "Bibel-Apps von Kalaam Media",
-            "about": "Über uns"
+            "about": "Über uns",
+            "searchLanguage": "Geben Sie eine Sprache ein",
+            "searchCountry": "Geben Sie ein Land ein",
+            "searchCode": "Geben Sie einen Sprachcode ein"
         }
     }
 }

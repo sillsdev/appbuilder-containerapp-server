@@ -1,9 +1,12 @@
 {
-    "lang": "English",
+    "lang": "Tagalog",
     "page": {
         "home": {
-            "title": "Welcome to Scripture App Builder",
-            "about": "About Us"
+            "title": "Mga Bible app mula sa Kalaam Media",
+            "about": "Tungkol sa atin",
+            "searchLanguage": "Magpasok ng isang wika",
+            "searchCountry": "Pumasok sa isang bansa",
+            "searchCode": "Maglagay ng code ng wika"
         }
     }
 }

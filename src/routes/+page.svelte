@@ -56,19 +56,31 @@
     <div class="search-box">
         {#if !searchCountry && !searchCode}
             <div class="search">
-                <input type="text" placeholder="Enter a language" bind:value={searchName} />
+                <input
+                    type="text"
+                    placeholder={$_('page.home.searchLanguage')}
+                    bind:value={searchName}
+                />
             </div>
         {/if}
 
         {#if !searchName && !searchCode}
             <div class="search2">
-                <input type="text" placeholder="Enter a Country" bind:value={searchCountry} />
+                <input
+                    type="text"
+                    placeholder={$_('page.home.searchCountry')}
+                    bind:value={searchCountry}
+                />
             </div>
         {/if}
 
         {#if !searchName && !searchCountry}
             <div class="search3">
-                <input type="text" placeholder="Language Code (ISO639-3)" bind:value={searchCode} />
+                <input
+                    type="text"
+                    placeholder={$_('page.home.searchCode')}
+                    bind:value={searchCode}
+                />
             </div>
         {/if}
     </div>

@@ -1,9 +1,12 @@
 {
-    "lang": "English",
+    "lang": "Français",
     "page": {
         "home": {
-            "title": "Welcome to Scripture App Builder",
-            "about": "About Us"
+            "title": "Applications bibliques de Kalaam Media",
+            "about": "À propos de nous",
+            "searchLanguage": "Entrez une langue",
+            "searchCountry": "Entrez un pays",
+            "searchCode": "Entrez un code de langue"
         }
     }
 }
