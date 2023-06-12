@@ -9,6 +9,7 @@
     import { collection, query, getDocs } from 'firebase/firestore';
     import { setDoc } from 'firebase/firestore';
     import { incomingPack } from '../../stores/packstore';
+    import { packages } from '../../stores/packstore';
 
     let projects = [];
     let userList = [];
@@ -58,6 +59,7 @@
         goto('/');
     }
 
+    // default page
     let currentPage = 'Active Packages';
     const setCurrentPage = (page) => {
         currentPage = page;
@@ -73,6 +75,7 @@
         const packagesRef = collection(db, 'packages');
         const packagesSnapshot = await getDocs(packagesRef);
         projects = packagesSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        console.log(projects);
     }
 
     function navigate(page) {
@@ -91,12 +94,14 @@
     }
 
     let incoming = $incomingPack;
+    
 </script>
 
 <svelte:head>
     <title>Admin</title>
 </svelte:head>
 
+<!--  -->
 {#if user}
     <div class="navbar bg-base-100">
         <div class="navbar-start">
@@ -128,42 +133,39 @@
             <p>{message}</p>
         </div>
     {/if}
-
     {#if isAdmin}
-        <div class="drawer drawer-mobile">
-            <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
-            <div class="drawer-content flex flex-col items-center justify-center">
-                <!-- Page content here -->
-                {#if currentPage === 'Dashboard'}
-                    <h1>Welcome to the Home Page</h1>
+    <div class="drawer drawer-mobile">
+        <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
+        <div class="drawer-content flex flex-col items-center justify-center">
+            <!-- DASHBOARD -->
+            {#if currentPage === 'Dashboard'}
+            <h1>Welcome to the Home Page</h1>
+
+            <!-- ACTIVE PACKAGES -->
                 {:else if currentPage === 'Active Packages'}
                     <div class="active-packages-section" />
                     {#if projects.length > 0}
                         <table class="table w-full">
                             <thead>
-                                <tr>
-                                    <th>Icon</th>
-                                    <th>Package</th>
-                                    <th>Region</th>
-
-                                    <!-- Add more columns as needed -->
-                                </tr>
+                                    <tr>
+                                        <th>Icon</th>
+                                        <th>Package</th>
+                                        <th>Region</th>
+                                    </tr>
                             </thead>
                             <tbody>
                                 {#each projects as project}
-                                    <tr>
-                                        <td
-                                            ><img
-                                                class="package-image"
-                                                src={`${project.image.baseurl}/${project.image.files[0].src}`}
-                                                alt="Package Image"
-                                            /></td
-                                        >
-
+                                <tr>
+                                        <a href='/admin/{project.id}'>
+                                        <td>
+                                            <img class="package-image" src={`${project.image.baseurl}/${project.image.files[0].src}`} alt="Package Image"/>
+                                        </td>
+                                        
                                         <td>{project.app_lang.name}</td>
-                                        <td>{project.app_lang.regionname}</td>
-
-                                        <!-- Add more columns as needed -->
+                                        <!-- debug : SHOULD BE REGION -->
+                                        <td>{project.id}</td>
+                                        
+                                    </a>    
                                     </tr>
                                 {/each}
                             </tbody>
@@ -171,6 +173,7 @@
                     {:else}
                         <p>No active packages found.</p>
                     {/if}
+                    <!-- INCOMING PACKAGES -->
                 {:else if currentPage === 'Incoming Packages'}
                     <div id="incoming-packs">
                         <table class="table w-full">
