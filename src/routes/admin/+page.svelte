@@ -9,7 +9,6 @@
     import { collection, query, getDocs } from 'firebase/firestore';
     import { setDoc } from 'firebase/firestore';
     import { incomingPack } from '../../stores/packstore';
-    import { packages } from '../../stores/packstore';
 
     let projects = [];
     let userList = [];
@@ -46,7 +45,6 @@
                     await fetchUsers();
                 }
             }
-            fetchUserData();
         });
     });
 
@@ -117,10 +115,7 @@
                 <button class="btn btn-ghost normal-case text-xl">
                     {$userInitials}
                 </button>
-                <ul
-                    tabindex="0"
-                    class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
-                >
+                <ul class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
                     <li><a>Settings</a></li>
                     <li><button on:click={logOut}>Sign Out</button></li>
                 </ul>
@@ -134,18 +129,18 @@
         </div>
     {/if}
     {#if isAdmin}
-    <div class="drawer drawer-mobile">
+    <div class="drawer lg:drawer-open">
         <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
-        <div class="drawer-content flex flex-col items-center justify-center">
+        <div class="drawer-content flex flex-row items-start justify-start">
             <!-- DASHBOARD -->
             {#if currentPage === 'Dashboard'}
             <h1>Welcome to the Home Page</h1>
 
             <!-- ACTIVE PACKAGES -->
                 {:else if currentPage === 'Active Packages'}
-                    <div class="active-packages-section" />
+                    <div class="overflow-x-auto w-full">
                     {#if projects.length > 0}
-                        <table class="table w-full">
+                        <table class="table table-md table-pin-rows table-pin-cols">
                             <thead>
                                     <tr>
                                         <th>Icon</th>
@@ -156,27 +151,26 @@
                             <tbody>
                                 {#each projects as project}
                                 <tr>
+                                    <td>
                                         <a href='/admin/{project.id}'>
-                                        <td>
-                                            <img class="package-image" src={`${project.image.baseurl}/${project.image.files[0].src}`} alt="Package Image"/>
-                                        </td>
-                                        
-                                        <td>{project.app_lang.name}</td>
-                                        <!-- debug : SHOULD BE REGION -->
-                                        <td>{project.id}</td>
-                                        
-                                    </a>    
-                                    </tr>
+                                        <img class="mask mask-squircle w-24" src={`${project.image.baseurl}/${project.image.files[0].src}`} alt="App Icon"/>
+                                        </a>    
+                                    </td>                
+                                    <td>{project.app_lang.name}</td>
+                                    <td>{project.app_lang.regionname}</td>    
+                                    <td></td>
+                                </tr>
                                 {/each}
                             </tbody>
                         </table>
                     {:else}
                         <p>No active packages found.</p>
                     {/if}
+                    </div>
                     <!-- INCOMING PACKAGES -->
                 {:else if currentPage === 'Incoming Packages'}
-                    <div id="incoming-packs">
-                        <table class="table w-full">
+                    <div class="overflow-x-auto w-full">
+                        <table class="table table-md table-pin-rows table-pin-cols">
                             <thead>
                                 <tr>
                                     <td>Image</td>
@@ -187,13 +181,9 @@
                             <tbody>
                                 {#each incoming as pack}
                                     <tr>
-                                        <td
-                                            ><img
-                                                class="mask mask-squircle w-32"
-                                                src={pack.image}
-                                                alt="app image"
-                                            /></td
-                                        >
+                                        <td>
+                                            <img class="mask mask-squircle w-24" src={pack.image} alt="app icon"/>
+                                        </td>
                                         <td>{pack.name}</td>
                                         <td>{pack.country}</td>
                                     </tr>
@@ -202,9 +192,9 @@
                         </table>
                     </div>
                 {:else if currentPage === 'Users'}
-                    <div class="users-section" />
+                    <div class="overflow-x-auto w-full">
                     {#if userList.length > 0}
-                        <table class="table w-full">
+                        <table class="table">
                             <thead>
                                 <tr>
                                     <th>Name</th>
@@ -237,6 +227,7 @@
                     {:else}
                         <p>No users found.</p>
                     {/if}
+                    </div>
                 {/if}
             </div>
 
@@ -260,13 +251,10 @@
             </div>
         </div>
     {/if}
-{:else}{/if}
+{:else}
+{/if}
 
 <style>
-    .users-section {
-        width: 100%;
-        margin-top: -47%; /* Adjust the margin to position the users table at the top */
-    }
     .message-container {
         text-align: center;
         padding: 1rem;
@@ -275,20 +263,5 @@
         border: 1px solid #f5c6cb;
         border-radius: 0.25rem;
         margin: 1rem;
-    }
-    .active-packages-section {
-        width: 100%;
-        margin-top: -6%;
-    }
-
-    #incoming-packs {
-        width: 100%;
-        margin-top: -40%;
-    }
-
-    .package-image {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
     }
 </style>
