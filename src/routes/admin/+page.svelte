@@ -92,7 +92,6 @@
     }
 
     let incoming = $incomingPack;
-    
 </script>
 
 <svelte:head>
@@ -115,7 +114,9 @@
                 <button class="btn btn-ghost normal-case text-xl">
                     {$userInitials}
                 </button>
-                <ul class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+                <ul
+                    class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+                >
                     <li><a>Settings</a></li>
                     <li><button on:click={logOut}>Sign Out</button></li>
                 </ul>
@@ -129,43 +130,47 @@
         </div>
     {/if}
     {#if isAdmin}
-    <div class="drawer lg:drawer-open">
-        <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
-        <div class="drawer-content flex flex-row items-start justify-start">
-            <!-- DASHBOARD -->
-            {#if currentPage === 'Dashboard'}
-            <h1>Welcome to the Home Page</h1>
+        <div class="drawer lg:drawer-open">
+            <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
+            <div class="drawer-content flex flex-row items-start justify-start">
+                <!-- DASHBOARD -->
+                {#if currentPage === 'Dashboard'}
+                    <h1>Welcome to the Home Page</h1>
 
-            <!-- ACTIVE PACKAGES -->
+                    <!-- ACTIVE PACKAGES -->
                 {:else if currentPage === 'Active Packages'}
                     <div class="overflow-x-auto w-full">
-                    {#if projects.length > 0}
-                        <table class="table table-md table-pin-rows table-pin-cols">
-                            <thead>
+                        {#if projects.length > 0}
+                            <table class="table table-md table-pin-rows table-pin-cols">
+                                <thead>
                                     <tr>
                                         <th>Icon</th>
                                         <th>Package</th>
                                         <th>Region</th>
                                     </tr>
-                            </thead>
-                            <tbody>
-                                {#each projects as project}
-                                <tr>
-                                    <td>
-                                        <a href='/admin/{project.id}'>
-                                        <img class="mask mask-squircle w-24" src={`${project.image.baseurl}/${project.image.files[0].src}`} alt="App Icon"/>
-                                        </a>    
-                                    </td>                
-                                    <td>{project.app_lang.name}</td>
-                                    <td>{project.app_lang.regionname}</td>    
-                                    <td></td>
-                                </tr>
-                                {/each}
-                            </tbody>
-                        </table>
-                    {:else}
-                        <p>No active packages found.</p>
-                    {/if}
+                                </thead>
+                                <tbody>
+                                    {#each projects as project}
+                                        <tr>
+                                            <td>
+                                                <a href="/admin/{project.id}">
+                                                    <img
+                                                        class="mask mask-squircle w-24"
+                                                        src={`${project.image.baseurl}/${project.image.files[0].src}`}
+                                                        alt="App Icon"
+                                                    />
+                                                </a>
+                                            </td>
+                                            <td>{project.app_lang.name}</td>
+                                            <td>{project.app_lang.regionname}</td>
+                                            <td />
+                                        </tr>
+                                    {/each}
+                                </tbody>
+                            </table>
+                        {:else}
+                            <p>No active packages found.</p>
+                        {/if}
                     </div>
                     <!-- INCOMING PACKAGES -->
                 {:else if currentPage === 'Incoming Packages'}
@@ -182,7 +187,11 @@
                                 {#each incoming as pack}
                                     <tr>
                                         <td>
-                                            <img class="mask mask-squircle w-24" src={pack.image} alt="app icon"/>
+                                            <img
+                                                class="mask mask-squircle w-24"
+                                                src={pack.image}
+                                                alt="app icon"
+                                            />
                                         </td>
                                         <td>{pack.name}</td>
                                         <td>{pack.country}</td>
@@ -193,40 +202,40 @@
                     </div>
                 {:else if currentPage === 'Users'}
                     <div class="overflow-x-auto w-full">
-                    {#if userList.length > 0}
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {#each userList as user}
+                        {#if userList.length > 0}
+                            <table class="table">
+                                <thead>
                                     <tr>
-                                        <td>{user.firstname} {user.lastname}</td>
-                                        <td>{user.email}</td>
-                                        <td>
-                                            <select
-                                                value={user.role}
-                                                on:change={(e) => {
-                                                    updateUserRole(user.id, e.target.value);
-                                                    user.role = e.target.value;
-                                                }}
-                                            >
-                                                <option value="user">User</option>
-                                                <option value="admin">Admin</option>
-                                                <!-- Add more roles here if needed -->
-                                            </select>
-                                        </td>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
                                     </tr>
-                                {/each}
-                            </tbody>
-                        </table>
-                    {:else}
-                        <p>No users found.</p>
-                    {/if}
+                                </thead>
+                                <tbody>
+                                    {#each userList as user}
+                                        <tr>
+                                            <td>{user.firstname} {user.lastname}</td>
+                                            <td>{user.email}</td>
+                                            <td>
+                                                <select
+                                                    value={user.role}
+                                                    on:change={(e) => {
+                                                        updateUserRole(user.id, e.target.value);
+                                                        user.role = e.target.value;
+                                                    }}
+                                                >
+                                                    <option value="user">User</option>
+                                                    <option value="admin">Admin</option>
+                                                    <!-- Add more roles here if needed -->
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    {/each}
+                                </tbody>
+                            </table>
+                        {:else}
+                            <p>No users found.</p>
+                        {/if}
                     </div>
                 {/if}
             </div>
@@ -251,8 +260,7 @@
             </div>
         </div>
     {/if}
-{:else}
-{/if}
+{:else}{/if}
 
 <style>
     .message-container {
