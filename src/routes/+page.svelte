@@ -1,6 +1,7 @@
 <script>
     import { _ } from 'svelte-i18n';
     import Icon from '@iconify/svelte';
+    import { AboutIcon } from '$lib/icons';
     import { packages } from '../stores/packstore';
     import PackageCard from '../components/PackageCard.svelte';
     import LanguageSelector from '../components/LanguageSelector.svelte';
@@ -13,7 +14,6 @@
 
     $: {
         // search by name
-
         if (searchName) {
             filter = $packages.filter((pack) =>
                 pack.name
@@ -21,6 +21,7 @@
                     .toLowerCase()
                     .includes(searchName.toLowerCase())
             );
+        // search by country
         } else if (searchCountry) {
             filter = $packages.filter((pack) =>
                 pack.country
@@ -28,10 +29,12 @@
                     .toLowerCase()
                     .includes(searchCountry.toLowerCase())
             );
+        // search by code
         } else if (searchCode) {
             filter = $packages.filter((pack) =>
                 pack.code.toLowerCase().includes(searchCode.toLowerCase())
             );
+        // list is blank
         } else {
             filter = [];
         }
@@ -39,14 +42,15 @@
 </script>
 
 <section id="header">
-    <div class="btn btn-ghost m-1 p-2">
-        <a href="https://kalaam.org/en/home">
-            <Icon icon="ph:info-bold" color="white" width="32" />
-        </a>
+    <!-- ABOUT link to be set by admin -->
+    <div class="btn btn-ghost m-2 p-2 rounded-xl flex-nowrap items-middle justify-center">
+        <AboutIcon color="white"/>
     </div>
 
+    <!-- TITLE to be set by admin -->
     <div class="title">{$_('page.home.title')}</div>
 
+    <!-- Language Selector Component -->
     <div id="language_selector">
         <LanguageSelector />
     </div>
