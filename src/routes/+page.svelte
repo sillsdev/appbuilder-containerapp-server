@@ -21,7 +21,7 @@
                     .toLowerCase()
                     .includes(searchName.toLowerCase())
             );
-        // search by country
+            // search by country
         } else if (searchCountry) {
             filter = $packages.filter((pack) =>
                 pack.country
@@ -29,12 +29,12 @@
                     .toLowerCase()
                     .includes(searchCountry.toLowerCase())
             );
-        // search by code
+            // search by code
         } else if (searchCode) {
             filter = $packages.filter((pack) =>
                 pack.code.toLowerCase().includes(searchCode.toLowerCase())
             );
-        // list is blank
+            // list is blank
         } else {
             filter = [];
         }
@@ -44,7 +44,7 @@
 <section id="header">
     <!-- ABOUT link to be set by admin -->
     <div class="btn btn-ghost m-2 p-2 rounded-xl flex-nowrap items-middle justify-center">
-        <AboutIcon color="white"/>
+        <AboutIcon color="white" />
     </div>
 
     <!-- TITLE to be set by admin -->
