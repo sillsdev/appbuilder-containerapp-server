@@ -115,7 +115,9 @@
                 <button class="btn btn-ghost normal-case text-xl">
                     {$userInitials}
                 </button>
-                <ul class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-200 rounded-box w-52">
+                <ul
+                    class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-200 rounded-box w-52"
+                >
                     <li><a>Settings</a></li>
                     <li><button on:click={logOut}>Sign Out</button></li>
                 </ul>
@@ -161,7 +163,16 @@
                                             </td>
                                             <td>{project.app_lang.name}</td>
                                             <td>{project.app_lang.regionname}</td>
-                                            <td><a href="/admin/{project.id}"><Icon icon="ph:info" color="white" width="32" height="32" /></a></td>
+                                            <td
+                                                ><a href="/admin/{project.id}"
+                                                    ><Icon
+                                                        icon="ph:info"
+                                                        color="white"
+                                                        width="32"
+                                                        height="32"
+                                                    /></a
+                                                ></td
+                                            >
                                         </tr>
                                     {/each}
                                 </tbody>
