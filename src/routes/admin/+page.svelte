@@ -1,4 +1,5 @@
 <script>
+    import Icon from '@iconify/svelte';
     import { auth, db } from '$lib/fbconfig';
     import { signOut } from 'firebase/auth';
     import { goto } from '$app/navigation';
@@ -114,9 +115,7 @@
                 <button class="btn btn-ghost normal-case text-xl">
                     {$userInitials}
                 </button>
-                <ul
-                    class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
-                >
+                <ul class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-200 rounded-box w-52">
                     <li><a>Settings</a></li>
                     <li><button on:click={logOut}>Sign Out</button></li>
                 </ul>
@@ -141,29 +140,28 @@
                 {:else if currentPage === 'Active Packages'}
                     <div class="overflow-x-auto w-full">
                         {#if projects.length > 0}
-                            <table class="table table-md table-pin-rows table-pin-cols">
+                            <table class="table table-md lg:w-3/4">
                                 <thead>
                                     <tr>
                                         <th>Icon</th>
                                         <th>Package</th>
                                         <th>Region</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {#each projects as project}
                                         <tr>
                                             <td>
-                                                <a href="/admin/{project.id}">
-                                                    <img
-                                                        class="mask mask-squircle w-24"
-                                                        src={`${project.image.baseurl}/${project.image.files[0].src}`}
-                                                        alt="App Icon"
-                                                    />
-                                                </a>
+                                                <img
+                                                    class="mask mask-squircle w-24"
+                                                    src={`${project.image.baseurl}/${project.image.files[0].src}`}
+                                                    alt="App Icon"
+                                                />
                                             </td>
                                             <td>{project.app_lang.name}</td>
                                             <td>{project.app_lang.regionname}</td>
-                                            <td />
+                                            <td><a href="/admin/{project.id}"><Icon icon="ph:info" color="white" width="32" height="32" /></a></td>
                                         </tr>
                                     {/each}
                                 </tbody>
@@ -174,8 +172,8 @@
                     </div>
                     <!-- INCOMING PACKAGES -->
                 {:else if currentPage === 'Incoming Packages'}
-                    <div class="overflow-x-auto w-full">
-                        <table class="table table-md table-pin-rows table-pin-cols">
+                    <div class="overflow-x-auto w-full lg:w-3/4">
+                        <table class="table table-md">
                             <thead>
                                 <tr>
                                     <td>Image</td>
@@ -201,9 +199,9 @@
                         </table>
                     </div>
                 {:else if currentPage === 'Users'}
-                    <div class="overflow-x-auto w-full">
+                    <div class="overflow-x-auto w-full lg:w-3/4">
                         {#if userList.length > 0}
-                            <table class="table">
+                            <table class="table table-md">
                                 <thead>
                                     <tr>
                                         <th>Name</th>
@@ -242,7 +240,7 @@
 
             <div class="drawer-side">
                 <label for="my-drawer-2" class="drawer-overlay" />
-                <ul class="menu p-4 w-80 bg-base-100 text-base-content">
+                <ul class="menu p-4 lg:w-64 bg-base-100 text-base-content">
                     <li><button on:click={() => navigate('Dashboard')}>Dashboard</button></li>
                     <li>
                         <button on:click={() => navigate('Active Packages')}>Active Packages</button
