@@ -2,6 +2,25 @@
     import Icon from '@iconify/svelte';
     export let data;
     const { pack } = data;
+
+    function humanFileSize(bytes, metric = false, dp = 1) {
+        const threshold = metric ? 1000 : 1024;
+
+        if (Math.abs(bytes) < threshold) {
+            return bytes + ' B';
+        }
+
+        const units = metric
+            ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB']
+            : ['kiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB'];
+        let u = -1;
+        const r = 10 ** dp;
+        do {
+            bytes /= threshold;
+            ++u;
+        } while (Math.round(Math.abs(bytes) * r) / r >= threshold && u < units.length - 1);
+        return bytes.toFixed(dp) + ' ' + units[u];
+    }
 </script>
 
 <div class="flex flex-row justify-items-stretch columns-2 items-center">
@@ -46,13 +65,15 @@
     </div>
 
     <div class="m-2">
-        <h1 class="font-bold">Description :</h1>
-        <h2 class="font-semibold inline text-lg">{pack.listing[0].full_description}</h2>
+        <h1 class="font-bold inline">Package Size :</h1>
+        <h2 class="font-semibold inline text-lg">{humanFileSize(pack.size, true)}</h2>
     </div>
 
     <div class="m-2">
-        <h1 class="font-bold">Package Size :</h1>
-        <h2 class="font-semibold inline text-lg">{pack.size}</h2>
+        <h1 class="font-bold">Description :</h1>
+        <pre style="white-space:pre-wrap;">
+            {pack.listing[0].full_description}
+        </pre>
     </div>
 </div>
 

@@ -7,11 +7,11 @@
     import { doc, getDoc } from 'firebase/firestore';
     import { userInitials } from '$lib/components/userInitialsStore';
     import HamburgerIcon from '$lib/icons/HamburgerIcon.svelte';
-    import { collection, query, getDocs } from 'firebase/firestore';
+    import { collection, getDocs } from 'firebase/firestore';
     import { setDoc } from 'firebase/firestore';
-    import { incomingPack } from '../../stores/packstore';
 
     let projects = [];
+    let incoming = [];
     let userList = [];
     let user = null;
     let message = '';
@@ -43,6 +43,7 @@
                         isAdmin = true;
                     }
                     await fetchPackages();
+                    await fetchIncoming();
                     await fetchUsers();
                 }
             }
@@ -74,7 +75,12 @@
         const packagesRef = collection(db, 'packages');
         const packagesSnapshot = await getDocs(packagesRef);
         projects = packagesSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-        console.log(projects);
+    }
+
+    async function fetchIncoming() {
+        const incomingRef = collection(db, 'incoming');
+        const incomingSnapshot = await getDocs(incomingRef);
+        incoming = incomingSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     }
 
     function navigate(page) {
@@ -91,15 +97,12 @@
         const userRef = doc(db, 'users', userId);
         await setDoc(userRef, { role: newRole }, { merge: true });
     }
-
-    let incoming = $incomingPack;
 </script>
 
 <svelte:head>
     <title>Admin</title>
 </svelte:head>
 
-<!--  -->
 {#if user}
     <div class="navbar bg-base-100">
         <div class="navbar-start">
@@ -164,7 +167,7 @@
                                             <td>{project.app_lang.name}</td>
                                             <td>{project.app_lang.regionname}</td>
                                             <td
-                                                ><a href="/admin/{project.id}"
+                                                ><a href="/admin/active/{project.id}"
                                                     ><Icon
                                                         icon="ph:info"
                                                         color="white"
@@ -183,31 +186,46 @@
                     </div>
                     <!-- INCOMING PACKAGES -->
                 {:else if currentPage === 'Incoming Packages'}
-                    <div class="overflow-x-auto w-full lg:w-3/4">
-                        <table class="table table-md">
-                            <thead>
-                                <tr>
-                                    <td>Image</td>
-                                    <td>Name</td>
-                                    <td>Country</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {#each incoming as pack}
+                    <div class="overflow-x-auto w-full">
+                        {#if incoming.length > 0}
+                            <table class="table table-md lg:w-3/4">
+                                <thead>
                                     <tr>
-                                        <td>
-                                            <img
-                                                class="mask mask-squircle w-24"
-                                                src={pack.image}
-                                                alt="app icon"
-                                            />
-                                        </td>
-                                        <td>{pack.name}</td>
-                                        <td>{pack.country}</td>
+                                        <th>Icon</th>
+                                        <th>Package</th>
+                                        <th>Region</th>
+                                        <th>Actions</th>
                                     </tr>
-                                {/each}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {#each incoming as project}
+                                        <tr>
+                                            <td>
+                                                <img
+                                                    class="mask mask-squircle w-24"
+                                                    src={`${project.image.baseurl}/${project.image.files[0].src}`}
+                                                    alt="App Icon"
+                                                />
+                                            </td>
+                                            <td>{project.app_lang.name}</td>
+                                            <td>{project.app_lang.regionname}</td>
+                                            <td
+                                                ><a href="/admin/incoming/{project.id}"
+                                                    ><Icon
+                                                        icon="ph:info"
+                                                        color="white"
+                                                        width="32"
+                                                        height="32"
+                                                    /></a
+                                                ></td
+                                            >
+                                        </tr>
+                                    {/each}
+                                </tbody>
+                            </table>
+                        {:else}
+                            <p>No active packages found.</p>
+                        {/if}
                     </div>
                 {:else if currentPage === 'Users'}
                     <div class="overflow-x-auto w-full lg:w-3/4">
@@ -252,19 +270,18 @@
             <div class="drawer-side">
                 <label for="my-drawer-2" class="drawer-overlay" />
                 <ul class="menu p-4 lg:w-64 bg-base-100 text-base-content">
-                    <li><button on:click={() => navigate('Dashboard')}>Dashboard</button></li>
+                    <li><button on:click={() => navigate('Dashboard')}> Dashboard </button></li>
                     <li>
-                        <button on:click={() => navigate('Active Packages')}>Active Packages</button
-                        >
+                        <button on:click={() => navigate('Active Packages')}>
+                            Active Packages
+                        </button>
                     </li>
                     <li>
-                        <button on:click={() => navigate('Incoming Packages')}
-                            >Incoming Packages</button
-                        >
+                        <button on:click={() => navigate('Incoming Packages')}>
+                            Incoming Packages
+                        </button>
                     </li>
-                    <li>
-                        <button on:click={() => navigate('Users')}>Users</button>
-                    </li>
+                    <li><button on:click={() => navigate('Users')}> Users </button></li>
                 </ul>
             </div>
         </div>
