@@ -1,6 +1,5 @@
 <script>
     import { _ } from 'svelte-i18n';
-    import Icon from '@iconify/svelte';
     import { AboutIcon } from '$lib/icons';
     import { packages } from '../stores/packstore';
     import PackageCard from '../components/PackageCard.svelte';
@@ -43,8 +42,10 @@
 
 <section id="header">
     <!-- ABOUT link to be set by admin -->
-    <div class="btn btn-ghost m-2 p-2 rounded-xl flex-nowrap items-middle justify-center">
-        <AboutIcon color="white" />
+    <div class="btn btn-ghost m-2 p-2 rounded-xl items-middle justify-center flex-nowrap">
+        <a href="#">
+            <AboutIcon color="white" />
+        </a>
     </div>
 
     <!-- TITLE to be set by admin -->
