@@ -19,7 +19,7 @@
 
 {#key $_('lang')}
     <div class="dropdown dropdown-end">
-        <label for class="btn btn-ghost m-2 p-2 rounded-xl items-middle justify-center flex-nowrap">
+        <label for class="btn btn-ghost m-2 p-2 rounded-xl items-middle justify-center flex-nowrap" tabindex="-1">
             <LanguageIcon color="white" />
         </label>
         <div class="dropdown-content bg-base-200 w-48 rounded-md overflow-y-auto">
