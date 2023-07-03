@@ -43,7 +43,7 @@
 <section id="header">
     <!-- ABOUT link to be set by admin -->
     <div class="btn btn-ghost m-2 p-2 rounded-xl items-middle justify-center flex-nowrap">
-        <a href="#">
+        <a href="/#">
             <AboutIcon color="white" />
         </a>
     </div>
