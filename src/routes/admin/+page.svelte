@@ -1,5 +1,4 @@
 <script>
-    import Icon from '@iconify/svelte';
     import { auth, db } from '$lib/fbconfig';
     import { signOut } from 'firebase/auth';
     import { goto } from '$app/navigation';
@@ -10,8 +9,10 @@
     import { collection, getDocs } from 'firebase/firestore';
     import { setDoc } from 'firebase/firestore';
 
-    let projects = [];
-    let incoming = [];
+    export let data;
+    const active = data.activePacks;
+    const pending = data.inactivePacks;
+
     let userList = [];
     let user = null;
     let message = '';
@@ -42,8 +43,7 @@
                     } else {
                         isAdmin = true;
                     }
-                    await fetchPackages();
-                    await fetchIncoming();
+
                     await fetchUsers();
                 }
             }
@@ -69,18 +69,6 @@
         const usersRef = collection(db, 'users');
         const usersSnapshot = await getDocs(usersRef);
         userList = usersSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    }
-
-    async function fetchPackages() {
-        const packagesRef = collection(db, 'packages');
-        const packagesSnapshot = await getDocs(packagesRef);
-        projects = packagesSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    }
-
-    async function fetchIncoming() {
-        const incomingRef = collection(db, 'incoming');
-        const incomingSnapshot = await getDocs(incomingRef);
-        incoming = incomingSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     }
 
     function navigate(page) {
@@ -144,7 +132,7 @@
                     <!-- ACTIVE PACKAGES -->
                 {:else if currentPage === 'Active Packages'}
                     <div class="overflow-x-auto w-full">
-                        {#if projects.length > 0}
+                        {#if active.length > 0}
                             <table class="table table-md lg:w-3/4">
                                 <thead>
                                     <tr>
@@ -155,7 +143,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {#each projects as project}
+                                    {#each active as project}
                                         <tr>
                                             <td>
                                                 <img
@@ -167,7 +155,7 @@
                                             <td>{project.app_lang.name}</td>
                                             <td>{project.app_lang.regionname}</td>
                                             <td
-                                                ><a href="/admin/active/{project.id}"
+                                                ><a href="/admin/{project.id}"
                                                     ><AboutIcon color="white" /></a
                                                 ></td
                                             >
@@ -182,7 +170,7 @@
                     <!-- INCOMING PACKAGES -->
                 {:else if currentPage === 'Incoming Packages'}
                     <div class="overflow-x-auto w-full">
-                        {#if incoming.length > 0}
+                        {#if pending.length > 0}
                             <table class="table table-md lg:w-3/4">
                                 <thead>
                                     <tr>
@@ -193,7 +181,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {#each incoming as project}
+                                    {#each pending as project}
                                         <tr>
                                             <td>
                                                 <img
@@ -205,7 +193,7 @@
                                             <td>{project.app_lang.name}</td>
                                             <td>{project.app_lang.regionname}</td>
                                             <td>
-                                                <a href="/admin/incoming/{project.id}">
+                                                <a href="/admin/{project.id}">
                                                     <AboutIcon color="white" />
                                                 </a>
                                             </td>

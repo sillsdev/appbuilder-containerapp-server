@@ -2,31 +2,27 @@ import { db } from '$lib/fbconfig.js';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 
 export const load = () => {
-    const fetchActive = async (id) => {
-        // query 
+    const fetchActive = async () => {
+        // query
+        let active = [];
         const ref = collection(db, 'packages');
-        const q = query( ref, where("accepted", "!=", "null"));
+        const q = query(ref, where('accepted', '!=', ''));
         const querySnapshot = await getDocs(q);
-        const snap = querySnapshot;
-        // debug
-        // querySnapshot.forEach( (doc) => {
-        //     console.log( doc.id, " => ", doc.data() );
-        // })
-        return snap;
+        active = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+        return active;
     };
 
-    const fetchInactive = async (id) => {
+    const fetchInactive = async () => {
         // query
+        let pending = [];
         const ref = collection(db, 'packages');
-        const q = query( ref, where("accepted", "==", "null"));
+        const q = query(ref, where('accepted', '==', ''));
         const querySnapshot = await getDocs(q);
-        const snap = querySnapshot;
-        // debug
-        querySnapshot.forEach( (doc) => {
-            console.log( doc.id, " => ", doc.data() );
-        })
-        return snap;
-    }
+        pending = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+        return pending;
+    };
 
     return {
         activePacks: fetchActive(),
