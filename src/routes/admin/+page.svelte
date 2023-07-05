@@ -6,7 +6,7 @@
     import { onMount } from 'svelte';
     import { doc, getDoc } from 'firebase/firestore';
     import { userInitials } from '$lib/components/userInitialsStore';
-    import HamburgerIcon from '$lib/icons/HamburgerIcon.svelte';
+    import { HamburgerIcon, AboutIcon } from '$lib/icons';
     import { collection, getDocs } from 'firebase/firestore';
     import { setDoc } from 'firebase/firestore';
 
@@ -168,12 +168,7 @@
                                             <td>{project.app_lang.regionname}</td>
                                             <td
                                                 ><a href="/admin/active/{project.id}"
-                                                    ><Icon
-                                                        icon="ph:info"
-                                                        color="white"
-                                                        width="32"
-                                                        height="32"
-                                                    /></a
+                                                    ><AboutIcon color="white" /></a
                                                 ></td
                                             >
                                         </tr>
@@ -209,16 +204,11 @@
                                             </td>
                                             <td>{project.app_lang.name}</td>
                                             <td>{project.app_lang.regionname}</td>
-                                            <td
-                                                ><a href="/admin/incoming/{project.id}"
-                                                    ><Icon
-                                                        icon="ph:info"
-                                                        color="white"
-                                                        width="32"
-                                                        height="32"
-                                                    /></a
-                                                ></td
-                                            >
+                                            <td>
+                                                <a href="/admin/incoming/{project.id}">
+                                                    <AboutIcon color="white" />
+                                                </a>
+                                            </td>
                                         </tr>
                                     {/each}
                                 </tbody>

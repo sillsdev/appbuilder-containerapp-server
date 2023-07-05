@@ -1,6 +1,6 @@
 <script lang="ts">
-    // Hamburger from https://fonts.google.com/icons
-    // Filled = 1
+    // Arrow Forward from https://fonts.google.com/icons
+    // Filled = 0
     // Weight = 400
     // Grade = 0
     // Optical size = 40px
@@ -14,8 +14,7 @@
     height={size}
     viewBox="0 -960 960 960"
     width={size}
+    ><path
+        d="m 480 -160 l -47 -47.333 l 239.334 -239.334 H 160 v -66.666 h 512.334 L 433 -752.667 L 480 -800 l 320 320 l -320 320 Z"
+    /></svg
 >
-    <path
-        d="M 120 -240 v -66.666 h 720 V -240 H 120 Z m 0 -206.667 v -66.666 h 720 v 66.666 H 120 Z m 0 -206.667 V -720 h 720 v 66.666 H 120 Z"
-    />
-</svg>

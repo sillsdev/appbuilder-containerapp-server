@@ -1,5 +1,5 @@
 <script>
-    import Icon from '@iconify/svelte';
+    import { ArrowBackIcon } from '$lib/icons';
     export let data;
     const { pack } = data;
 
@@ -26,7 +26,7 @@
 <div class="flex flex-row justify-items-stretch columns-2 items-center">
     <div class="btn btn-ghost m-1 p-2">
         <a href="/admin">
-            <Icon icon="ion:caret-back" color="white" width="32" />
+            <ArrowBackIcon color="white" />
         </a>
     </div>
 
