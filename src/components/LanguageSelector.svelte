@@ -19,9 +19,9 @@
 
 {#key $_('lang')}
     <div class="dropdown dropdown-end">
-        <label 
-            for 
-            class="btn btn-ghost m-2 p-2 rounded-xl items-middle justify-center flex-nowrap" 
+        <label
+            for
+            class="btn btn-ghost m-2 p-2 rounded-xl items-middle justify-center flex-nowrap"
             tabindex="-1"
         >
             <LanguageIcon color="white" />
@@ -32,7 +32,6 @@
                     <li>
                         <div
                             class="btn flex {isActive(locale)}"
-                            tabindex="-1"
                             on:click={setLocale(locale)}
                             on:keypress={setLocale(locale)}
                         >
