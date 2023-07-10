@@ -1,17 +1,15 @@
 <script>
-    import { auth, db } from '$lib/fbconfig';
     import { signOut } from 'firebase/auth';
+    import { auth, db } from '$lib/fbconfig';
+    import { doc, getDoc, updateDoc, collection, getDocs } from 'firebase/firestore';
+    import { page } from '$app/stores'
     import { goto } from '$app/navigation';
     import { onMount } from 'svelte';
-    import { doc, getDoc } from 'firebase/firestore';
     import { userInitials } from '$lib/components/userInitialsStore';
-    import { HamburgerIcon, AboutIcon } from '$lib/icons';
-    import { collection, getDocs } from 'firebase/firestore';
-    import { setDoc } from 'firebase/firestore';
+    import { HamburgerIcon, AboutIcon, VisibleIcon, VisibleOffIcon } from '$lib/icons';
 
-    export let data;
-    const active = data.activePacks;
-    const pending = data.inactivePacks;
+    $: active = $page.data.active;
+    $: pending = $page.data.inactive;
 
     let userList = [];
     let user = null;
@@ -85,6 +83,24 @@
         const userRef = doc(db, 'users', userId);
         await setDoc(userRef, { role: newRole }, { merge: true });
     }
+
+    async function draftPackage ( id ) {
+        const docRef = doc(db, 'packages', id);
+        await updateDoc( docRef, {
+            accepted: ""
+        });
+        await invalidate("/admin");
+    }
+
+    async function publishPackage ( id ) {
+        const timestamp = new Date().toISOString();
+        const docRef = doc(db, 'packages', id);
+        await updateDoc( docRef, {
+            accepted: timestamp
+        });
+        await invalidate("/admin");
+    }
+
 </script>
 
 <svelte:head>
@@ -131,6 +147,7 @@
 
                     <!-- ACTIVE PACKAGES -->
                 {:else if currentPage === 'Active Packages'}
+            
                     <div class="overflow-x-auto w-full">
                         {#if active.length > 0}
                             <table class="table table-md lg:w-3/4">
@@ -154,20 +171,24 @@
                                             </td>
                                             <td>{project.app_lang.name}</td>
                                             <td>{project.app_lang.regionname}</td>
-                                            <td
-                                                ><a href="/admin/{project.id}"
-                                                    ><AboutIcon color="white" /></a
-                                                ></td
-                                            >
+                                            <td>
+                                                <a href="/admin/{project.id}">
+                                                    <AboutIcon color="white" />
+                                                </a>
+                                                <button class="btn btn-ghost btn-circle" on:click={ () => draftPackage(project.id) }>
+                                                    <VisibleOffIcon color="white"/>
+                                                </button>
+                                            </td>
                                         </tr>
                                     {/each}
                                 </tbody>
                             </table>
-                        {:else}
+                            {:else}
                             <p>No active packages found.</p>
-                        {/if}
-                    </div>
-                    <!-- INCOMING PACKAGES -->
+                            {/if}
+                        </div>
+                        
+                        <!-- INCOMING PACKAGES -->
                 {:else if currentPage === 'Incoming Packages'}
                     <div class="overflow-x-auto w-full">
                         {#if pending.length > 0}
@@ -196,13 +217,16 @@
                                                 <a href="/admin/{project.id}">
                                                     <AboutIcon color="white" />
                                                 </a>
+                                                <button class="btn btn-ghost btn-circle" on:click={ () => publishPackage(project.id) }>
+                                                    <VisibleIcon color="white"/>
+                                                </button>
                                             </td>
                                         </tr>
                                     {/each}
                                 </tbody>
                             </table>
                         {:else}
-                            <p>No active packages found.</p>
+                            <p>No inactive packages found.</p>
                         {/if}
                     </div>
                 {:else if currentPage === 'Users'}

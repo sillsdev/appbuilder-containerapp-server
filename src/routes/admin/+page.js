@@ -1,31 +1,24 @@
 import { db } from '$lib/fbconfig.js';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 
-export const load = () => {
-    const fetchActive = async () => {
-        // query
-        let active = [];
-        const ref = collection(db, 'packages');
-        const q = query(ref, where('accepted', '!=', ''));
-        const querySnapshot = await getDocs(q);
-        active = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+export async function load ({ depends }) {
 
-        return active;
-    };
+        const activeRef = collection(db, 'packages');
+        const activeQ = query(activeRef, where('accepted', '!=', ''));
+        const activeQuery = await getDocs(activeQ);
+        const active = activeQuery.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        console.log(`Loaded ${active.length} active packages `);
 
-    const fetchInactive = async () => {
-        // query
-        let pending = [];
-        const ref = collection(db, 'packages');
-        const q = query(ref, where('accepted', '==', ''));
-        const querySnapshot = await getDocs(q);
-        pending = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        const inactiveRef = collection(db, 'packages');
+        const inactiveQ = query(inactiveRef, where('accepted', '==', ''));
+        const inactiveQuery = await getDocs(inactiveQ);
+        const inactive = inactiveQuery.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        console.log(`Loaded ${inactive.length} inactive packages `);
 
-        return pending;
-    };
+    depends("packages")
 
     return {
-        activePacks: fetchActive(),
-        inactivePacks: fetchInactive()
+        active,
+        inactive
     };
 };
