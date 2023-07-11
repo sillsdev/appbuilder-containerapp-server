@@ -150,7 +150,7 @@
                 {:else if currentPage === 'Active Packages'}
             
                     <div class="overflow-x-auto w-full">
-                        {#if active.length > 0}
+                        {#if $activePackages.length > 0}
                             <table class="table table-md lg:w-3/4">
                                 <thead>
                                     <tr>
@@ -161,7 +161,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {#each active as project}
+                                    {#each $activePackages as project}
                                         <tr>
                                             <td>
                                                 <img
@@ -176,7 +176,7 @@
                                                 <a href="/admin/{project.id}">
                                                     <AboutIcon color="white" />
                                                 </a>
-                                                <button class="btn btn-ghost btn-circle" on:click={ () => draftPackage(project.id) }>
+                                                <button class="btn btn-ghost btn-circle" on:click={ () => deactivatePackage(project.id) }>
                                                     <VisibleOffIcon color="white"/>
                                                 </button>
                                             </td>
@@ -192,7 +192,7 @@
                         <!-- INCOMING PACKAGES -->
                 {:else if currentPage === 'Incoming Packages'}
                     <div class="overflow-x-auto w-full">
-                        {#if pending.length > 0}
+                        {#if $incomingPackages.length > 0}
                             <table class="table table-md lg:w-3/4">
                                 <thead>
                                     <tr>
@@ -203,7 +203,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {#each pending as project}
+                                    {#each $incomingPackages as project}
                                         <tr>
                                             <td>
                                                 <img
@@ -218,7 +218,7 @@
                                                 <a href="/admin/{project.id}">
                                                     <AboutIcon color="white" />
                                                 </a>
-                                                <button class="btn btn-ghost btn-circle" on:click={ () => publishPackage(project.id) }>
+                                                <button class="btn btn-ghost btn-circle" on:click={ () => activatePackage(project.id) }>
                                                     <VisibleIcon color="white"/>
                                                 </button>
                                             </td>
