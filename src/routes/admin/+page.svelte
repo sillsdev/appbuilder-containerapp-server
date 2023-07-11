@@ -7,6 +7,7 @@
     import { onMount } from 'svelte';
     import { userInitials } from '$lib/components/userInitialsStore';
     import { HamburgerIcon, AboutIcon, VisibleIcon, VisibleOffIcon } from '$lib/icons';
+    import { activePackages, incomingPackages, activatePackage, deactivatePackage } from '../../stores/packstore';
 
     $: active = $page.data.active;
     $: pending = $page.data.inactive;
