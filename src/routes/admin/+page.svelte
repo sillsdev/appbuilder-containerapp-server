@@ -2,12 +2,17 @@
     import { signOut } from 'firebase/auth';
     import { auth, db } from '$lib/fbconfig';
     import { doc, getDoc, updateDoc, collection, getDocs } from 'firebase/firestore';
-    import { page } from '$app/stores'
+    import { page } from '$app/stores';
     import { goto } from '$app/navigation';
     import { onMount } from 'svelte';
     import { userInitials } from '$lib/components/userInitialsStore';
     import { HamburgerIcon, AboutIcon, VisibleIcon, VisibleOffIcon } from '$lib/icons';
-    import { activePackages, incomingPackages, activatePackage, deactivatePackage } from '../../stores/packstore';
+    import {
+        activePackages,
+        incomingPackages,
+        activatePackage,
+        deactivatePackage
+    } from '../../stores/packstore';
 
     $: active = $page.data.active;
     $: pending = $page.data.inactive;
@@ -85,23 +90,22 @@
         await setDoc(userRef, { role: newRole }, { merge: true });
     }
 
-    async function draftPackage ( id ) {
+    async function draftPackage(id) {
         const docRef = doc(db, 'packages', id);
-        await updateDoc( docRef, {
-            accepted: ""
+        await updateDoc(docRef, {
+            accepted: ''
         });
-        await invalidate("/admin");
+        await invalidate('/admin');
     }
 
-    async function publishPackage ( id ) {
+    async function publishPackage(id) {
         const timestamp = new Date().toISOString();
         const docRef = doc(db, 'packages', id);
-        await updateDoc( docRef, {
+        await updateDoc(docRef, {
             accepted: timestamp
         });
-        await invalidate("/admin");
+        await invalidate('/admin');
     }
-
 </script>
 
 <svelte:head>
@@ -112,7 +116,7 @@
     <div class="navbar bg-base-100">
         <div class="navbar-start">
             <label for="my-drawer-2" class="btn btn-ghost btn-circle drawer-button lg:hidden">
-                <HamburgerIcon color="white" />
+                <HamburgerIcon />
             </label>
             <li class="btn btn-ghost normal-case text-xl">
                 <button on:click={home}>Kalaam Media Administrator</button>
@@ -148,7 +152,6 @@
 
                     <!-- ACTIVE PACKAGES -->
                 {:else if currentPage === 'Active Packages'}
-            
                     <div class="overflow-x-auto w-full">
                         {#if $activePackages.length > 0}
                             <table class="table table-md lg:w-3/4">
@@ -173,23 +176,29 @@
                                             <td>{project.app_lang.name}</td>
                                             <td>{project.app_lang.regionname}</td>
                                             <td>
-                                                <a href="/admin/{project.id}">
-                                                    <AboutIcon color="white" />
+                                                <a
+                                                    href="/admin/{project.id}"
+                                                    class="btn btn-ghost btn-circle"
+                                                >
+                                                    <AboutIcon />
                                                 </a>
-                                                <button class="btn btn-ghost btn-circle" on:click={ () => deactivatePackage(project.id) }>
-                                                    <VisibleOffIcon color="white"/>
+                                                <button
+                                                    class="btn btn-ghost btn-circle"
+                                                    on:click={() => deactivatePackage(project.id)}
+                                                >
+                                                    <VisibleOffIcon />
                                                 </button>
                                             </td>
                                         </tr>
                                     {/each}
                                 </tbody>
                             </table>
-                            {:else}
+                        {:else}
                             <p>No active packages found.</p>
-                            {/if}
-                        </div>
-                        
-                        <!-- INCOMING PACKAGES -->
+                        {/if}
+                    </div>
+
+                    <!-- INCOMING PACKAGES -->
                 {:else if currentPage === 'Incoming Packages'}
                     <div class="overflow-x-auto w-full">
                         {#if $incomingPackages.length > 0}
@@ -215,11 +224,17 @@
                                             <td>{project.app_lang.name}</td>
                                             <td>{project.app_lang.regionname}</td>
                                             <td>
-                                                <a href="/admin/{project.id}">
-                                                    <AboutIcon color="white" />
+                                                <a
+                                                    href="/admin/{project.id}"
+                                                    class="btn btn-ghost btn-circle"
+                                                >
+                                                    <AboutIcon />
                                                 </a>
-                                                <button class="btn btn-ghost btn-circle" on:click={ () => activatePackage(project.id) }>
-                                                    <VisibleIcon color="white"/>
+                                                <button
+                                                    class="btn btn-ghost btn-circle"
+                                                    on:click={() => activatePackage(project.id)}
+                                                >
+                                                    <VisibleIcon />
                                                 </button>
                                             </td>
                                         </tr>

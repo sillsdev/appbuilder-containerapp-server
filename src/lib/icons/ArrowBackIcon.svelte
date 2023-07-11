@@ -1,11 +1,11 @@
 <script lang="ts">
-    // Arrow Back from https://fonts.google.com/icons
+    // Chevron Left from https://fonts.google.com/icons
     // Filled = 0
     // Weight = 400
     // Grade = 0
-    // Optical size = 40px
-    export let size = '40';
-    export let color = 'black';
+    // Optical size = 24px
+    export let size = '32';
+    export let color = 'white';
 </script>
 
 <svg
@@ -14,7 +14,5 @@
     height={size}
     viewBox="0 -960 960 960"
     width={size}
-    ><path
-        d="M 480 -160 L 160 -480 l 320 -320 l 47 46.666 l -240.001 240.001 H 800 v 66.666 H 286.999 L 527 -206.666 L 480 -160 Z"
-    /></svg
+    ><path d="M 560 -240 L 320 -480 l 240 -240 l 56 56 l -184 184 l 184 184 l -56 56 Z" /></svg
 >

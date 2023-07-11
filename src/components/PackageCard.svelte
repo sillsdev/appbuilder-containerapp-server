@@ -9,19 +9,28 @@
             <div>
                 <h2>{pack.app_lang.name.toUpperCase()}</h2>
                 <h3>
-                    Region: {pack.app_lang.region.substring(0, 1).toUpperCase()}{pack.app_lang.region.substring(1)}
+                    Region: {pack.app_lang.region
+                        .substring(0, 1)
+                        .toUpperCase()}{pack.app_lang.region.substring(1)}
                 </h3>
                 <h3>Language Code: {pack.app_lang.iso639_3}</h3>
             </div>
             <figure>
-                <img class="mask mask-squircle" src={pack.image.baseurl + '/' + pack.image.files[0].src} alt="App Image" width="128" />
+                <img
+                    class="mask mask-squircle"
+                    src={pack.image.baseurl + '/' + pack.image.files[0].src}
+                    alt="App Image"
+                    width="128"
+                />
             </figure>
         </div>
         <div class="divider m-2" />
         <ul>
             <h3 class="overflow-auto">Alternate Names: {pack.app_lang.names}</h3>
             <h3>
-                The {pack.app_lang.name.substring(0, 1).toUpperCase()}{pack.app_lang.name.substring(1)} App package is
+                The {pack.app_lang.name.substring(0, 1).toUpperCase()}{pack.app_lang.name.substring(
+                    1
+                )} App package is
                 {Math.floor(pack.size / 1000)} MB.
             </h3>
         </ul>

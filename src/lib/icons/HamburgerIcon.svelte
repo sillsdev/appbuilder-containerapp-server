@@ -3,9 +3,9 @@
     // Filled = 1
     // Weight = 400
     // Grade = 0
-    // Optical size = 40px
-    export let size = '40';
-    export let color = 'black';
+    // Optical size = 24px
+    export let size = '32';
+    export let color = 'white';
 </script>
 
 <svg
@@ -16,6 +16,6 @@
     width={size}
 >
     <path
-        d="M 120 -240 v -66.666 h 720 V -240 H 120 Z m 0 -206.667 v -66.666 h 720 v 66.666 H 120 Z m 0 -206.667 V -720 h 720 v 66.666 H 120 Z"
+        d="M 120 -240 v -80 h 720 v 80 H 120 Z m 0 -200 v -80 h 720 v 80 H 120 Z m 0 -200 v -80 h 720 v 80 H 120 Z"
     />
 </svg>

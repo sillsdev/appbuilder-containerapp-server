@@ -14,44 +14,43 @@ export async function initPackages() {
 
     const snapshot = await getDocs(colq);
 
-    const loadedPack = snapshot.docs.map( (doc) => ( { id: doc.id, ...doc.data() }));
+    const loadedPack = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
     allPackages.set(loadedPack);
 }
 
 export const incomingPackages = derived([allPackages], ([$packages]) => {
     return $packages.filter((pack) => pack.accepted === '');
-})
+});
 
 export const activePackages = derived([allPackages], ([$packages]) => {
     return $packages.filter((pack) => pack.accepted !== '');
-})
+});
 
-export function activatePackage( id ) {
+export function activatePackage(id) {
     allPackages.update((packages) => {
-        return packages.map( obj => {
-            if( obj.id === id ) {
+        return packages.map((obj) => {
+            if (obj.id === id) {
                 return {
-                    ...obj, accepted: new Date().toISOString()
+                    ...obj,
+                    accepted: new Date().toISOString()
                 };
             }
             return obj;
-        })
-    })
+        });
+    });
 }
 
-export function deactivatePackage( id ) {
+export function deactivatePackage(id) {
     allPackages.update((packages) => {
-        return packages.map( obj => {
-            if( obj.id === id ) {
+        return packages.map((obj) => {
+            if (obj.id === id) {
                 return {
-                    ...obj, accepted: ""
+                    ...obj,
+                    accepted: ''
                 };
             }
             return obj;
-        })
-    })
+        });
+    });
 }
-
-
-
