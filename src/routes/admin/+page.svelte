@@ -148,7 +148,7 @@
                                         <tr>
                                             <td>
                                                 <img
-                                                    class="mask mask-squircle lg:w-14 lg:h-14"
+                                                    class="mask mask-squircle sm:w-12 sm:h-12 lg:w-14 lg:h-14"
                                                     src={`${project.image.baseurl}/${project.image.files[0].src}`}
                                                     alt="App Icon"
                                                 />
@@ -160,7 +160,7 @@
                                                     href="/admin/{project.id}"
                                                     class="btn btn-ghost btn-circle"
                                                 >
-                                                    <AboutIcon />
+                                                    <AboutIcon/>
                                                 </a>
                                                 <button
                                                     class="btn btn-ghost btn-circle"
@@ -196,7 +196,7 @@
                                         <tr>
                                             <td>
                                                 <img
-                                                    class="mask mask-squircle lg:w-14 lg:h-14"
+                                                    class="mask mask-squircle sm:w-12 sm:h-12 lg:w-14 lg:h-14"
                                                     src={`${project.image.baseurl}/${project.image.files[0].src}`}
                                                     alt="App Icon"
                                                 />
