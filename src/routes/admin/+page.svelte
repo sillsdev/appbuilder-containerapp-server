@@ -160,7 +160,7 @@
                                                     href="/admin/{project.id}"
                                                     class="btn btn-ghost btn-circle"
                                                 >
-                                                    <AboutIcon/>
+                                                    <AboutIcon />
                                                 </a>
                                                 <button
                                                     class="btn btn-ghost btn-circle"
