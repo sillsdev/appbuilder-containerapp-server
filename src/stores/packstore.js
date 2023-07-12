@@ -14,7 +14,12 @@ export async function initPackages() {
 
     const snapshot = await getDocs(colq);
 
-    const loadedPack = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    const loadedPack = snapshot.docs
+        .map((doc) => ({ id: doc.id, ...doc.data() }))
+        .map((project) => ({
+            ...project,
+            img: project.image.baseurl + '/' + project.image.files[0].src
+        }));
 
     allPackages.set(loadedPack);
 }

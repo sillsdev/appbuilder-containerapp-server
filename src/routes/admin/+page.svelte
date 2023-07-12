@@ -149,7 +149,7 @@
                                             <td>
                                                 <img
                                                     class="mask mask-squircle sm:w-12 sm:h-12 lg:w-14 lg:h-14"
-                                                    src={`${project.image.baseurl}/${project.image.files[0].src}`}
+                                                    src={project.img}
                                                     alt="App Icon"
                                                 />
                                             </td>
@@ -197,7 +197,7 @@
                                             <td>
                                                 <img
                                                     class="mask mask-squircle sm:w-12 sm:h-12 lg:w-14 lg:h-14"
-                                                    src={`${project.image.baseurl}/${project.image.files[0].src}`}
+                                                    src={project.img}
                                                     alt="App Icon"
                                                 />
                                             </td>

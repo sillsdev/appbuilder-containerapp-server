@@ -16,12 +16,7 @@
                 <h3>Language Code: {pack.app_lang.iso639_3}</h3>
             </div>
             <figure>
-                <img
-                    class="mask mask-squircle"
-                    src={pack.image.baseurl + '/' + pack.image.files[0].src}
-                    alt="App Image"
-                    width="128"
-                />
+                <img class="mask mask-squircle" src={pack.img} alt="App Image" width="128" />
             </figure>
         </div>
         <div class="divider m-2" />
