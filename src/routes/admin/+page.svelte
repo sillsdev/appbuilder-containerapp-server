@@ -1,8 +1,7 @@
 <script>
     import { signOut } from 'firebase/auth';
     import { auth, db } from '$lib/fbconfig';
-    import { doc, getDoc, updateDoc, collection, getDocs } from 'firebase/firestore';
-    import { page } from '$app/stores';
+    import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
     import { goto } from '$app/navigation';
     import { onMount } from 'svelte';
     import { userInitials } from '$lib/components/userInitialsStore';
@@ -13,9 +12,6 @@
         activatePackage,
         deactivatePackage
     } from '../../stores/packstore';
-
-    $: active = $page.data.active;
-    $: pending = $page.data.inactive;
 
     let userList = [];
     let user = null;
@@ -65,6 +61,7 @@
 
     // default page
     let currentPage = 'Active Packages';
+
     const setCurrentPage = (page) => {
         currentPage = page;
     };
@@ -89,23 +86,6 @@
         const userRef = doc(db, 'users', userId);
         await setDoc(userRef, { role: newRole }, { merge: true });
     }
-
-    async function draftPackage(id) {
-        const docRef = doc(db, 'packages', id);
-        await updateDoc(docRef, {
-            accepted: ''
-        });
-        await invalidate('/admin');
-    }
-
-    async function publishPackage(id) {
-        const timestamp = new Date().toISOString();
-        const docRef = doc(db, 'packages', id);
-        await updateDoc(docRef, {
-            accepted: timestamp
-        });
-        await invalidate('/admin');
-    }
 </script>
 
 <svelte:head>
@@ -118,13 +98,13 @@
             <label for="my-drawer-2" class="btn btn-ghost btn-circle drawer-button lg:hidden">
                 <HamburgerIcon />
             </label>
-            <li class="btn btn-ghost normal-case text-xl">
+            <li class="btn btn-ghost rounded-lg normal-case text-xl">
                 <button on:click={home}>Kalaam Media Administrator</button>
             </li>
         </div>
         <div class="navbar-end">
             <div class="dropdown dropdown-end">
-                <button class="btn btn-ghost normal-case text-xl">
+                <button class="btn btn-ghost rounded-lg normal-case text-xl">
                     {$userInitials}
                 </button>
                 <ul
@@ -168,7 +148,7 @@
                                         <tr>
                                             <td>
                                                 <img
-                                                    class="mask mask-squircle w-24"
+                                                    class="mask mask-squircle lg:w-14 lg:h-14"
                                                     src={`${project.image.baseurl}/${project.image.files[0].src}`}
                                                     alt="App Icon"
                                                 />
@@ -216,7 +196,7 @@
                                         <tr>
                                             <td>
                                                 <img
-                                                    class="mask mask-squircle w-24"
+                                                    class="mask mask-squircle lg:w-14 lg:h-14"
                                                     src={`${project.image.baseurl}/${project.image.files[0].src}`}
                                                     alt="App Icon"
                                                 />
@@ -287,7 +267,9 @@
 
             <div class="drawer-side">
                 <label for="my-drawer-2" class="drawer-overlay" />
-                <ul class="menu p-4 lg:w-64 bg-base-100 text-base-content">
+                <ul
+                    class="menu mt-14 lg:mt-0 rounded-r-lg p-4 lg:w-64 bg-base-100 text-base-content"
+                >
                     <li><button on:click={() => navigate('Dashboard')}> Dashboard </button></li>
                     <li>
                         <button on:click={() => navigate('Active Packages')}>

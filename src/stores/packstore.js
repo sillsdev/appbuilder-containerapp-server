@@ -1,4 +1,4 @@
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { writable, derived } from 'svelte/store';
 import { db } from '../lib/fbconfig';
 
@@ -27,21 +27,30 @@ export const activePackages = derived([allPackages], ([$packages]) => {
     return $packages.filter((pack) => pack.accepted !== '');
 });
 
-export function activatePackage(id) {
+export async function activatePackage(id) {
+    const timestamp = new Date().toISOString();
+    const docRef = doc(db, 'packages', id);
+
     allPackages.update((packages) => {
         return packages.map((obj) => {
             if (obj.id === id) {
                 return {
                     ...obj,
-                    accepted: new Date().toISOString()
+                    accepted: timestamp
                 };
             }
             return obj;
         });
     });
+
+    await updateDoc(docRef, {
+        accepted: timestamp
+    });
 }
 
-export function deactivatePackage(id) {
+export async function deactivatePackage(id) {
+    const docRef = doc(db, 'packages', id);
+
     allPackages.update((packages) => {
         return packages.map((obj) => {
             if (obj.id === id) {
@@ -52,5 +61,9 @@ export function deactivatePackage(id) {
             }
             return obj;
         });
+    });
+
+    await updateDoc(docRef, {
+        accepted: ''
     });
 }
