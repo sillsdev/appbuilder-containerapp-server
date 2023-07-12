@@ -1,7 +1,7 @@
 <script>
     import { _ } from 'svelte-i18n';
     import { AboutIcon } from '$lib/icons';
-    import { packages } from '../stores/packstore';
+    import { activePackages } from '../stores/packstore';
     import PackageCard from '../components/PackageCard.svelte';
     import LanguageSelector from '../components/LanguageSelector.svelte';
 
@@ -14,24 +14,24 @@
     $: {
         // search by name
         if (searchName) {
-            filter = $packages.filter((pack) =>
-                pack.name
+            filter = $activePackages.filter((pack) =>
+                pack.app_lang.name
                     .substring(0, searchName.length)
                     .toLowerCase()
                     .includes(searchName.toLowerCase())
             );
             // search by country
         } else if (searchCountry) {
-            filter = $packages.filter((pack) =>
-                pack.country
+            filter = $activePackages.filter((pack) =>
+                pack.app_lang.region
                     .substring(0, searchCountry.length)
                     .toLowerCase()
                     .includes(searchCountry.toLowerCase())
             );
             // search by code
         } else if (searchCode) {
-            filter = $packages.filter((pack) =>
-                pack.code.toLowerCase().includes(searchCode.toLowerCase())
+            filter = $activePackages.filter((pack) =>
+                pack.app_lang.iso639_3.toLowerCase().includes(searchCode.toLowerCase())
             );
             // list is blank
         } else {

@@ -1,17 +1,18 @@
 <script>
-    import Icon from '@iconify/svelte';
-    import { auth, db } from '$lib/fbconfig';
     import { signOut } from 'firebase/auth';
+    import { auth, db } from '$lib/fbconfig';
+    import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
     import { goto } from '$app/navigation';
     import { onMount } from 'svelte';
-    import { doc, getDoc } from 'firebase/firestore';
     import { userInitials } from '$lib/components/userInitialsStore';
-    import { HamburgerIcon, AboutIcon } from '$lib/icons';
-    import { collection, getDocs } from 'firebase/firestore';
-    import { setDoc } from 'firebase/firestore';
+    import { HamburgerIcon, AboutIcon, VisibleIcon, VisibleOffIcon } from '$lib/icons';
+    import {
+        activePackages,
+        incomingPackages,
+        activatePackage,
+        deactivatePackage
+    } from '../../stores/packstore';
 
-    let projects = [];
-    let incoming = [];
     let userList = [];
     let user = null;
     let message = '';
@@ -42,8 +43,7 @@
                     } else {
                         isAdmin = true;
                     }
-                    await fetchPackages();
-                    await fetchIncoming();
+
                     await fetchUsers();
                 }
             }
@@ -61,6 +61,7 @@
 
     // default page
     let currentPage = 'Active Packages';
+
     const setCurrentPage = (page) => {
         currentPage = page;
     };
@@ -69,18 +70,6 @@
         const usersRef = collection(db, 'users');
         const usersSnapshot = await getDocs(usersRef);
         userList = usersSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    }
-
-    async function fetchPackages() {
-        const packagesRef = collection(db, 'packages');
-        const packagesSnapshot = await getDocs(packagesRef);
-        projects = packagesSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    }
-
-    async function fetchIncoming() {
-        const incomingRef = collection(db, 'incoming');
-        const incomingSnapshot = await getDocs(incomingRef);
-        incoming = incomingSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     }
 
     function navigate(page) {
@@ -107,15 +96,15 @@
     <div class="navbar bg-base-100">
         <div class="navbar-start">
             <label for="my-drawer-2" class="btn btn-ghost btn-circle drawer-button lg:hidden">
-                <HamburgerIcon color="white" />
+                <HamburgerIcon />
             </label>
-            <li class="btn btn-ghost normal-case text-xl">
+            <li class="btn btn-ghost rounded-lg normal-case text-xl">
                 <button on:click={home}>Kalaam Media Administrator</button>
             </li>
         </div>
         <div class="navbar-end">
             <div class="dropdown dropdown-end">
-                <button class="btn btn-ghost normal-case text-xl">
+                <button class="btn btn-ghost rounded-lg normal-case text-xl">
                     {$userInitials}
                 </button>
                 <ul
@@ -144,7 +133,7 @@
                     <!-- ACTIVE PACKAGES -->
                 {:else if currentPage === 'Active Packages'}
                     <div class="overflow-x-auto w-full">
-                        {#if projects.length > 0}
+                        {#if $activePackages.length > 0}
                             <table class="table table-md lg:w-3/4">
                                 <thead>
                                     <tr>
@@ -155,22 +144,31 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {#each projects as project}
+                                    {#each $activePackages as project}
                                         <tr>
                                             <td>
                                                 <img
-                                                    class="mask mask-squircle w-24"
-                                                    src={`${project.image.baseurl}/${project.image.files[0].src}`}
+                                                    class="mask mask-squircle sm:w-12 sm:h-12 lg:w-14 lg:h-14"
+                                                    src={project.img}
                                                     alt="App Icon"
                                                 />
                                             </td>
                                             <td>{project.app_lang.name}</td>
                                             <td>{project.app_lang.regionname}</td>
-                                            <td
-                                                ><a href="/admin/active/{project.id}"
-                                                    ><AboutIcon color="white" /></a
-                                                ></td
-                                            >
+                                            <td>
+                                                <a
+                                                    href="/admin/{project.id}"
+                                                    class="btn btn-ghost btn-circle"
+                                                >
+                                                    <AboutIcon />
+                                                </a>
+                                                <button
+                                                    class="btn btn-ghost btn-circle"
+                                                    on:click={() => deactivatePackage(project.id)}
+                                                >
+                                                    <VisibleOffIcon />
+                                                </button>
+                                            </td>
                                         </tr>
                                     {/each}
                                 </tbody>
@@ -179,10 +177,11 @@
                             <p>No active packages found.</p>
                         {/if}
                     </div>
+
                     <!-- INCOMING PACKAGES -->
                 {:else if currentPage === 'Incoming Packages'}
                     <div class="overflow-x-auto w-full">
-                        {#if incoming.length > 0}
+                        {#if $incomingPackages.length > 0}
                             <table class="table table-md lg:w-3/4">
                                 <thead>
                                     <tr>
@@ -193,28 +192,37 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {#each incoming as project}
+                                    {#each $incomingPackages as project}
                                         <tr>
                                             <td>
                                                 <img
-                                                    class="mask mask-squircle w-24"
-                                                    src={`${project.image.baseurl}/${project.image.files[0].src}`}
+                                                    class="mask mask-squircle sm:w-12 sm:h-12 lg:w-14 lg:h-14"
+                                                    src={project.img}
                                                     alt="App Icon"
                                                 />
                                             </td>
                                             <td>{project.app_lang.name}</td>
                                             <td>{project.app_lang.regionname}</td>
                                             <td>
-                                                <a href="/admin/incoming/{project.id}">
-                                                    <AboutIcon color="white" />
+                                                <a
+                                                    href="/admin/{project.id}"
+                                                    class="btn btn-ghost btn-circle"
+                                                >
+                                                    <AboutIcon />
                                                 </a>
+                                                <button
+                                                    class="btn btn-ghost btn-circle"
+                                                    on:click={() => activatePackage(project.id)}
+                                                >
+                                                    <VisibleIcon />
+                                                </button>
                                             </td>
                                         </tr>
                                     {/each}
                                 </tbody>
                             </table>
                         {:else}
-                            <p>No active packages found.</p>
+                            <p>No inactive packages found.</p>
                         {/if}
                     </div>
                 {:else if currentPage === 'Users'}
@@ -259,7 +267,9 @@
 
             <div class="drawer-side">
                 <label for="my-drawer-2" class="drawer-overlay" />
-                <ul class="menu p-4 lg:w-64 bg-base-100 text-base-content">
+                <ul
+                    class="menu mt-14 lg:mt-0 rounded-r-lg p-4 lg:w-64 bg-base-100 text-base-content"
+                >
                     <li><button on:click={() => navigate('Dashboard')}> Dashboard </button></li>
                     <li>
                         <button on:click={() => navigate('Active Packages')}>
