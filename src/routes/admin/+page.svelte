@@ -7,7 +7,14 @@
     import { userInitials } from '$lib/components/userInitialsStore';
     import { generateRandomAPIKey } from '$lib/components/KeyGenerator';
     import { createNewAPIKey } from '$lib/components/CreateAPIKey';
-    import { HamburgerIcon, AboutIcon, VisibleIcon, VisibleOffIcon } from '$lib/icons';
+    import {
+        HamburgerIcon,
+        AboutIcon,
+        VisibleIcon,
+        VisibleOffIcon,
+        AddIcon,
+        RefreshIcon
+    } from '$lib/icons';
     import {
         activePackages,
         incomingPackages,
@@ -44,7 +51,6 @@
                     role = userData.role || 'user';
                     firstName = userData.firstname || '';
                     lastName = userData.lastname || '';
-                    console.log('Name : ' + firstName + ' ' + lastName + ', Role : ' + role);
                     userInitials.set(`${firstName.charAt(0)}${lastName.charAt(0)}`);
 
                     if (role !== 'admin') {
@@ -112,7 +118,7 @@
                 <ul
                     class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-200 rounded-box w-52"
                 >
-                    <li><a>Settings</a></li>
+                    <li><a href="/#">Settings</a></li>
                     <li><button on:click={logOut}>Sign Out</button></li>
                 </ul>
             </div>
@@ -269,27 +275,31 @@
                         <div class="form-control w-full m-1 p-1 md:max-w-md">
                             <!-- svelte-ignore a11y-label-has-associated-control -->
                             <label class="label">
-                                <span class="label-text">Add new custom key or</span>
-                                <span class="label-text">Auto-Generate Key:</span>
-                                <span
+                                <span class="label-text"
+                                    >Add new custom key or Auto-Generate Key:</span
+                                >
+                                <button
                                     class="btn btn-ghost btn-circle btn-xs"
                                     on:click={() => (customKey = generateRandomAPIKey())}
                                 >
-                                    <AboutIcon size="20" />
-                                </span>
+                                    <RefreshIcon size="20" />
+                                </button>
                             </label>
                         </div>
-                        <input
-                            type="text"
-                            placeholder="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
-                            class="input input-bordered input-md p-1 m-1 rounded-lg w-full max-w-xs sm:max-w-lg"
-                            bind:value={customKey}
-                        />
-                        <button
-                            class="btn btn-outline border-green-500 btn-circle"
-                            on:click={() => createNewAPIKey(customKey, `${lastName}, ${firstName}`)}
-                            >Add</button
-                        >
+                        <div class="flex align-items-center">
+                            <input
+                                type="text"
+                                placeholder="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
+                                class="input input-bordered input-md p-1 m-1 rounded-lg w-full max-w-xs sm:max-w-lg"
+                                bind:value={customKey}
+                            />
+                            <button
+                                class="btn btn-ghost rounded-lg btn-md"
+                                on:click={() =>
+                                    createNewAPIKey(customKey, `${lastName}, ${firstName}`)}
+                                ><AddIcon size="32" /></button
+                            >
+                        </div>
                         {#if $allKeys.length > 0}
                             <table class="table table-md">
                                 <thead>
@@ -338,7 +348,9 @@
             </div>
         </div>
     {/if}
-{:else}{/if}
+{:else}
+    <!-- else nothing -->
+{/if}
 
 <style>
     .message-container {
