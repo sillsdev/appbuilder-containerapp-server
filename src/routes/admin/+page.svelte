@@ -5,18 +5,27 @@
     import { goto } from '$app/navigation';
     import { onMount } from 'svelte';
     import { userInitials } from '$lib/components/userInitialsStore';
+    import { generateRandomAPIKey } from '$lib/components/KeyGenerator';
+    import { createNewAPIKey } from '$lib/components/CreateAPIKey';
     import { HamburgerIcon, AboutIcon, VisibleIcon, VisibleOffIcon } from '$lib/icons';
     import {
         activePackages,
         incomingPackages,
+        allUsers,
+        allKeys,
         activatePackage,
         deactivatePackage
     } from '../../stores/packstore';
 
-    let userList = [];
     let user = null;
+    let role;
+    let firstName;
+    let lastName;
+    
     let message = '';
     let isAdmin = false;
+
+    let customKey = "";
 
     onMount(() => {
         auth.onAuthStateChanged(async (userData) => {
@@ -27,13 +36,15 @@
                 user = userData;
 
                 const userRef = doc(db, 'users', user.uid);
+                console.log(user.uid);
                 const userSnapshot = await getDoc(userRef);
 
                 if (userSnapshot.exists()) {
                     const userData = userSnapshot.data();
-                    const role = userData.role || 'user';
-                    const firstName = userData.firstname || '';
-                    const lastName = userData.lastname || '';
+                    role = userData.role || 'user';
+                    firstName = userData.firstname || '';
+                    lastName = userData.lastname || '';
+                    console.log("Name : " + firstName + " " + lastName + ", Role : " + role);
                     userInitials.set(`${firstName.charAt(0)}${lastName.charAt(0)}`);
 
                     if (role !== 'admin') {
@@ -44,7 +55,6 @@
                         isAdmin = true;
                     }
 
-                    await fetchUsers();
                 }
             }
         });
@@ -66,20 +76,10 @@
         currentPage = page;
     };
 
-    async function fetchUsers() {
-        const usersRef = collection(db, 'users');
-        const usersSnapshot = await getDocs(usersRef);
-        userList = usersSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    }
-
     function navigate(page) {
         setCurrentPage(page);
         const drawerToggle = document.getElementById('my-drawer-2');
         drawerToggle.checked = false;
-
-        if (page === 'Users') {
-            fetchUsers();
-        }
     }
 
     async function updateUserRole(userId, newRole) {
@@ -95,7 +95,7 @@
 {#if user}
     <div class="navbar bg-base-100">
         <div class="navbar-start">
-            <label for="my-drawer-2" class="btn btn-ghost btn-circle drawer-button lg:hidden">
+            <label for="my-drawer-2" class="btn btn-ghost btn-circle btn-sm drawer-button lg:hidden">
                 <HamburgerIcon />
             </label>
             <li class="btn btn-ghost rounded-lg normal-case text-xl">
@@ -158,12 +158,12 @@
                                             <td>
                                                 <a
                                                     href="/admin/{project.id}"
-                                                    class="btn btn-ghost btn-circle"
+                                                    class="btn btn-ghost btn-circle btn-sm"
                                                 >
                                                     <AboutIcon />
                                                 </a>
                                                 <button
-                                                    class="btn btn-ghost btn-circle"
+                                                    class="btn btn-ghost btn-circle btn-sm"
                                                     on:click={() => deactivatePackage(project.id)}
                                                 >
                                                     <VisibleOffIcon />
@@ -206,12 +206,12 @@
                                             <td>
                                                 <a
                                                     href="/admin/{project.id}"
-                                                    class="btn btn-ghost btn-circle"
+                                                    class="btn btn-ghost btn-circle btn-sm"
                                                 >
                                                     <AboutIcon />
                                                 </a>
                                                 <button
-                                                    class="btn btn-ghost btn-circle"
+                                                    class="btn btn-ghost btn-circle btn-sm"
                                                     on:click={() => activatePackage(project.id)}
                                                 >
                                                     <VisibleIcon />
@@ -227,7 +227,7 @@
                     </div>
                 {:else if currentPage === 'Users'}
                     <div class="overflow-x-auto w-full lg:w-3/4">
-                        {#if userList.length > 0}
+                        {#if $allUsers.length > 0}
                             <table class="table table-md">
                                 <thead>
                                     <tr>
@@ -237,7 +237,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {#each userList as user}
+                                    {#each $allUsers as user}
                                         <tr>
                                             <td>{user.firstname} {user.lastname}</td>
                                             <td>{user.email}</td>
@@ -262,6 +262,47 @@
                             <p>No users found.</p>
                         {/if}
                     </div>
+                {:else if currentPage === 'API Keys'}
+                    <div class="overflow-x-auto w-full m-1 p-1 lg:w-3/4">
+                        <div class="form-control w-full m-1 p-1 md:max-w-md">
+                            <!-- svelte-ignore a11y-label-has-associated-control -->
+                            <label class="label">
+                                <span class="label-text">Add new custom key or</span>
+                                <span class="label-text">Auto-Generate Key:</span>
+                                <span class="btn btn-ghost btn-circle btn-xs" on:click={() => customKey = generateRandomAPIKey()}>
+                                    <AboutIcon size="20"/>
+                                </span>
+                            </label>
+                        </div>
+                        <input type="text" 
+                            placeholder="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx" 
+                            class="input input-bordered input-md p-1 m-1 rounded-lg w-full max-w-xs sm:max-w-lg" 
+                            bind:value={customKey} />
+                        <button class="btn btn-outline border-green-500 btn-circle" on:click={() => createNewAPIKey( customKey, `${lastName}, ${firstName}`)}>Add</button>
+                        {#if $allKeys.length > 0}
+                            <table class="table table-md">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Key</th>
+                                        <th>Date Created</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {#each $allKeys as key}
+                                        <tr>
+                                            <td>{key.user}</td>
+                                            <td>{key.key}</td>
+                                            <td>{new Date(key.timestamp)}</td>
+                                        </tr>
+                                    {/each}
+                                </tbody>
+                            </table>
+                        {:else}
+                            <p>No users found.</p>
+                        {/if}
+                        
+                    </div>
                 {/if}
             </div>
 
@@ -282,6 +323,7 @@
                         </button>
                     </li>
                     <li><button on:click={() => navigate('Users')}> Users </button></li>
+                    <li><button on:click={() => navigate('API Keys')}> API Keys </button></li>
                 </ul>
             </div>
         </div>

@@ -1,3 +1,6 @@
+import { initKeys, initUsers } from "../../stores/packstore";
+
 export async function load() {
-    return {};
+    await initUsers();
+    await initKeys();
 }
