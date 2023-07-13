@@ -34,7 +34,7 @@ export async function initUsers() {
 
     const snapshot = await getDocs(colq);
 
-    const loadedUsers = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data()}));
+    const loadedUsers = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
     allUsers.set(loadedUsers);
 }
@@ -44,7 +44,7 @@ export async function initKeys() {
 
     const snapshot = await getDocs(colq);
 
-    const loadedKeys = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data()}));
+    const loadedKeys = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
     allKeys.set(loadedKeys);
 }

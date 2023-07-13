@@ -21,11 +21,11 @@
     let role;
     let firstName;
     let lastName;
-    
+
     let message = '';
     let isAdmin = false;
 
-    let customKey = "";
+    let customKey = '';
 
     onMount(() => {
         auth.onAuthStateChanged(async (userData) => {
@@ -44,7 +44,7 @@
                     role = userData.role || 'user';
                     firstName = userData.firstname || '';
                     lastName = userData.lastname || '';
-                    console.log("Name : " + firstName + " " + lastName + ", Role : " + role);
+                    console.log('Name : ' + firstName + ' ' + lastName + ', Role : ' + role);
                     userInitials.set(`${firstName.charAt(0)}${lastName.charAt(0)}`);
 
                     if (role !== 'admin') {
@@ -54,7 +54,6 @@
                     } else {
                         isAdmin = true;
                     }
-
                 }
             }
         });
@@ -95,7 +94,10 @@
 {#if user}
     <div class="navbar bg-base-100">
         <div class="navbar-start">
-            <label for="my-drawer-2" class="btn btn-ghost btn-circle btn-sm drawer-button lg:hidden">
+            <label
+                for="my-drawer-2"
+                class="btn btn-ghost btn-circle btn-sm drawer-button lg:hidden"
+            >
                 <HamburgerIcon />
             </label>
             <li class="btn btn-ghost rounded-lg normal-case text-xl">
@@ -269,16 +271,25 @@
                             <label class="label">
                                 <span class="label-text">Add new custom key or</span>
                                 <span class="label-text">Auto-Generate Key:</span>
-                                <span class="btn btn-ghost btn-circle btn-xs" on:click={() => customKey = generateRandomAPIKey()}>
-                                    <AboutIcon size="20"/>
+                                <span
+                                    class="btn btn-ghost btn-circle btn-xs"
+                                    on:click={() => (customKey = generateRandomAPIKey())}
+                                >
+                                    <AboutIcon size="20" />
                                 </span>
                             </label>
                         </div>
-                        <input type="text" 
-                            placeholder="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx" 
-                            class="input input-bordered input-md p-1 m-1 rounded-lg w-full max-w-xs sm:max-w-lg" 
-                            bind:value={customKey} />
-                        <button class="btn btn-outline border-green-500 btn-circle" on:click={() => createNewAPIKey( customKey, `${lastName}, ${firstName}`)}>Add</button>
+                        <input
+                            type="text"
+                            placeholder="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
+                            class="input input-bordered input-md p-1 m-1 rounded-lg w-full max-w-xs sm:max-w-lg"
+                            bind:value={customKey}
+                        />
+                        <button
+                            class="btn btn-outline border-green-500 btn-circle"
+                            on:click={() => createNewAPIKey(customKey, `${lastName}, ${firstName}`)}
+                            >Add</button
+                        >
                         {#if $allKeys.length > 0}
                             <table class="table table-md">
                                 <thead>
@@ -301,7 +312,6 @@
                         {:else}
                             <p>No users found.</p>
                         {/if}
-                        
                     </div>
                 {/if}
             </div>
