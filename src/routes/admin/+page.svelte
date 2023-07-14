@@ -116,7 +116,7 @@
                     {$userInitials}
                 </button>
                 <ul
-                    class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-200 rounded-box w-52"
+                    class="menu menu-compact dropdown-content mt-1 p-2 shadow bg-base-200 rounded-box"
                 >
                     <li><a href="/#">Settings</a></li>
                     <li><button on:click={logOut}>Sign Out</button></li>
@@ -163,20 +163,23 @@
                                             </td>
                                             <td>{project.app_lang.name}</td>
                                             <td>{project.app_lang.regionname}</td>
-                                            <td>
-                                                <a
-                                                    href="/admin/{project.id}"
-                                                    class="btn btn-ghost btn-circle btn-sm"
-                                                >
-                                                    <AboutIcon />
-                                                </a>
-                                                <button
-                                                    class="btn btn-ghost btn-circle btn-sm"
-                                                    on:click={() => deactivatePackage(project.id)}
-                                                >
-                                                    <VisibleOffIcon />
-                                                </button>
-                                            </td>
+                                            {#if isAdmin}
+                                                <td>
+                                                    <a
+                                                        href="/admin/{project.id}"
+                                                        class="btn btn-ghost btn-circle btn-sm"
+                                                    >
+                                                        <AboutIcon />
+                                                    </a>
+                                                    <button
+                                                        class="btn btn-ghost btn-circle btn-sm"
+                                                        on:click={() =>
+                                                            deactivatePackage(project.id)}
+                                                    >
+                                                        <VisibleOffIcon />
+                                                    </button>
+                                                </td>
+                                            {/if}
                                         </tr>
                                     {/each}
                                 </tbody>
@@ -272,7 +275,7 @@
                     </div>
                 {:else if currentPage === 'API Keys'}
                     <div class="overflow-x-auto w-full m-1 p-1 lg:w-3/4">
-                        <div class="form-control w-full m-1 p-1 md:max-w-md">
+                        <div class="form-control w-full m-1 p-1 lg:w-3/4">
                             <!-- svelte-ignore a11y-label-has-associated-control -->
                             <label class="label">
                                 <span class="label-text"
@@ -290,7 +293,7 @@
                             <input
                                 type="text"
                                 placeholder="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
-                                class="input input-bordered input-md p-1 m-1 rounded-lg w-full max-w-xs sm:max-w-lg"
+                                class="input input-bordered input-md p-1 m-1 rounded-lg w-full max-w-xs sm:max-w-md"
                                 bind:value={customKey}
                             />
                             <button
