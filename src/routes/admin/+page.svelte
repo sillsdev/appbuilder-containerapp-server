@@ -4,7 +4,15 @@
     import { doc, getDoc } from 'firebase/firestore';
     import { goto } from '$app/navigation';
     import { onMount } from 'svelte';
-    import { allKeys, allUsers, userInitials } from '$lib/stores';
+    import {
+        allKeys,
+        allUsers,
+        userInitials,
+        activePackages,
+        incomingPackages,
+        activatePackage,
+        deactivatePackage
+    } from '$lib/stores';
     import { generateRandomAPIKey, createNewAPIKey, destroyKey } from '$lib/data/APIKeys';
     import {
         HamburgerIcon,
@@ -15,12 +23,6 @@
         RefreshIcon,
         TrashIcon
     } from '$lib/icons';
-    import {
-        activePackages,
-        incomingPackages,
-        activatePackage,
-        deactivatePackage
-    } from '../../lib/stores/packages';
 
     let user = null;
     let role;
