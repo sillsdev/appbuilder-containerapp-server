@@ -7,13 +7,15 @@
     import { userInitials } from '$lib/components/userInitialsStore';
     import { generateRandomAPIKey } from '$lib/components/KeyGenerator';
     import { createNewAPIKey } from '$lib/components/CreateAPIKey';
+    import { destroyKey } from '$lib/components/destroyKey';
     import {
         HamburgerIcon,
         AboutIcon,
         VisibleIcon,
         VisibleOffIcon,
         AddIcon,
-        RefreshIcon
+        RefreshIcon,
+        TrashIcon
     } from '$lib/icons';
     import {
         activePackages,
@@ -275,7 +277,7 @@
                     </div>
                 {:else if currentPage === 'API Keys'}
                     <div class="overflow-x-auto w-full m-1 p-1 lg:w-3/4">
-                        <div class="form-control w-full m-1 p-1 lg:w-3/4">
+                        <div class="form-control w-full m-1 p-1 max-w-xs sm:max-w-md lg:w-3/4">
                             <!-- svelte-ignore a11y-label-has-associated-control -->
                             <label class="label">
                                 <span class="label-text"
@@ -318,6 +320,14 @@
                                             <td>{key.user}</td>
                                             <td>{key.key}</td>
                                             <td>{new Date(key.timestamp)}</td>
+                                            <td>
+                                                <button
+                                                    class="btn btn-ghost btn-circle btn-sm"
+                                                    on:click={() => destroyKey(key.id)}
+                                                >
+                                                    <TrashIcon />
+                                                </button></td
+                                            >
                                         </tr>
                                     {/each}
                                 </tbody>
