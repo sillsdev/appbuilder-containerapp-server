@@ -1,4 +1,4 @@
-import { initKeys, initUsers } from '../../lib/stores/packstore';
+import { initUsers, initKeys } from '$lib/stores';
 
 export async function load() {
     await initUsers();

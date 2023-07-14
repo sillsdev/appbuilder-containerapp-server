@@ -4,7 +4,7 @@
     import { doc, getDoc } from 'firebase/firestore';
     import { goto } from '$app/navigation';
     import { onMount } from 'svelte';
-    import { userInitials } from '$lib/data/userInitialsStore';
+    import { allKeys, allUsers, userInitials } from '$lib/stores';
     import { generateRandomAPIKey, createNewAPIKey, destroyKey } from '$lib/data/APIKeys';
     import {
         HamburgerIcon,
@@ -18,11 +18,9 @@
     import {
         activePackages,
         incomingPackages,
-        allUsers,
-        allKeys,
         activatePackage,
         deactivatePackage
-    } from '../../lib/stores/packstore';
+    } from '../../lib/stores/packages';
 
     let user = null;
     let role;
@@ -43,7 +41,6 @@
                 user = userData;
 
                 const userRef = doc(db, 'users', user.uid);
-                console.log(user.uid);
                 const userSnapshot = await getDoc(userRef);
 
                 if (userSnapshot.exists()) {

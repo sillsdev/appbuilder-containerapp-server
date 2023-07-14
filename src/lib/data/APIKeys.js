@@ -1,6 +1,6 @@
 import { db } from '$lib/fbconfig';
 import { collection, doc, addDoc, deleteDoc } from 'firebase/firestore';
-import { initKeys } from '$lib/stores/packstore';
+import { initKeys } from '$lib/stores';
 
 export function generateRandomAPIKey() {
     let date = new Date().getTime();
