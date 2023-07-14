@@ -297,10 +297,10 @@
                             />
                             <button
                                 class="btn btn-ghost rounded-lg btn-md"
-                                on:click={() =>
-                                    createNewAPIKey(customKey, `${lastName}, ${firstName}`)}
-                                ><AddIcon size="32" /></button
-                            >
+                                on:click={() => {
+                                    createNewAPIKey(customKey, `${lastName}, ${firstName}`);
+                                    customKey = '';
+                                }}><AddIcon size="32" /></button                            >
                         </div>
                         {#if $allKeys.length > 0}
                             <table class="table table-md">
