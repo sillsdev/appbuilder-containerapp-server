@@ -1,13 +1,11 @@
 <script>
     import { signOut } from 'firebase/auth';
     import { auth, db } from '$lib/fbconfig';
-    import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
+    import { doc, getDoc } from 'firebase/firestore';
     import { goto } from '$app/navigation';
     import { onMount } from 'svelte';
-    import { userInitials } from '$lib/components/userInitialsStore';
-    import { generateRandomAPIKey } from '$lib/components/KeyGenerator';
-    import { createNewAPIKey } from '$lib/components/CreateAPIKey';
-    import { destroyKey } from '$lib/components/destroyKey';
+    import { userInitials } from '$lib/data/userInitialsStore';
+    import { generateRandomAPIKey, createNewAPIKey, destroyKey } from '$lib/data/APIKeys';
     import {
         HamburgerIcon,
         AboutIcon,
@@ -24,7 +22,7 @@
         allKeys,
         activatePackage,
         deactivatePackage
-    } from '../../stores/packstore';
+    } from '../../lib/stores/packstore';
 
     let user = null;
     let role;
