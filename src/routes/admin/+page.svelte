@@ -300,7 +300,8 @@
                                 on:click={() => {
                                     createNewAPIKey(customKey, `${lastName}, ${firstName}`);
                                     customKey = '';
-                                }}><AddIcon size="32" /></button                            >
+                                }}><AddIcon size="32" /></button                            
+                            >
                         </div>
                         {#if $allKeys.length > 0}
                             <table class="table table-md">
