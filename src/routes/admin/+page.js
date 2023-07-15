@@ -1,3 +1,6 @@
+import { initUsers, initKeys } from '$lib/stores';
+
 export async function load() {
-    return {};
+    await initUsers();
+    await initKeys();
 }

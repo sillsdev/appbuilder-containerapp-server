@@ -1,12 +1,7 @@
 import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { writable, derived } from 'svelte/store';
-import { db } from '../lib/fbconfig';
+import { db } from '../fbconfig';
 
-/**
- * @type {any}
- */
-
-export const packs = [];
 export const allPackages = writable([]);
 
 export async function initPackages() {

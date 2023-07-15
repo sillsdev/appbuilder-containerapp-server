@@ -1,9 +1,8 @@
 <script>
     import SignIn from '$lib/components/login/loginForm.svelte';
     import { signInWithEmailAndPassword } from 'firebase/auth';
-    import { auth, userDoc } from '$lib/fbconfig';
+    import { auth } from '$lib/fbconfig';
     import { goto } from '$app/navigation';
-    import { setDoc } from 'firebase/firestore';
     let error;
     async function signIn(event) {
         try {

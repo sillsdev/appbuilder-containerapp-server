@@ -1,9 +1,9 @@
 <script>
     import { _ } from 'svelte-i18n';
     import { AboutIcon } from '$lib/icons';
-    import { activePackages } from '../stores/packstore';
-    import PackageCard from '../components/PackageCard.svelte';
-    import LanguageSelector from '../components/LanguageSelector.svelte';
+    import { activePackages } from '$lib/stores';
+    import PackageCard from '$lib/components/PackageCard.svelte';
+    import LanguageSelector from '$lib/components/LanguageSelector.svelte';
 
     let searchName = '';
     let searchCountry = '';
