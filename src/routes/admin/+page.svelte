@@ -32,6 +32,10 @@
     let message = '';
     let isAdmin = false;
 
+    let pending;
+
+    $: pending = $incomingPackages;
+
     let customKey = '';
 
     onMount(() => {
@@ -191,7 +195,7 @@
                     <!-- INCOMING PACKAGES -->
                 {:else if currentPage === 'Incoming Packages'}
                     <div class="overflow-x-auto w-full">
-                        {#if $incomingPackages.length > 0}
+                        {#if pending.length > 0}
                             <table class="table table-md lg:w-3/4">
                                 <thead>
                                     <tr>
@@ -202,7 +206,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {#each $incomingPackages as project}
+                                    {#each pending as project}
                                         <tr>
                                             <td>
                                                 <img
