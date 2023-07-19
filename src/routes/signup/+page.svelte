@@ -1,10 +1,12 @@
 <script>
-    import SignUp from '$lib/components/login/signupform.svelte';
     import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+    import SignUp from '$lib/components/login/signupform.svelte';
+    import { collection, addDoc } from 'firebase/firestore';
     import { goto } from '$app/navigation';
-    import { auth, userDoc } from '$lib/fbconfig';
-    import { setDoc } from 'firebase/firestore';
+    import { auth } from '$lib/fbconfig';
+    
     let errors;
+    
     async function signUp(event) {
         try {
             let user = await createUserWithEmailAndPassword(
@@ -22,7 +24,10 @@
             if (event.detail.firstname) {
                 userData.firstname = event.detail.firstname;
             }
-            await setDoc(userDoc(auth.currentUser.uid), userData);
+            await addDoc( collection('users'), {
+                userData
+            });
+
             await goto('/admin');
         } catch (e) {
             console.log('error from creating user', e);

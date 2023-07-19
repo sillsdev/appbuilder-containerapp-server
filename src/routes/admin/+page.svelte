@@ -53,8 +53,6 @@
                     userInitials.set(`${firstName.charAt(0)}${lastName.charAt(0)}`);
 
                     if (role !== 'admin') {
-                        // Redirect the user to another page or show an error message
-                        message = 'CONTACT ADMINSTRATOR FOR ROLE';
                         isAdmin = false;
                     } else {
                         isAdmin = true;
@@ -129,7 +127,7 @@
             <p>{message}</p>
         </div>
     {/if}
-    {#if isAdmin}
+    {#if user}
         <div class="drawer lg:drawer-open">
             <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
             <div class="drawer-content flex flex-row items-start justify-start">
@@ -147,7 +145,9 @@
                                         <th>Icon</th>
                                         <th>Package</th>
                                         <th>Region</th>
+                                        {#if isAdmin}
                                         <th>Actions</th>
+                                        {/if}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -198,7 +198,9 @@
                                         <th>Icon</th>
                                         <th>Package</th>
                                         <th>Region</th>
+                                        {#if isAdmin}
                                         <th>Actions</th>
+                                        {/if}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -213,6 +215,7 @@
                                             </td>
                                             <td>{project.app_lang.name}</td>
                                             <td>{project.app_lang.regionname}</td>
+                                            {#if isAdmin}
                                             <td>
                                                 <a
                                                     href="/admin/{project.id}"
@@ -227,6 +230,7 @@
                                                     <VisibleIcon />
                                                 </button>
                                             </td>
+                                            {/if}
                                         </tr>
                                     {/each}
                                 </tbody>
@@ -353,8 +357,10 @@
                             Incoming Packages
                         </button>
                     </li>
+                    {#if isAdmin}
                     <li><button on:click={() => navigate('Users')}> Users </button></li>
                     <li><button on:click={() => navigate('API Keys')}> API Keys </button></li>
+                    {/if}
                 </ul>
             </div>
         </div>
