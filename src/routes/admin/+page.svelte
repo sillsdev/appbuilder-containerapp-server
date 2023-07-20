@@ -7,7 +7,7 @@
     import {
         allKeys,
         allUsers,
-        userInitials,
+        currUser,
         activePackages,
         incomingPackages,
         activatePackage,
@@ -15,19 +15,18 @@
     } from '$lib/stores';
     import { generateRandomAPIKey, createNewAPIKey, destroyKey } from '$lib/data/APIKeys';
     import {
-        HamburgerIcon,
         AboutIcon,
-        VisibleIcon,
-        VisibleOffIcon,
         AddIcon,
+        HamburgerIcon,
+        LogoutIcon,
         RefreshIcon,
-        TrashIcon
+        SettingsIcon,
+        TrashIcon,
+        VisibleIcon,
+        VisibleOffIcon
     } from '$lib/icons';
 
     let user = null;
-    let role;
-    let firstName;
-    let lastName;
 
     let message = '';
     let isAdmin = false;
@@ -35,58 +34,72 @@
     let customKey = '';
 
     onMount(() => {
-        auth.onAuthStateChanged(async (userData) => {
-            if (!userData) {
-                // Redirect the user to the login page
-                goto('/login');
-            } else {
-                user = userData;
+            auth.onAuthStateChanged( async (userData) => {
+                if (!userData) {
+                    // If unauthenticated, redirect the user to the login page
+                    goto('/login');
+                } else {
+                    // Store auth user data in user object and call for additional user data 
+                    user = userData;
+                    const userRef = doc(db, 'users', userData.uid);
+                    const userSnapshot = await getDoc(userRef);
 
-                const userRef = doc(db, 'users', user.uid);
-                const userSnapshot = await getDoc(userRef);
+                    // If additional info is found, update current user store
+                    if (userSnapshot.exists()) {
+                        const userData = userSnapshot.data();
+                        
+                        currUser.set({
+                            ...userData,
+                            userInitials: `${userData.firstname.toUpperCase().charAt(0)}${userData.lastname.toUpperCase().charAt(0)}`
+                        });
 
-                if (userSnapshot.exists()) {
-                    const userData = userSnapshot.data();
-                    role = userData.role || 'user';
-                    firstName = userData.firstname || '';
-                    lastName = userData.lastname || '';
-                    userInitials.set(`${firstName.charAt(0)}${lastName.charAt(0)}`);
+                        // If role is unknown, give base priviledges
+                        if(!userData.role) {
+                            currUser.set({
+                                ...$currUser,
+                                role: 'user'
+                            })
+                        }
 
-                    if (role !== 'admin') {
-                        isAdmin = false;
+                        // check if user has administrative priviledges
+                        if ($currUser.role !== 'admin') {
+                            isAdmin = false;
+                        } else {
+                            isAdmin = true;
+                        }
                     } else {
-                        isAdmin = true;
+                        message = "User information could not be found.";
                     }
                 }
             }
-        });
-    });
-
-    async function logOut() {
-        await signOut(auth);
-        await goto('/login');
-    }
-
+    )});
+    
+    // default page
+    let currentPage = 'Active Packages';
+    
     function home() {
         goto('/');
     }
-
-    // default page
-    let currentPage = 'Active Packages';
-
+    
     const setCurrentPage = (page) => {
         currentPage = page;
     };
-
+    
     function navigate(page) {
         setCurrentPage(page);
-        const drawerToggle = document.getElementById('my-drawer-2');
+        const drawerToggle = document.getElementById('primary-content-drawer');
         drawerToggle.checked = false;
     }
 
     async function updateUserRole(userId, newRole) {
         const userRef = doc(db, 'users', userId);
         await setDoc(userRef, { role: newRole }, { merge: true });
+    }
+
+    async function logOut() {
+        console.log( "attempting to sign out")
+        await signOut(auth);
+        await goto('/login');
     }
 </script>
 
@@ -95,10 +108,10 @@
 </svelte:head>
 
 {#if user}
-    <div class="navbar bg-base-100">
+    <div class="navbar bg-base-300">
         <div class="navbar-start">
             <label
-                for="my-drawer-2"
+                for="primary-content-drawer"
                 class="btn btn-ghost btn-circle btn-sm drawer-button lg:hidden"
             >
                 <HamburgerIcon />
@@ -108,28 +121,33 @@
             </li>
         </div>
         <div class="navbar-end">
-            <div class="dropdown dropdown-end">
-                <button class="btn btn-ghost rounded-lg normal-case text-xl">
-                    {$userInitials}
-                </button>
-                <ul
-                    class="menu menu-compact dropdown-content mt-1 p-2 shadow bg-base-200 rounded-box"
-                >
-                    <li><a href="/#">Settings</a></li>
-                    <li><button on:click={logOut}>Sign Out</button></li>
+            <details class="dropdown dropdown-end">
+                <summary tabIndex="0" class="btn btn-ghost btn-md rounded-lg normal-case text-xl">
+                    {$currUser.userInitials}
+                </summary>
+                <ul class="menu dropdown-content z-[1] bg-base-200 mt-2 p-0 rounded-b-xl justify-center align-middle">
+                    <li><a data-tip="Settings" class="btn btn-md btn-ghost tooltip tooltip-left" href='/admin/settings'><SettingsIcon /></a></li>
+                    <li><a data-tip="Log out" class="btn btn-md btn-ghost tooltip tooltip-left rounded-b-xl" on:click={() => logOut()}><LogoutIcon color="red"/></a></li>
                 </ul>
-            </div>
+            </details>
         </div>
     </div>
 
+    <!-- <li>
+                        <a href='/settings' class="tooltip tooltip-left m-2" data-tip="Settings"> <SettingsIcon /> </a>
+                    </li>
+                    <li>
+                        <a href='/#' class="tooltip tooltip-left m-2" data-tip="Logout"> <LogoutIcon color="red"/> </a>
+                    </li> -->
     {#if message}
         <div class="message-container">
             <p>{message}</p>
         </div>
     {/if}
+
     {#if user}
         <div class="drawer lg:drawer-open">
-            <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
+            <input id="primary-content-drawer" type="checkbox" class="drawer-toggle" />
             <div class="drawer-content flex flex-row items-start justify-start">
                 <!-- DASHBOARD -->
                 {#if currentPage === 'Dashboard'}
@@ -145,9 +163,7 @@
                                         <th>Icon</th>
                                         <th>Package</th>
                                         <th>Region</th>
-                                        {#if isAdmin}
                                         <th>Actions</th>
-                                        {/if}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -162,14 +178,14 @@
                                             </td>
                                             <td>{project.app_lang.name}</td>
                                             <td>{project.app_lang.regionname}</td>
-                                            {#if isAdmin}
-                                                <td>
-                                                    <a
-                                                        href="/admin/{project.id}"
-                                                        class="btn btn-ghost btn-circle btn-sm"
-                                                    >
-                                                        <AboutIcon />
-                                                    </a>
+                                            <td>
+                                                <a
+                                                href="/admin/{project.id}"
+                                                class="btn btn-ghost btn-circle btn-sm"
+                                                >
+                                                <AboutIcon />
+                                                </a>
+                                                {#if isAdmin}
                                                     <button
                                                         class="btn btn-ghost btn-circle btn-sm"
                                                         on:click={() =>
@@ -177,8 +193,8 @@
                                                     >
                                                         <VisibleOffIcon />
                                                     </button>
-                                                </td>
-                                            {/if}
+                                                {/if}
+                                            </td>
                                         </tr>
                                     {/each}
                                 </tbody>
@@ -197,10 +213,8 @@
                                     <tr>
                                         <th>Icon</th>
                                         <th>Package</th>
-                                        <th>Region</th>
-                                        {#if isAdmin}
-                                        <th>Actions</th>
-                                        {/if}
+                                        <th>Region</th>                                        
+                                        <th>Actions</th>                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -215,22 +229,22 @@
                                             </td>
                                             <td>{project.app_lang.name}</td>
                                             <td>{project.app_lang.regionname}</td>
-                                            {#if isAdmin}
                                             <td>
                                                 <a
-                                                    href="/admin/{project.id}"
-                                                    class="btn btn-ghost btn-circle btn-sm"
+                                                href="/admin/{project.id}"
+                                                class="btn btn-ghost btn-circle btn-sm"
                                                 >
-                                                    <AboutIcon />
+                                                <AboutIcon />
                                                 </a>
+                                                {#if isAdmin}
                                                 <button
                                                     class="btn btn-ghost btn-circle btn-sm"
                                                     on:click={() => activatePackage(project.id)}
                                                 >
                                                     <VisibleIcon />
                                                 </button>
+                                                {/if}
                                             </td>
-                                            {/if}
                                         </tr>
                                     {/each}
                                 </tbody>
@@ -295,14 +309,14 @@
                         <div class="flex align-items-center">
                             <input
                                 type="text"
-                                placeholder="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
+                                placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                                 class="input input-bordered input-md p-1 m-1 rounded-lg w-full max-w-xs sm:max-w-md"
                                 bind:value={customKey}
                             />
                             <button
                                 class="btn btn-ghost rounded-lg btn-md"
                                 on:click={() => {
-                                    createNewAPIKey(customKey, `${lastName}, ${firstName}`);
+                                    createNewAPIKey(customKey, `${$currUser.firstName.toNormalCase()}, ${$currUser.firstName.toNormalCase()}`);
                                     customKey = '';
                                 }}><AddIcon size="32" /></button
                             >
@@ -342,7 +356,7 @@
             </div>
 
             <div class="drawer-side">
-                <label for="my-drawer-2" class="drawer-overlay" />
+                <label for="primary-content-drawer" class="drawer-overlay" />
                 <ul
                     class="menu mt-14 lg:mt-0 rounded-r-lg p-4 lg:w-64 bg-base-100 text-base-content"
                 >
