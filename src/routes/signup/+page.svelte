@@ -1,31 +1,29 @@
 <script>
     import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
     import SignUp from '$lib/components/login/signupform.svelte';
-    import { collection, addDoc } from 'firebase/firestore';
+    import { doc, setDoc } from 'firebase/firestore';
     import { goto } from '$app/navigation';
-    import { auth } from '$lib/fbconfig';
+    import { db, auth } from '$lib/fbconfig';
     
     let errors;
     
     async function signUp(event) {
         try {
-            let user = await createUserWithEmailAndPassword(
+            const user = await createUserWithEmailAndPassword(
                 auth,
                 event.detail.email,
                 event.detail.password
             );
-            await updateProfile(user.user, {
+
+            await updateProfile( user.user, {
                 displayName: `${event.detail.firstname} ${event.detail.lastname}`
             });
-            const userData = {
+            
+            await setDoc( 
+                doc(db, 'users', user.user.uid), {
                 email: user.user.email,
+                firstname: event.detail.firstname,
                 lastname: event.detail.lastname
-            };
-            if (event.detail.firstname) {
-                userData.firstname = event.detail.firstname;
-            }
-            await addDoc( collection('users'), {
-                userData
             });
 
             await goto('/admin');
