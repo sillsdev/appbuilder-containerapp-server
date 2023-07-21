@@ -4,9 +4,9 @@
     import { doc, setDoc } from 'firebase/firestore';
     import { goto } from '$app/navigation';
     import { db, auth } from '$lib/fbconfig';
-    
+
     let errors;
-    
+
     async function signUp(event) {
         try {
             const user = await createUserWithEmailAndPassword(
@@ -15,12 +15,11 @@
                 event.detail.password
             );
 
-            await updateProfile( user.user, {
+            await updateProfile(user.user, {
                 displayName: `${event.detail.firstname} ${event.detail.lastname}`
             });
-            
-            await setDoc( 
-                doc(db, 'users', user.user.uid), {
+
+            await setDoc(doc(db, 'users', user.user.uid), {
                 email: user.user.email,
                 firstname: event.detail.firstname,
                 lastname: event.detail.lastname

@@ -34,57 +34,59 @@
     let customKey = '';
 
     onMount(() => {
-            auth.onAuthStateChanged( async (userData) => {
-                if (!userData) {
-                    // If unauthenticated, redirect the user to the login page
-                    goto('/login');
-                } else {
-                    // Store auth user data in user object and call for additional user data 
-                    user = userData;
-                    const userRef = doc(db, 'users', userData.uid);
-                    const userSnapshot = await getDoc(userRef);
+        auth.onAuthStateChanged(async (userData) => {
+            if (!userData) {
+                // If unauthenticated, redirect the user to the login page
+                goto('/login');
+            } else {
+                // Store auth user data in user object and call for additional user data
+                user = userData;
+                const userRef = doc(db, 'users', userData.uid);
+                const userSnapshot = await getDoc(userRef);
 
-                    // If additional info is found, update current user store
-                    if (userSnapshot.exists()) {
-                        const userData = userSnapshot.data();
-                        
+                // If additional info is found, update current user store
+                if (userSnapshot.exists()) {
+                    const userData = userSnapshot.data();
+
+                    currUser.set({
+                        ...userData,
+                        userInitials: `${userData.firstname
+                            .toUpperCase()
+                            .charAt(0)}${userData.lastname.toUpperCase().charAt(0)}`
+                    });
+
+                    // If role is unknown, give base priviledges
+                    if (!userData.role) {
                         currUser.set({
-                            ...userData,
-                            userInitials: `${userData.firstname.toUpperCase().charAt(0)}${userData.lastname.toUpperCase().charAt(0)}`
+                            ...$currUser,
+                            role: 'user'
                         });
-
-                        // If role is unknown, give base priviledges
-                        if(!userData.role) {
-                            currUser.set({
-                                ...$currUser,
-                                role: 'user'
-                            })
-                        }
-
-                        // check if user has administrative priviledges
-                        if ($currUser.role !== 'admin') {
-                            isAdmin = false;
-                        } else {
-                            isAdmin = true;
-                        }
-                    } else {
-                        message = "User information could not be found.";
                     }
+
+                    // check if user has administrative priviledges
+                    if ($currUser.role !== 'admin') {
+                        isAdmin = false;
+                    } else {
+                        isAdmin = true;
+                    }
+                } else {
+                    message = 'User information could not be found.';
                 }
             }
-    )});
-    
+        });
+    });
+
     // default page
     let currentPage = 'Active Packages';
-    
+
     function home() {
         goto('/');
     }
-    
+
     const setCurrentPage = (page) => {
         currentPage = page;
     };
-    
+
     function navigate(page) {
         setCurrentPage(page);
         const drawerToggle = document.getElementById('primary-content-drawer');
@@ -97,7 +99,7 @@
     }
 
     async function logOut() {
-        console.log( "attempting to sign out")
+        console.log('attempting to sign out');
         await signOut(auth);
         await goto('/login');
     }
@@ -125,20 +127,28 @@
                 <summary tabIndex="0" class="btn btn-ghost btn-md rounded-lg normal-case text-xl">
                     {$currUser.userInitials}
                 </summary>
-                <ul class="menu dropdown-content z-[1] bg-base-200 mt-2 p-0 rounded-b-xl justify-center align-middle">
-                    <li><a data-tip="Settings" class="btn btn-md btn-ghost tooltip tooltip-left" href='/admin/settings'><SettingsIcon /></a></li>
-                    <li><a data-tip="Log out" class="btn btn-md btn-ghost tooltip tooltip-left rounded-b-xl" on:click={() => logOut()}><LogoutIcon color="red"/></a></li>
+                <ul
+                    class="menu dropdown-content z-[1] bg-base-200 mt-2 p-0 rounded-b-xl justify-center align-middle"
+                >
+                    <li>
+                        <a
+                            data-tip="Settings"
+                            class="btn btn-md btn-ghost tooltip tooltip-left"
+                            href="/admin/settings"><SettingsIcon /></a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            data-tip="Log out"
+                            class="btn btn-md btn-ghost tooltip tooltip-left rounded-b-xl"
+                            on:click={() => logOut()}><LogoutIcon color="red" /></a
+                        >
+                    </li>
                 </ul>
             </details>
         </div>
     </div>
 
-    <!-- <li>
-                        <a href='/settings' class="tooltip tooltip-left m-2" data-tip="Settings"> <SettingsIcon /> </a>
-                    </li>
-                    <li>
-                        <a href='/#' class="tooltip tooltip-left m-2" data-tip="Logout"> <LogoutIcon color="red"/> </a>
-                    </li> -->
     {#if message}
         <div class="message-container">
             <p>{message}</p>
@@ -180,10 +190,10 @@
                                             <td>{project.app_lang.regionname}</td>
                                             <td>
                                                 <a
-                                                href="/admin/{project.id}"
-                                                class="btn btn-ghost btn-circle btn-sm"
+                                                    href="/admin/{project.id}"
+                                                    class="btn btn-ghost btn-circle btn-sm"
                                                 >
-                                                <AboutIcon />
+                                                    <AboutIcon />
                                                 </a>
                                                 {#if isAdmin}
                                                     <button
@@ -213,8 +223,8 @@
                                     <tr>
                                         <th>Icon</th>
                                         <th>Package</th>
-                                        <th>Region</th>                                        
-                                        <th>Actions</th>                                        
+                                        <th>Region</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -231,18 +241,18 @@
                                             <td>{project.app_lang.regionname}</td>
                                             <td>
                                                 <a
-                                                href="/admin/{project.id}"
-                                                class="btn btn-ghost btn-circle btn-sm"
+                                                    href="/admin/{project.id}"
+                                                    class="btn btn-ghost btn-circle btn-sm"
                                                 >
-                                                <AboutIcon />
+                                                    <AboutIcon />
                                                 </a>
                                                 {#if isAdmin}
-                                                <button
-                                                    class="btn btn-ghost btn-circle btn-sm"
-                                                    on:click={() => activatePackage(project.id)}
-                                                >
-                                                    <VisibleIcon />
-                                                </button>
+                                                    <button
+                                                        class="btn btn-ghost btn-circle btn-sm"
+                                                        on:click={() => activatePackage(project.id)}
+                                                    >
+                                                        <VisibleIcon />
+                                                    </button>
                                                 {/if}
                                             </td>
                                         </tr>
@@ -316,7 +326,10 @@
                             <button
                                 class="btn btn-ghost rounded-lg btn-md"
                                 on:click={() => {
-                                    createNewAPIKey(customKey, `${$currUser.firstName.toNormalCase()}, ${$currUser.firstName.toNormalCase()}`);
+                                    createNewAPIKey(
+                                        customKey,
+                                        `${$currUser.firstName.toNormalCase()}, ${$currUser.firstName.toNormalCase()}`
+                                    );
                                     customKey = '';
                                 }}><AddIcon size="32" /></button
                             >
@@ -372,8 +385,8 @@
                         </button>
                     </li>
                     {#if isAdmin}
-                    <li><button on:click={() => navigate('Users')}> Users </button></li>
-                    <li><button on:click={() => navigate('API Keys')}> API Keys </button></li>
+                        <li><button on:click={() => navigate('Users')}> Users </button></li>
+                        <li><button on:click={() => navigate('API Keys')}> API Keys </button></li>
                     {/if}
                 </ul>
             </div>

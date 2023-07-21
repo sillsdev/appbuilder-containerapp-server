@@ -6,11 +6,11 @@ export const allUsers = writable([]);
 
 export async function initUsers() {
     const colq = collection(db, 'users');
-    
+
     const snapshot = await getDocs(colq);
-    
+
     const loadedUsers = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    
+
     allUsers.set(loadedUsers);
 }
 
