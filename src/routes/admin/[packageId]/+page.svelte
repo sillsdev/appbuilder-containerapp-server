@@ -30,7 +30,7 @@
         </a>
     </div>
 
-    <div class="flex justify-center items-center h-12">
+    <div class="flex justify-center items-center h-12 p-1 m-1">
         <h1 class="text-center text-lg font-bold">Package Description</h1>
     </div>
 </div>

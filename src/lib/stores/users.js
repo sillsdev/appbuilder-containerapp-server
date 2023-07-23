@@ -15,4 +15,3 @@ export async function initUsers() {
 }
 
 export const currUser = writable([]);
-export const userInitials = writable([]);

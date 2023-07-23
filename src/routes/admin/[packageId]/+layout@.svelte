@@ -1,4 +1,4 @@
 <script>
 </script>
 
-Settings Page
+<slot />
