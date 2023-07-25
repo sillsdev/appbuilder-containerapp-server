@@ -3,7 +3,9 @@
     import { signInWithEmailAndPassword } from 'firebase/auth';
     import { auth } from '$lib/fbconfig';
     import { goto } from '$app/navigation';
+
     let error;
+
     async function signIn(event) {
         try {
             let user = await signInWithEmailAndPassword(
@@ -27,43 +29,23 @@
 <svelte:head>
     <title>Login</title>
 </svelte:head>
-<div>
-    <div class="header">
-        <h4>Login</h4>
+
+<div class="flex flex-col w-full justify-center">
+    <div class="flex text-4xl font-bold justify-center m-2 p-2">
+        <h4>Welcome Back!</h4>
     </div>
-    <div class="signin-form">
+
+    <div class="flex w-full justify-center">
         {#if error}
-            <div class="notification-block">
+            <div>
                 <p>{error}</p>
             </div>
         {/if}
+
         <SignIn on:login={signIn} />
-        <div>Don't have an account? <a class="link link-hover" href="/signup">Sign Up</a></div>
+    </div>
+
+    <div class="flex justify-center items-center gap-2 mt-4">
+        Don't have an account? <a class="link link-hover" href="/signup"> Sign Up </a>
     </div>
 </div>
-
-<style>
-    .header {
-        width: 100vw;
-        padding: 2em 0;
-        min-height: 20vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .header h4 {
-        font-weight: 600;
-        font-size: 3rem;
-    }
-    .signin-form {
-        min-height: 80vh;
-        display: grid;
-        place-items: center;
-    }
-    .notification-block {
-        min-width: 20vw;
-        padding: 1.2em 0.75em;
-        border-radius: 5px;
-        background-color: #fe634e;
-    }
-</style>

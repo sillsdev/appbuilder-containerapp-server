@@ -1,7 +1,7 @@
 <script>
     import { _ } from 'svelte-i18n';
     import { AboutIcon } from '$lib/icons';
-    import { activePackages } from '$lib/stores';
+    import { activePackages, interfacePref } from '$lib/stores';
     import PackageCard from '$lib/components/PackageCard.svelte';
     import LanguageSelector from '$lib/components/LanguageSelector.svelte';
 
@@ -43,7 +43,7 @@
 <section id="header">
     <!-- ABOUT link to be set by admin -->
     <div class="btn btn-ghost m-2 p-2 rounded-xl items-middle justify-center flex-nowrap">
-        <a href="/#">
+        <a href={$interfacePref.homeLink}>
             <AboutIcon color="white" />
         </a>
     </div>
@@ -57,7 +57,7 @@
     </div>
 </section>
 
-<section id="main">
+<section id="main" style="background-image: url({$interfacePref.homeImage});">
     <div class="search-box">
         {#if !searchCountry && !searchCode}
             <div class="search">
@@ -113,6 +113,9 @@
         display: flex;
         align-items: center;
         flex-direction: column;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
     }
 
     .list {

@@ -42,37 +42,39 @@
                 // If additional info is found, update current user store
                 if (userSnapshot.exists()) {
                     const userData = userSnapshot.data();
-
-                    currUser.set({
-                        ...userData,
-                        uid: user.uid,
-                        userInitials: `${userData.firstname
-                            .toUpperCase()
-                            .charAt(0)}${userData.lastname.toUpperCase().charAt(0)}`
-                    });
-
-                    // If role is unknown, give base priviledges
-                    if (!userData.role) {
+                    if (userData.role === 'user' || userData.role === 'admin') {
                         currUser.set({
-                            ...$currUser,
-                            role: 'user'
+                            ...userData,
+                            uid: user.uid,
+                            userInitials: `${userData.firstname
+                                .toUpperCase()
+                                .charAt(0)}${userData.lastname.toUpperCase().charAt(0)}`
                         });
-                    }
 
-                    // check if user has administrative priviledges
-                    if ($currUser.role !== 'admin') {
-                        currUser.set({
-                            ...$currUser,
-                            isAdmin: false
-                        });
+                        // If role is unknown, give base priviledges
+                        if (!userData.role) {
+                            currUser.set({
+                                ...$currUser,
+                                role: 'user'
+                            });
+                        }
+
+                        // check if user has administrative priviledges
+                        if ($currUser.role !== 'admin') {
+                            currUser.set({
+                                ...$currUser,
+                                isAdmin: false
+                            });
+                        } else {
+                            currUser.set({
+                                ...$currUser,
+                                isAdmin: true
+                            });
+                        }
                     } else {
-                        currUser.set({
-                            ...$currUser,
-                            isAdmin: true
-                        });
+                        message =
+                            "Sorry, but you don't have permissions yet! Please contact an administrator for access.";
                     }
-
-                    console.log($currUser);
                 } else {
                     message = 'User information could not be found.';
                 }
@@ -91,7 +93,7 @@
     </div>
 {/if}
 
-{#if user}
+{#if user && !message}
     <!-- DASHBOARD -->
     {#if $currPage === 'Dashboard'}
         <h1>Welcome to the Home Page</h1>
@@ -214,9 +216,9 @@
                                 <td>
                                     <select
                                         value={user.role}
-                                        on:change={(e) => {
-                                            updateUserRole(user.id, e.target.value);
-                                            user.role = e.target.value;
+                                        on:change={(option) => {
+                                            updateUserRole(user.id, option.target.value);
+                                            user.role = option.target.value;
                                         }}
                                     >
                                         <option value="user">User</option>
@@ -294,6 +296,40 @@
             {:else}
                 <p>No users found.</p>
             {/if}
+        </div>
+    {:else if $currPage === 'Interface Preferences'}
+        <div class="w-full flex justify-center m-4">
+            <div class="card flex flex-col w-full bg-base-200 p-4 m-2 rounded-xl">
+                <div class="card-title">
+                    <h1>Application Interface Preferences</h1>
+                </div>
+
+                <div class="card-body">
+                    <div class="overflow-x-auto">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th>Home Background</th>
+                                    <td>'/static/earth.jpg'</td>
+                                </tr>
+                                <tr>
+                                    <th>Home About Link</th>
+                                    <td>www.sil.org</td>
+                                </tr>
+                                <tr>
+                                    <th>Color Theme</th>
+                                    <td>
+                                        <select class="select select-sm rounded-lg w-full lg:w-3/4">
+                                            <option> business </option>
+                                            <option> cupcake </option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     {/if}
 {/if}

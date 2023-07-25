@@ -58,7 +58,9 @@
 
     <div class="drawer-side">
         <label for="primary-content-drawer" class="drawer-overlay" />
-        <ul class="menu mt-14 lg:mt-0 rounded-r-lg p-4 lg:w-64 bg-base-100 text-base-content">
+        <ul
+            class="menu mt-16 lg:mt-0 rounded-r-xl p-4 w-3/4 lg:w-64 bg-base-100 text-base-content h-full"
+        >
             <li>
                 <button on:click={() => updatePage('Dashboard')}>
                     {#if $currPage === 'Dashboard'}
@@ -98,6 +100,14 @@
                             <span class="loading loading-ring loading-xs text-secondary" />
                         {/if}
                         API Keys
+                    </button>
+                </li>
+                <li>
+                    <button on:click={() => updatePage('Interface Preferences')}>
+                        {#if $currPage === 'Interface Preferences'}
+                            <span class="loading loading-ring loading-xs text-secondary" />
+                        {/if}
+                        Interface Preferences
                     </button>
                 </li>
             {/if}
