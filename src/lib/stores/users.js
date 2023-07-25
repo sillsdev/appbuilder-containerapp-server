@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store';
-import { db } from '$lib/fbconfig.js';
+import { db, auth } from '$lib/fbconfig.js';
+import { getAuth } from 'firebase/auth';
 import { collection, getDocs } from 'firebase/firestore';
 
 export const allUsers = writable([]);
@@ -15,3 +16,17 @@ export async function initUsers() {
 }
 
 export const currUser = writable([]);
+
+export async function initCurrUser() {
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (user !== null) {
+        user.providerData.forEach((profile) => {
+            currUser.set({
+                ...currUser,
+                profile
+            });
+        });
+    }
+}
