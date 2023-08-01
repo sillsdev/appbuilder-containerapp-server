@@ -24,7 +24,7 @@
             class="btn btn-ghost m-2 p-2 rounded-xl items-middle justify-center flex-nowrap"
             tabindex="-1"
         >
-            <LanguageIcon color="white" />
+            <LanguageIcon color="hsl(var(--bc))" />
         </label>
         <div class="dropdown-content bg-base-200 w-48 rounded-md overflow-y-auto">
             <ul class="menu menu-compact gap-1 p-2" tabindex="-1">

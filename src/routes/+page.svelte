@@ -44,7 +44,7 @@
     <!-- ABOUT link to be set by admin -->
     <div class="btn btn-ghost m-2 p-2 rounded-xl items-middle justify-center flex-nowrap">
         <a href={$interfacePref.homeLink}>
-            <AboutIcon color="white" />
+            <AboutIcon color="hsl(var(--bc))" />
         </a>
     </div>
 
@@ -101,10 +101,6 @@
     #header {
         display: flex;
         justify-content: space-between;
-    }
-
-    a {
-        color: white;
     }
 
     #main {

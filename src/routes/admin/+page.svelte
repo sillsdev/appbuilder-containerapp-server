@@ -11,6 +11,7 @@
         currPage,
         activePackages,
         incomingPackages,
+        interfacePref,
         activatePackage,
         deactivatePackage
     } from '$lib/stores';
@@ -23,10 +24,42 @@
         VisibleIcon,
         VisibleOffIcon
     } from '$lib/icons';
+    import { themes } from '$lib/data/Themes';
+    import { enhance } from '$app/forms';
+    import ThemePreview from '$lib/components/ThemePreview.svelte';
 
     let user = null;
     let message = '';
     let customKey = '';
+
+    let newHomeLink;
+    let newImageLink;
+    let newTheme;
+    let changes = false;
+
+    $: {
+        newHomeLink = newHomeLink ? newHomeLink : $interfacePref.homeLink;
+        newImageLink = newImageLink ? newImageLink : $interfacePref.homeImage;
+        if (
+            newHomeLink !== $interfacePref.homeLink ||
+            newImageLink !== $interfacePref.homeImage ||
+            newTheme !== undefined
+        ) {
+            changes = true;
+        }
+    }
+
+    function setTheme(theme) {
+        newTheme = theme;
+    }
+
+    const submitUpdateTheme = ({ action }) => {
+        const theme = action.searchParams.get('theme');
+
+        if (theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+        }
+    };
 
     onMount(() => {
         auth.onAuthStateChanged(async (userData) => {
@@ -50,14 +83,6 @@
                                 .toUpperCase()
                                 .charAt(0)}${userData.lastname.toUpperCase().charAt(0)}`
                         });
-
-                        // If role is unknown, give base priviledges
-                        if (!userData.role) {
-                            currUser.set({
-                                ...$currUser,
-                                role: 'user'
-                            });
-                        }
 
                         // check if user has administrative priviledges
                         if ($currUser.role !== 'admin') {
@@ -96,7 +121,7 @@
 {#if user && !message}
     <!-- DASHBOARD -->
     {#if $currPage === 'Dashboard'}
-        <h1>Welcome to the Home Page</h1>
+        <h1 class="text-base-content">Welcome to the Home Page</h1>
 
         <!-- ACTIVE PACKAGES -->
     {:else if $currPage === 'Active Packages'}
@@ -128,14 +153,14 @@
                                         href="/admin/{project.id}"
                                         class="btn btn-ghost btn-circle btn-sm"
                                     >
-                                        <AboutIcon />
+                                        <AboutIcon color="hsl(var(--bc))" />
                                     </a>
                                     {#if $currUser.isAdmin}
                                         <button
                                             class="btn btn-ghost btn-circle btn-sm"
                                             on:click={() => deactivatePackage(project.id)}
                                         >
-                                            <VisibleOffIcon />
+                                            <VisibleOffIcon color="hsl(var(--bc))" />
                                         </button>
                                     {/if}
                                 </td>
@@ -178,14 +203,14 @@
                                         href="/admin/{project.id}"
                                         class="btn btn-ghost btn-circle btn-sm"
                                     >
-                                        <AboutIcon />
+                                        <AboutIcon color="hsl(var(--bc))" />
                                     </a>
                                     {#if $currUser.isAdmin}
                                         <button
                                             class="btn btn-ghost btn-circle btn-sm"
                                             on:click={() => activatePackage(project.id)}
                                         >
-                                            <VisibleIcon />
+                                            <VisibleIcon color="hsl(var(--bc))" />
                                         </button>
                                     {/if}
                                 </td>
@@ -221,6 +246,7 @@
                                             user.role = option.target.value;
                                         }}
                                     >
+                                        <option value="none">None</option>
                                         <option value="user">User</option>
                                         <option value="admin">Admin</option>
                                         <!-- Add more roles here if needed -->
@@ -244,26 +270,28 @@
                         class="btn btn-ghost btn-circle btn-xs"
                         on:click={() => (customKey = generateRandomAPIKey())}
                     >
-                        <RefreshIcon size="20" />
+                        <RefreshIcon color="hsl(var(--bc))" size="20" />
                     </button>
                 </label>
             </div>
-            <div class="flex align-items-center">
+            <div
+                class="flex join align-items-center rounded-xl border border-base-content border-opacity-25"
+            >
                 <input
                     type="text"
                     placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                    class="input input-bordered input-md p-1 m-1 rounded-lg w-full max-w-xs sm:max-w-md"
+                    class="input input-md rounded-lg w-full join-item focus:outline-none"
                     bind:value={customKey}
                 />
                 <button
-                    class="btn btn-ghost rounded-lg btn-md"
+                    class="btn btn-ghost rounded-lg btn-md join-item"
                     on:click={() => {
                         createNewAPIKey(
                             customKey,
                             `${$currUser.firstName.toNormalCase()}, ${$currUser.firstName.toNormalCase()}`
                         );
                         customKey = '';
-                    }}><AddIcon size="32" /></button
+                    }}><AddIcon color="hsl(var(--bc))" size="32" /></button
                 >
             </div>
             {#if $allKeys.length > 0}
@@ -305,29 +333,78 @@
                 </div>
 
                 <div class="card-body">
-                    <div class="overflow-x-auto">
+                    <div class="flex flex-row-reverse w-full justify-between">
+                        <form method="POST" use:enhance={submitUpdateTheme}>
+                            <div class="dropdown dropdown-end">
+                                <label
+                                    for="theme"
+                                    tabindex="-1"
+                                    class="btn btn-md btn-outline rounded-xl m-2 p-2"
+                                    >Change Theme</label
+                                >
+                                <ul
+                                    tabindex="-1"
+                                    class="dropdown-content z-[1] menu bg-base-100 shadow-xl w-min-12 max-h-96 block overflow-y-scroll lg:rounded-tl-xl rounded-b-xl"
+                                >
+                                    {#each themes as theme}
+                                        <li>
+                                            <button
+                                                class="no-animation hover:bg-base-100 active:animate-none focus:animate-none"
+                                                value={newTheme}
+                                                formaction="?/setTheme&theme={theme}"
+                                                on:click={() => setTheme(theme)}
+                                            >
+                                                <ThemePreview {theme} />
+                                            </button>
+                                        </li>
+                                    {/each}
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+                    <form method="POST" action="?/submitChanges">
                         <table class="table">
+                            <thead>
+                                <tr>
+                                    <th> Attribute </th>
+                                    <th> Currently </th>
+                                </tr>
+                            </thead>
                             <tbody>
                                 <tr>
-                                    <th>Home Background</th>
-                                    <td>'/static/earth.jpg'</td>
-                                </tr>
-                                <tr>
-                                    <th>Home About Link</th>
-                                    <td>www.sil.org</td>
-                                </tr>
-                                <tr>
-                                    <th>Color Theme</th>
+                                    <th> Home Link </th>
                                     <td>
-                                        <select class="select select-sm rounded-lg w-full lg:w-3/4">
-                                            <option> business </option>
-                                            <option> cupcake </option>
-                                        </select>
+                                        <input
+                                            class="input input-ghost rounded-xl w-full"
+                                            placeholder="Please enter a web link"
+                                            bind:value={newHomeLink}
+                                            name="homelink"
+                                            type="text"
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th> Home Image </th>
+                                    <td>
+                                        <input
+                                            class="input input-ghost rounded-xl w-full"
+                                            placeholder="Please enter an image link"
+                                            bind:value={newImageLink}
+                                            name="homeimage"
+                                            type="text"
+                                        />
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
+                        <button
+                            disabled={!changes}
+                            class="btn btn-md rounded-xl m-2 p-2"
+                            formaction="?/submitChanges"
+                        >
+                            Save Changes
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -343,5 +420,9 @@
         border: 1px solid #f5c6cb;
         border-radius: 0.25rem;
         margin: 1rem;
+    }
+
+    ::-webkit-scrollbar {
+        display: none;
     }
 </style>

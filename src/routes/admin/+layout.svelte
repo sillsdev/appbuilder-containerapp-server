@@ -2,7 +2,7 @@
     import { HamburgerIcon, LogoutIcon, SettingsIcon } from '$lib/icons';
     import { goHome } from '$lib/data/NavigationFunctions';
     import { logOut } from '$lib/data/AuthFunctions';
-    import { currPage, currUser, updatePage } from '$lib/stores';
+    import { currPage, currUser, updatePage, incomingPackages } from '$lib/stores';
 </script>
 
 <div class="navbar bg-base-300">
@@ -11,7 +11,7 @@
             for="primary-content-drawer"
             class="btn btn-ghost btn-circle btn-sm drawer-button lg:hidden"
         >
-            <HamburgerIcon />
+            <HamburgerIcon color="hsl(var(--bc))" />
         </label>
         <li class="btn btn-ghost rounded-lg normal-case text-xl">
             <button on:click={() => goHome()}>Administrator Panel</button>
@@ -83,6 +83,9 @@
                         <span class="loading loading-ring loading-xs text-secondary" />
                     {/if}
                     Incoming Packages
+                    <span class="badge badge-outline rounded-full badge-accent"
+                        >{$incomingPackages.length}</span
+                    >
                 </button>
             </li>
             {#if $currUser.isAdmin}
