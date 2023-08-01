@@ -1,6 +1,5 @@
 /** @type {import('./$types').Actions} */
 
-import { goto } from '$app/navigation';
 import { auth } from '$lib/fbconfig';
 import { signInWithEmailAndPassword, updateEmail } from 'firebase/auth';
 import { updateFirstName, updateLastName, updateStashedEmail } from '$lib/data/AuthFunctions';
@@ -26,7 +25,7 @@ export const actions = {
                         console.log('Update error: ' + error);
                     })
                     .catch((error) => {
-                        console.log('Authetication error: ' + error);
+                        console.log('Authentication error: ' + error);
                     });
             }
         });

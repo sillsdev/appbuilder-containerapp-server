@@ -41,7 +41,7 @@
         </div>
 
         <div class="card-body">
-            <div class="overflow-x-auto">
+            <div class="overflow-x-visible">
                 <table class="table">
                     <thead>
                         <tr class="text-white text-lg font-bold border-opacity-50">
