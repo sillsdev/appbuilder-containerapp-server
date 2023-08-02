@@ -53,6 +53,11 @@
         newTheme = theme;
     }
 
+    const submitUpdateSettings = ({ action }) => {
+        const img = action.searchParams.get('img');
+        const link = action.searchParams.get('lnk');
+    };
+
     const submitUpdateTheme = ({ action }) => {
         const theme = action.searchParams.get('theme');
 
