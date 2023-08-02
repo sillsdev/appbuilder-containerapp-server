@@ -3,8 +3,7 @@ import type { Handle } from '@sveltejs/kit';
 
 export const handle = (async ({ event, resolve }) => {
     let theme: string | null = null;
-    const newTheme = event.url.searchParams.get('theme');
-    const cookieTheme = event.cookies.get('colortheme');
+
     await initInterface();
 
     interfacePref.subscribe((item) => {
@@ -12,12 +11,6 @@ export const handle = (async ({ event, resolve }) => {
             theme = item.theme;
         }
     });
-
-    if (newTheme) {
-        theme = newTheme;
-    } else if (cookieTheme) {
-        theme = cookieTheme;
-    }
 
     if (theme) {
         return await resolve(event, {
