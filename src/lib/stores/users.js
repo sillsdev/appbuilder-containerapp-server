@@ -1,6 +1,7 @@
 import { writable } from 'svelte/store';
-import { db, auth } from '$lib/fbconfig.js';
-import { getAuth } from 'firebase/auth';
+import { db } from '$lib/fbconfig.js';
+import { auth } from '$lib/fbconfig.js';
+import { derived } from 'svelte/store';
 import { collection, getDocs } from 'firebase/firestore';
 
 export const allUsers = writable([]);
@@ -18,7 +19,6 @@ export async function initUsers() {
 export const currUser = writable([]);
 
 export async function initCurrUser() {
-    const auth = getAuth();
     const user = auth.currentUser;
 
     if (user !== null) {
@@ -30,3 +30,7 @@ export async function initCurrUser() {
         });
     }
 }
+
+export const adminUsers = derived([allUsers], ([$users]) => {
+    return $users.filter((user) => user.role === 'admin');
+});

@@ -291,10 +291,7 @@
                 <button
                     class="btn btn-ghost rounded-lg btn-md join-item"
                     on:click={() => {
-                        createNewAPIKey(
-                            customKey,
-                            `${$currUser.firstName.toNormalCase()}, ${$currUser.firstName.toNormalCase()}`
-                        );
+                        createNewAPIKey(customKey, `${$currUser.firstName}, ${$currUser.lastName}`);
                         customKey = '';
                     }}><AddIcon color="hsl(var(--bc))" size="32" /></button
                 >

@@ -1,6 +1,7 @@
 import { db } from '$lib/fbconfig';
 import { collection, doc, addDoc, deleteDoc } from 'firebase/firestore';
 import { initKeys } from '$lib/stores';
+import toast from 'svelte-french-toast';
 
 export function generateRandomAPIKey() {
     let date = new Date().getTime();
@@ -22,8 +23,10 @@ export async function createNewAPIKey(key, user) {
                 timestamp: new Date().toISOString()
             });
             await initKeys();
+            toast.success('New key added.');
         } catch (e) {}
     } else {
+        toast.error('Empty key could not be added.');
         throw new Error('Please define a key value');
     }
 }

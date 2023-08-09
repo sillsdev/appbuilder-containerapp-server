@@ -3,6 +3,7 @@
     import { signInWithEmailAndPassword } from 'firebase/auth';
     import { auth } from '$lib/fbconfig';
     import { goto } from '$app/navigation';
+    import toast from 'svelte-french-toast';
 
     let error;
 
@@ -15,13 +16,7 @@
             );
             await goto('/admin');
         } catch (err) {
-            console.log('error signin in', err.message);
-            error = err.message;
-            if (err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') {
-                error = 'Wrong email or password';
-            } else {
-                error = err.message;
-            }
+            toast.error('Error signing in.');
         }
     }
 </script>
@@ -47,5 +42,10 @@
 
     <div class="flex justify-center items-center gap-2 mt-4">
         Don't have an account? <a class="link link-hover" href="/signup"> Sign Up </a>
+    </div>
+    <div class="flex justify-center items-center gap-2 mt-4">
+        <button class="btn btn-wide btn-ghost rounded-xl hover:underline hover:bg-base-100">
+            Forgot your password?
+        </button>
     </div>
 </div>
