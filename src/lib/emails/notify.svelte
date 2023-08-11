@@ -1,7 +1,9 @@
 <script>
     import { Button, Container, Head, Hr, Html, Img, Preview, Section, Text } from 'svelte-email';
+    import { PUBLIC_DEPLOYMENT_LINK } from '$env/static/public';
 
     export let pack;
+    const link = `${PUBLIC_DEPLOYMENT_LINK}/admin`;
 </script>
 
 <Html lang="en">
@@ -17,7 +19,7 @@
                 <Text>Region: {pack.app_lang.regionname}</Text>
                 <Text>Language Code: {pack.app_lang.iso639_3.toUpperCase()}</Text>
             </Container>
-            <Button href="/admin">View Package</Button>
+            <Button href={link}>View Package</Button>
         </Container>
     </Section>
 </Html>
