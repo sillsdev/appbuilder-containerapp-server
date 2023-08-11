@@ -4,7 +4,8 @@ import {
     PUBLIC_NODEMAILER_PORT,
     PUBLIC_NODEMAILER_USER,
     PUBLIC_NODEMAILER_PASSWORD,
-    PUBLIC_NODEMAILER_SENDER
+    PUBLIC_NODEMAILER_SENDER,
+    PUBLIC_NODEMAILER_SECURE
 } from '$env/static/public';
 import { addDoc, collection } from 'firebase/firestore';
 import { allKeys, initKeys } from '$lib/stores/keys.js';
@@ -20,7 +21,8 @@ const transporter = nodemailer.createTransport({
     auth: {
         user: PUBLIC_NODEMAILER_USER,
         pass: PUBLIC_NODEMAILER_PASSWORD
-    }
+    },
+    secure: PUBLIC_NODEMAILER_SECURE
 });
 
 let recipients = [];
