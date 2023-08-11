@@ -61,14 +61,14 @@
         <ul
             class="menu mt-16 lg:mt-0 rounded-r-xl p-4 w-3/4 lg:w-64 bg-base-100 text-base-content h-full"
         >
-            <li>
+            <!-- <li>
                 <button on:click={() => updatePage('Dashboard')}>
                     {#if $currPage === 'Dashboard'}
                         <span class="loading loading-ring loading-xs text-secondary" />
                     {/if}
                     Dashboard
                 </button>
-            </li>
+            </li> -->
             <li>
                 <button on:click={() => updatePage('Active Packages')}>
                     {#if $currPage === 'Active Packages'}
