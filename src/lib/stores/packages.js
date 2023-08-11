@@ -1,6 +1,7 @@
 import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { writable, derived } from 'svelte/store';
 import { db } from '../fbconfig';
+import toast from 'svelte-french-toast';
 
 export const allPackages = writable([]);
 
@@ -46,6 +47,8 @@ export async function activatePackage(id) {
     await updateDoc(docRef, {
         accepted: timestamp
     });
+
+    toast.success('Package status changed.');
 }
 
 export async function deactivatePackage(id) {
@@ -66,4 +69,6 @@ export async function deactivatePackage(id) {
     await updateDoc(docRef, {
         accepted: ''
     });
+
+    toast.success('Package status changed.');
 }

@@ -1,6 +1,9 @@
 <script>
     import { ArrowBackIcon } from '$lib/icons';
     import { passwordReset } from '$lib/data/AuthFunctions.js';
+    import toast from 'svelte-french-toast';
+    import { enhance } from '$app/forms';
+    import { currUser } from '$lib/stores/users.js';
 
     export let data;
     const user = data.user;
@@ -20,6 +23,27 @@
     $: {
         changes = `${newFirstName}${newLastName}${newEmail}`;
     }
+
+    const submitProfileChanges = () => {
+        return async ({ result, update }) => {
+            switch (result.type) {
+                case 'success':
+                    toast.success('Profile information updated.');
+                    reauthenticate_modal.close();
+                    await update();
+                    break;
+                case 'invalid':
+                    toast.error('Whoops! Invalid credentials.');
+                    await update();
+                    break;
+                case 'error':
+                    toast.error('Unable to update profile. Try again later.');
+                    break;
+                default:
+                    await update();
+            }
+        };
+    };
 </script>
 
 <div class="flex flex-row justify-items-stretch columns-2 items-center">
@@ -135,7 +159,7 @@
 
 <dialog id="reauthenticate_modal" class="modal">
     <div class="modal-box rounded-xl shadow-xl bg-base-100">
-        <form method="POST" action="?/reauthenticate">
+        <form method="POST" action="?/reauthenticate" use:enhance={submitProfileChanges}>
             <h3 class="font-bold text-lg flex justify-center">Authentication</h3>
             <p class="text-sm flex justify-center">
                 Reauthenticate your account by entering your current email and password.
@@ -197,7 +221,9 @@
                 autocomplete="off"
             />
             <div class="modal-action">
-                <button class="btn rounded-lg" formaction="?/reauthenticate"> Save Changes </button>
+                <button class="btn rounded-lg modal-action" formaction="?/reauthenticate">
+                    Save Changes
+                </button>
             </div>
         </form>
     </div>
