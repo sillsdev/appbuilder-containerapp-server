@@ -1,12 +1,12 @@
 import { db } from '$lib/fbconfig.js';
 import {
-    PUBLIC_NODEMAILER_HOST,
-    PUBLIC_NODEMAILER_PORT,
-    PUBLIC_NODEMAILER_USER,
-    PUBLIC_NODEMAILER_PASSWORD,
-    PUBLIC_NODEMAILER_SENDER,
-    PUBLIC_NODEMAILER_SECURE
-} from '$env/static/public';
+    NODEMAILER_HOST,
+    NODEMAILER_PORT,
+    NODEMAILER_USER,
+    NODEMAILER_PASSWORD,
+    NODEMAILER_SENDER,
+    NODEMAILER_SECURE
+} from '$env/static/private';
 import { addDoc, collection } from 'firebase/firestore';
 import { allKeys, initKeys } from '$lib/stores/keys.js';
 import { initPackages } from '$lib/stores/packages.js';
@@ -14,33 +14,34 @@ import { adminUsers, initUsers } from '$lib/stores/users.js';
 import Notify from '$lib/emails/notify.svelte';
 import nodemailer from 'nodemailer';
 import { render } from 'svelte-email';
+import { get } from 'svelte/store';
 
 const transporter = nodemailer.createTransport({
-    host: PUBLIC_NODEMAILER_HOST,
-    port: PUBLIC_NODEMAILER_PORT,
+    host: NODEMAILER_HOST,
+    port: NODEMAILER_PORT,
     auth: {
-        user: PUBLIC_NODEMAILER_USER,
-        pass: PUBLIC_NODEMAILER_PASSWORD
+        user: NODEMAILER_USER,
+        pass: NODEMAILER_PASSWORD
     },
-    secure: PUBLIC_NODEMAILER_SECURE
+    secure: NODEMAILER_SECURE
 });
 
-let recipients = [];
+const sender = NODEMAILER_SENDER;
 
 export async function POST({ request }) {
     await initKeys();
     await initUsers();
 
     let valid = false;
+    const recipients = [];
 
     const bearer = request.headers.get('authorization');
 
-    allKeys.subscribe((keys) => {
-        keys.forEach((key) => {
-            if (bearer.includes(key.key)) {
-                valid = true;
-            }
-        });
+    const keys = get(allKeys);
+    keys.forEach((key) => {
+        if (bearer.includes(key.key)) {
+            valid = true;
+        }
     });
 
     if (valid) {
@@ -53,11 +54,8 @@ export async function POST({ request }) {
             ...pack
         });
 
-        adminUsers.subscribe((users) => {
-            users.forEach((user) => {
-                recipients.push(user.email);
-            });
-        });
+        const users = get(adminUsers);
+        users.forEach((user) => recipients.push(user.email));
 
         const emailHtml = render({
             template: Notify,
@@ -67,7 +65,7 @@ export async function POST({ request }) {
         });
 
         const options = {
-            from: PUBLIC_NODEMAILER_SENDER,
+            from: sender,
             to: recipients,
             subject: 'New Package Pending Review',
             html: emailHtml
