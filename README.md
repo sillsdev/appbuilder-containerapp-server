@@ -1,22 +1,22 @@
-# create-svelte
+# appbuilder-containerapp-server
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+[Scripture App Builder](https://software.sil.org/scriptureappbuilder) supports creating a iOS container app. The container app has a URL for the web server that provides the starting UI of the container app. From the web page, the user taps on an entry which causes the container app to download an asset package (which is a zip file of the assets that would be included in a dedicated app), extracts the asset package into local storage, and then starts the scripture app using those assets.
 
-## Creating a project
+For a container app to work, there needs to be a server on the internet that has a catalog of asset packages and displays a page which allows the user to select from the catalog. This project provides an implementation of a server that can:
 
-If you're seeing this, you've probably already done this step. Congrats!
+-   receive notifications of new asset packages published by Scriptoria
+-   provides an admin interface to approve of packages to be available
+-   provides a page to be included in an SAB iOS container app
+    -   users can enter the language name, country or language code
+-   emails admin users when new packages are ready for review
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## Dependencies
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+Firebase is the backend-as-a-service to store data and do user authentication.
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Install dependencies with `npm install` and start a development server:
 
 ```bash
 npm run dev
